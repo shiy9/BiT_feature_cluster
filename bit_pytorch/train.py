@@ -71,6 +71,10 @@ def mktrainval(args, logger):
   elif args.dataset == "imagenet2012":
     train_set = tv.datasets.ImageFolder(pjoin(args.datadir, "train"), train_tx)
     valid_set = tv.datasets.ImageFolder(pjoin(args.datadir, "val"), val_tx)
+  elif args.dataset == "eoetest":
+    train_set = tv.datasets.ImageFolder(pjoin(args.datadir, "train"), train_tx)
+    # valid_set = tv.datasets.ImageFolder(pjoin(args.datadir, "val"), val_tx)
+    valid_set = None
   else:
     raise ValueError(f"Sorry, we have not spent time implementing the "
                      f"{args.dataset} dataset in the PyTorch codebase. "
@@ -82,13 +86,18 @@ def mktrainval(args, logger):
     train_set = torch.utils.data.Subset(train_set, indices=indices)
 
   logger.info(f"Using a training set with {len(train_set)} images.")
-  logger.info(f"Using a validation set with {len(valid_set)} images.")
+  # TODO: original commented out
+  # logger.info(f"Using a validation set with {len(valid_set)} images.")
+  logger.info(f"Not using a validation set currently.")
 
   micro_batch_size = args.batch // args.batch_split
 
-  valid_loader = torch.utils.data.DataLoader(
-      valid_set, batch_size=micro_batch_size, shuffle=False,
-      num_workers=args.workers, pin_memory=True, drop_last=False)
+  # TODO: original commented out
+  # valid_loader = torch.utils.data.DataLoader(
+  #     valid_set, batch_size=micro_batch_size, shuffle=False,
+  #     num_workers=args.workers, pin_memory=True, drop_last=False)
+
+  valid_loader = None
 
   if micro_batch_size <= len(train_set):
     train_loader = torch.utils.data.DataLoader(
@@ -168,7 +177,10 @@ def main(args):
   train_set, valid_set, train_loader, valid_loader = mktrainval(args, logger)
 
   logger.info(f"Loading model from {args.model}.npz")
-  model = models.KNOWN_MODELS[args.model](head_size=len(valid_set.classes), zero_head=True)
+
+  # TODO: original commented out
+  # model = models.KNOWN_MODELS[args.model](head_size=len(valid_set.classes), zero_head=True)
+  model = models.KNOWN_MODELS[args.model](head_size=1, zero_head=True)
   model.load_from(np.load(f"{args.model}.npz"))
 
   logger.info("Moving model onto all GPUs")

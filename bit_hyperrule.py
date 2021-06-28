@@ -18,12 +18,14 @@ def get_resolution(original_resolution):
   return (160, 128) if area < 96*96 else (512, 480)
 
 
+# TODO: add future dataset here
 known_dataset_sizes = {
   'cifar10': (32, 32),
   'cifar100': (32, 32),
   'oxford_iiit_pet': (224, 224),
   'oxford_flowers102': (224, 224),
   'imagenet2012': (224, 224),
+  'eoetest': (256, 256)
 }
 
 
