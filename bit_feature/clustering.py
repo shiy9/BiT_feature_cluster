@@ -2,7 +2,7 @@ import numpy as np
 import os
 # import openslide
 from PIL import Image
-from sklearn.cluster import SpectralClustering
+from sklearn.cluster import SpectralClustering, KMeans, Birch
 from sklearn.metrics import pairwise_distances
 import random
 
@@ -23,13 +23,15 @@ import random
 
 WSI_name = 'P16-7404;S6;UVM'
 reg_num = '4'
+feature_1024 = True
+save_ext = '_1024' if feature_1024 else ''
 
 for _ in range(1):  # TODO: original for train_img_file in WSI_list:
     # print(train_img_file)
     # file_name = train_img_file
 
     # file_name_abbr = train_img_file.split('.')[0]
-    fea_file = os.path.join('data_root/feature', f'{WSI_name}_R{reg_num}_feature.npy')
+    fea_file = os.path.join('data_root/feature', f'{WSI_name}_R{reg_num}_feature{save_ext}.npy')
     # coor_file = os.path.join(data_info_root, 'coord', 'tiles_coord.npy')
     # label_file = os.path.join(data_info_root, 'label', file_name_abbr + '_label.npy')
 
@@ -49,12 +51,34 @@ for _ in range(1):  # TODO: original for train_img_file in WSI_list:
 
     ### build tumor feature array
     # fea_tumor = fea_array[sample_index, ...]
+    sim_matrix = 1 - pairwise_distances(fea_array, metric="cosine")
     clustering = SpectralClustering(n_clusters=5,
                  assign_labels="discretize",
-                 random_state=0).fit(fea_array)  # Original: fea_tumor
+                 random_state=0).fit(sim_matrix)  # Original: fea_tumor
+
+    # test the Euclidean a bit first
+    # Dist_0_1 = np.linalg.norm(fea_array[0]-fea_array[1])
+    # Dist_0_2 = np.linalg.norm(fea_array[0]-fea_array[2])
+    # Dist_0_3 = np.linalg.norm(fea_array[0]-fea_array[3])
+    # Dist_1_2 = np.linalg.norm(fea_array[1]-fea_array[2])
+    # Dist_1_3 = np.linalg.norm(fea_array[1]-fea_array[3])
+    #
+    # print(f'Dist_0_1: {Dist_0_1}')
+    # print(f'Dist_0_2: {Dist_0_2}')
+    # print(f'Dist_0_3: {Dist_0_3}')
+    # print(f'Dist_1_2: {Dist_1_2}')
+    # print(f'Dist_1_3: {Dist_1_3}')
+
+
+
+
+
+
+    # clustering = Birch(n_clusters=2).fit(fea_array)
     tumor_subclass_list = clustering.labels_
-    # filename = ..._cluter_label
-    np.save(f'data_root/cluster/{WSI_name}_R{reg_num}_cluster_label', tumor_subclass_list)
+    np.save(f'data_root/cluster/{WSI_name}_R{reg_num}_cluster_label{save_ext}', tumor_subclass_list)
+    np.savetxt(f'data_root/cluster/{WSI_name}_R{reg_num}_cluster_label{save_ext}.txt', tumor_subclass_list.astype(int),
+               fmt='%i')
 
     # abstract top 5 patch in each cluster
     # for cluster_index in range(5):

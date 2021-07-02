@@ -22,6 +22,8 @@ reg_num = 4
 downsample = 2
 WSI_name = 'P16-7404;S6;UVM'
 WSI_ext = '.scn'
+feature_1024 = True  # TODO: check this before running
+save_ext = '_1024' if feature_1024 else ''
 
 for _ in range(1):  # Original: for train_img_file in WSI_list:
     # print(train_img_file)
@@ -42,7 +44,7 @@ for _ in range(1):  # Original: for train_img_file in WSI_list:
 
     # file_name_abbr = train_img_file.split('.')[0]
     coor_file = os.path.join(data_root, 'tiles_coord', WSI_name + f'_R{reg_num}_tiles_coord.npy')
-    label_file = os.path.join(data_root, 'cluster', WSI_name + f'_R{reg_num}_cluster_label.npy')
+    label_file = os.path.join(data_root, 'cluster', WSI_name + f'_R{reg_num}_cluster_label{save_ext}.npy')
 
     new_img_w = int(max_w/downsample//patch_size)
     new_img_h = int(max_h/downsample//patch_size)
@@ -60,4 +62,4 @@ for _ in range(1):  # Original: for train_img_file in WSI_list:
         color = colors_list[label]
         img_color_arr[int(coor_y)][int(coor_x)] = color
 
-    Image.fromarray(img_color_arr).save(f'{data_root}/result_img/{WSI_name}_R{reg_num}_cluster_mask.png')
+    Image.fromarray(img_color_arr).save(f'{data_root}/result_img/{WSI_name}_R{reg_num}_cluster_mask{save_ext}.png')
