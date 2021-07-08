@@ -10,8 +10,7 @@ from matplotlib import pyplot as plt
 # import csv
 # import pandas as pd
 
-WSI_name = 'P18-6324;S2;UVM'
-WSI_name_abbr = 'P18-6324'
+WSI_name = 'P16-8917;S6;UVM'
 reg_num = 0  # reg_num is 0 based!
 downsample = 2
 patch_size = 256
@@ -45,10 +44,10 @@ save_root = f'/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/tiles/'
 
 colors_list = [(255, 255, 255), (123, 35, 15), (23, 172, 169), (211, 49, 153),
                 (160, 90, 160), (200, 200, 200),
-               (150, 200, 150), (200, 0, 0), (201, 120, 25)]
+               (150, 200, 150), (200, 0, 0), (201, 120, 25), (214, 199, 219), (42, 189, 89)]
 
 # TODO: official documentation is 'EA' instead of 'EI'
-label_dict = {'eos': 0, 'bzh': 1, 'dis': 2, 'ei': 3, 'sl': 4, 'sea': 5, 'dec': 6, 'lpf': 7}
+label_dict = {'eos': 1, 'bzh': 2, 'dis': 3, 'ea': 4, 'sl': 5, 'sea': 6, 'dec': 7, 'lpf': 8, 'normal lp': 9, 'fibrotic lp': 10}
 
 print(WSI_name)
 WSI_file_name = WSI_name + '.scn'
@@ -78,12 +77,10 @@ ratio_dict = {}
 
 count = -1
 
-# TODO: all divide by 2 below are because of 20x resolution
 with open(f'{json_root}{WSI_name}_R{reg_num}.json') as json_file:
     data = json.load(json_file)
     for object in data:
         count += 1
-        print(count)
         coor = object['geometry']['coordinates']
         if object['geometry']['type'] == 'Polygon':
             for coor_sub in coor:
@@ -165,7 +162,7 @@ tiles_coord = np.load(tiles_coord_path)
 i = 0
 
 for filename in sorted(os.listdir(tiles_root)):
-    print(f'File being processed: {filename}')
+    # print(f'File being processed: {filename}')
     # at 40x resolution and are relative coordinates in terms of region
     patch_start_x = tiles_coord[i][0] - reg_x
     patch_start_y = tiles_coord[i][1] - reg_y
@@ -202,23 +199,27 @@ for filename in sorted(os.listdir(tiles_root)):
             third_label = label
     temp_x = int(patch_start_x/downsample//patch_size)
     temp_y = int(patch_start_y/downsample//patch_size)
+
+    others_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/others'
+    if not os.path.exists(others_root):
+        os.makedirs(others_root)
+
     if first_label == '_':
         img_color_arr[temp_y, temp_x] = colors_list[0]
+        shutil.copy(f'{tiles_root}{filename}', f'{others_root}/{filename}')
     else:
         color_index = label_dict[first_label]
         img_color_arr[temp_y, temp_x] = colors_list[color_index]
-        sorted_root = f'{save_root}{WSI_name}_sorted_tiles/{first_label}'
+        sorted_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{first_label}'
         if not os.path.exists(sorted_root):
             os.makedirs(sorted_root)
-        shutil.copy(f'{tiles_root}{filename}', f'{sorted_root}/{filename[:-4]}_{second_label}_{third_label}.png')
-        print(f'Saved! {i} {first_label}')
-
-        # Not changing the name
-        # shutil.move(f'{tiles_root}{filename}',f'{tiles_root}{first_label}/{filename}')
+        shutil.copy(f'{tiles_root}{filename}', f'{sorted_root}/{filename}')
+        print(f'Labeled saved! {i} {first_label} {second_label} {third_label}')
     # print(temp_x, temp_y, first_label)
     i += 1
 
-Image.fromarray(img_color_arr).save('ReportImgs/patch_group_mask.png')
+shutil.move(tiles_root, f'{save_root}Unlabeled')
+Image.fromarray(img_color_arr).save(f'data_root/result_img/{WSI_name}_R{reg_num}_patch_group_mask.png')
 
 
 
