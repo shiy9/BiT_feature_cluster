@@ -2,3 +2,4 @@
 *.png
 *.npy
 __pycache__/
+data_root/
