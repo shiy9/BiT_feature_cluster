@@ -1,179 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="638e606b-167a-4d2a-80b2-6f1f669f3ee1" name="Default Changelist" comment="Feature extraction and clustering mask">
+    <list default="true" id="638e606b-167a-4d2a-80b2-6f1f669f3ee1" name="Default Changelist" comment="gitignore update">
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/WSI/P16-7404;S6;UVM.scn" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/cluster/P16-7404;S6;UVM_R4_cluster_label.npy" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/feature/P16-7404;S6;UVM_R4_feature.npy" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/result_img/P16-7404;S6;UVM_R4_cluster_mask.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006568.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006772.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006773.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006774.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006978.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006979.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006980.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006981.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006982.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_006983.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007183.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007184.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007185.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007186.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007187.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007188.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007189.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007190.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007191.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007388.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007389.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007390.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007391.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007392.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007393.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007394.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007395.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007396.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007594.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007595.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007596.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007597.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007598.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007599.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007600.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007801.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007802.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007809.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007810.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007811.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007812.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_007813.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008015.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008016.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008017.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008018.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008019.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008020.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008222.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008223.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008224.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008225.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008226.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008425.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008426.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008428.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008429.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008430.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008431.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008432.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008630.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008631.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008632.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008633.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008634.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008635.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008636.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008637.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008638.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008639.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008836.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008837.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008838.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008839.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008840.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008841.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008842.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008843.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008844.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_008845.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009042.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009043.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009044.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009045.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009046.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009047.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009048.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009049.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009050.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009051.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009052.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009250.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009252.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009253.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009254.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009255.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009256.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009257.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009258.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009457.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009458.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009459.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009460.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009461.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009462.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009662.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009663.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009664.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009665.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009666.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009667.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009668.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009670.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009671.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009869.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009870.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009871.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009872.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009873.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009874.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009876.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_009877.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010074.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010075.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010076.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010077.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010078.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010079.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010080.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010081.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010082.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010083.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010281.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010282.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010283.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010284.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010285.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010286.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010287.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010288.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010492.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_010493.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011128.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011129.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011130.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011334.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011335.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011336.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011540.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011541.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011745.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011746.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011941.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011942.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011951.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_011952.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_012157.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_012158.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_012363.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_012364.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles/P16-7404;S6;UVM_R4_tiles/eoe/P16-7404;S6;UVM_012569.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/tiles_coord/P16-7404;S6;UVM_R4_tiles_coord.npy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bit_feature/npy_read.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/0512_m1_prepare_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/clustering.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/draw_mask_79WSI.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/clustering_mask.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/train_BiT_cross_val.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/feature_extraction_old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/npy_read.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/npy_read.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/patch_grouping.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/patch_grouping.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,13 +33,14 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/bit_feature/create_feature_from_simtriplet.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.cluster_mask">
+  <component name="RunManager" selected="Python.group_patches">
     <configuration name="cluster_mask" type="PythonConfigurationType" factoryName="Python">
       <module name="big_transfer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -292,6 +129,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="group_patches" type="PythonConfigurationType" factoryName="Python">
+      <module name="big_transfer" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/patch_grouping.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="npy_dummy_read" type="PythonConfigurationType" factoryName="Python">
       <module name="big_transfer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -314,7 +173,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pytorch-train" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="wsi_properties" type="PythonConfigurationType" factoryName="Python">
       <module name="big_transfer" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -322,35 +181,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_pytorch" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_pytorch/train.py" />
-      <option name="PARAMETERS" value="--name testrun --model BiT-M-R50x1 --logdir train_log --batch 128 --batch_split 8 --dataset eoetest --datadir train_input/P16-7404;S6;UVM_tiles" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="tf2-train" type="PythonConfigurationType" factoryName="Python">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_tf2" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_tf2/train.py" />
-      <option name="PARAMETERS" value="--name testrun --model BiT-M-R50x1 --logdir train_log --dataset eoetest" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/WSI_Properties.py" />
+      <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -359,13 +196,13 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.tf2-train" />
-      <item itemvalue="Python.pytorch-train" />
-      <item itemvalue="Python.feature-extraction" />
-      <item itemvalue="Python.clustering" />
       <item itemvalue="Python.feature-extraction-2.0" />
+      <item itemvalue="Python.clustering" />
       <item itemvalue="Python.cluster_mask" />
+      <item itemvalue="Python.group_patches" />
+      <item itemvalue="Python.wsi_properties" />
       <item itemvalue="Python.npy_dummy_read" />
+      <item itemvalue="Python.feature-extraction" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -397,7 +234,18 @@
       <workItem from="1624895142711" duration="475000" />
       <workItem from="1625060634780" duration="5548000" />
       <workItem from="1625154251834" duration="3672000" />
-      <workItem from="1625168877519" duration="8921000" />
+      <workItem from="1625168877519" duration="9622000" />
+      <workItem from="1625235852851" duration="599000" />
+      <workItem from="1625581830998" duration="1962000" />
+      <workItem from="1625666169863" duration="16014000" />
+      <workItem from="1625704078875" duration="3556000" />
+      <workItem from="1625750829518" duration="678000" />
+      <workItem from="1625758878054" duration="2009000" />
+      <workItem from="1625762601955" duration="1039000" />
+      <workItem from="1625765112651" duration="696000" />
+      <workItem from="1625766064746" duration="1273000" />
+      <workItem from="1625787878177" duration="734000" />
+      <workItem from="1626097324888" duration="5722000" />
     </task>
     <task id="LOCAL-00001" summary="Feature extraction and clustering mask">
       <created>1624843132766</created>
@@ -406,7 +254,35 @@
       <option name="project" value="LOCAL" />
       <updated>1624843132766</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Feature extraction 2.0 and better clustering">
+      <created>1625200240837</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1625200240837</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Patch grouping">
+      <created>1625687324187</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1625687324187</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Patch grouping update">
+      <created>1625766750084</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1625766750084</updated>
+    </task>
+    <task id="LOCAL-00005" summary="gitignore update">
+      <created>1625787990842</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1625787990842</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -426,7 +302,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Feature extraction and clustering mask" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feature extraction and clustering mask" />
+    <MESSAGE value="Feature extraction 2.0 and better clustering" />
+    <MESSAGE value="Patch grouping" />
+    <MESSAGE value="Patch grouping update" />
+    <MESSAGE value="gitignore update" />
+    <option name="LAST_COMMIT_MESSAGE" value="gitignore update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -438,7 +318,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/npy_read.py</url>
-          <line>5</line>
+          <line>9</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -466,17 +346,34 @@
           <line>74</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bit_feature/patch_grouping.py</url>
+          <line>151</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bit_feature/patch_grouping.py</url>
+          <line>159</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bit_feature/npy_read.py</url>
+          <line>8</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/big_transfer$cluster_mask.coverage" NAME="cluster_mask Coverage Results" MODIFIED="1625194755561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$clustering.coverage" NAME="clustering Coverage Results" MODIFIED="1625194716295" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$group_patches.coverage" NAME="group_patches Coverage Results" MODIFIED="1626100908073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$tf2_train.coverage" NAME="tf2-train Coverage Results" MODIFIED="1623943396317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_tf2" />
     <SUITE FILE_PATH="coverage/big_transfer$pytorch_train.coverage" NAME="pytorch-train Coverage Results" MODIFIED="1624216754862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_pytorch" />
     <SUITE FILE_PATH="coverage/big_transfer$draw_mask.coverage" NAME="draw_mask Coverage Results" MODIFIED="1625190342517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$npy_dummy_read.coverage" NAME="npy_dummy_read Coverage Results" MODIFIED="1625169195015" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$feature_extraction.coverage" NAME="feature-extraction Coverage Results" MODIFIED="1625193183568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$feature_extraction_2_0.coverage" NAME="feature-extraction-2.0 Coverage Results" MODIFIED="1625194675766" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$npy_dummy_read.coverage" NAME="npy_dummy_read Coverage Results" MODIFIED="1626098704105" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$wsi_properties.coverage" NAME="wsi_properties Coverage Results" MODIFIED="1625667304879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
   </component>
 </project>

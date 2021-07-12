@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 # import csv
 # import pandas as pd
 
-WSI_name = 'P16-8917;S6;UVM'
+WSI_name = 'P17-2343;S6;UVM'
 reg_num = 0  # reg_num is 0 based!
 downsample = 2
 patch_size = 256
@@ -34,20 +34,16 @@ save_root = f'/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/tiles/'
 
 
 # file_list = os.listdir(root)
-# label_dict = {'fat': 0, 'tumor': 1, 'stroma': 2, 'blood vessel': 3, 'epidermis': 4, 'ulceration': 5, \
-#     'immune cells': 6, 'nerve': 7, 'necrosis': 8, 'lymph vessel': 9, 'granular layer': 10, 'hair follicle': 11, \
-#     'sebaceous gland': 12, 'muscle': 13, 'cartilage': 14}
-
-# label_dict = {'bg': 0, 'blood vessel': 1, 'cartilage': 2, 'epidermis': 3, 'fat': 4, 'granular layer': 5, 'hair follicle': 6,
-#              'immune cells': 7, 'lymph vessel': 8, 'muscle': 9, 'necrosis': 10, 'nerve': 11, 'sebaceous gland': 12,
-#              'stroma': 13, 'tumor': 14, 'ulceration': 15}
 
 colors_list = [(255, 255, 255), (123, 35, 15), (23, 172, 169), (211, 49, 153),
                 (160, 90, 160), (200, 200, 200),
                (150, 200, 150), (200, 0, 0), (201, 120, 25), (214, 199, 219), (42, 189, 89)]
 
 # TODO: official documentation is 'EA' instead of 'EI'
-label_dict = {'eos': 1, 'bzh': 2, 'dis': 3, 'ea': 4, 'sl': 5, 'sea': 6, 'dec': 7, 'lpf': 8, 'normal lp': 9, 'fibrotic lp': 10}
+label_dict = {'eos': 1, 'bzh': 2, 'dis': 3, 'ea': 4, 'sl': 5, 'sea': 6, 'dec': 7, 'lpf': 8, 'normal lp': 9,
+              'fibrotic lp': 10}
+pt_mask_dict = {'eos': 17, 'bzh': 34, 'dis': 51, 'ea': 68, 'sl': 85, 'sea': 102, 'dec': 119, 'lpf': 136,
+                'normal lp': 153, 'fibrotic lp': 170}
 
 print(WSI_name)
 WSI_file_name = WSI_name + '.scn'
@@ -177,10 +173,16 @@ for filename in sorted(os.listdir(tiles_root)):
     first_label = '_'
     second_label = '_'
     third_label = '_'
+
+    # The grayscale mask of each patch containing all the labels within that patch
+    patch_save_mask = np.zeros((patch_size, patch_size), dtype=np.uint8)
+
     for label in class_dict.keys():
         subject_mask = class_dict[label]
         patch_mask = subject_mask[patch_start_y // downsample: patch_start_y // downsample + patch_size,
                      patch_start_x // downsample: patch_start_x // downsample + patch_size]
+        patch_save_mask = np.where(patch_mask > 0, pt_mask_dict[label], patch_save_mask)
+
         mask_area = cv2.countNonZero(patch_mask)
         if mask_area > first_mask_area:
             third_mask_area = second_mask_area
@@ -197,6 +199,15 @@ for filename in sorted(os.listdir(tiles_root)):
         elif mask_area > third_mask_area:
             third_mask_area = mask_area
             third_label = label
+
+        # V2
+        if mask_area > 0:
+            sorted_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{label}'
+            if not os.path.exists(sorted_root):
+                os.makedirs(sorted_root)
+            shutil.copy(f'{tiles_root}{filename}', f'{sorted_root}/{filename}')
+
+
     temp_x = int(patch_start_x/downsample//patch_size)
     temp_y = int(patch_start_y/downsample//patch_size)
 
@@ -210,11 +221,22 @@ for filename in sorted(os.listdir(tiles_root)):
     else:
         color_index = label_dict[first_label]
         img_color_arr[temp_y, temp_x] = colors_list[color_index]
-        sorted_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{first_label}'
-        if not os.path.exists(sorted_root):
-            os.makedirs(sorted_root)
-        shutil.copy(f'{tiles_root}{filename}', f'{sorted_root}/{filename}')
-        print(f'Labeled saved! {i} {first_label} {second_label} {third_label}')
+
+        sorted_mask_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/tiles_mask'
+        sorted_mask_file_root = sorted_mask_root + '/mask_file'
+        sorted_mask_img_root = sorted_mask_root + '/mask_img'
+
+        if not os.path.exists(sorted_mask_root):  # V1: sorted root
+            os.makedirs(sorted_mask_root)
+        if not os.path.exists(sorted_mask_file_root):
+            os.makedirs(sorted_mask_file_root)
+        if not os.path.exists(sorted_mask_img_root):
+            os.makedirs(sorted_mask_img_root)
+
+        # V2
+        np.save(f'{sorted_mask_file_root}/{filename}_mask.npy', patch_save_mask)
+        Image.fromarray(patch_save_mask).save(f'{sorted_mask_img_root}/{filename}_mask.png')
+
     # print(temp_x, temp_y, first_label)
     i += 1
 
