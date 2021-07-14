@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 # import csv
 # import pandas as pd
 
-WSI_name = 'P17-2343;S6;UVM'
+WSI_name = 'P18-8264;S2;UVM'
 reg_num = 0  # reg_num is 0 based!
 downsample = 2
 patch_size = 256

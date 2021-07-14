@@ -19,9 +19,9 @@ from sklearn import preprocessing
 # from torchvision.models import resnet50, resnet18
 
 patch_size = 256
-WSI_name = 'P16-7404;S6;UVM'
-reg_num = 4
-feature_1024 = True
+WSI_name = 'P16-8917;S6;UVM'
+reg_num = 0
+feature_1024 = False
 
 save_ext = '_1024' if feature_1024 else ''
 
@@ -29,7 +29,7 @@ feature_dict = {}
 coord_dict = {}
 # valid_directory = '/share/contrastive_learning/data/data_w_nearby_patches/original_4w'
 save_folder = f'data_root/feature/'
-valid_directory = f'data_root/tiles/{WSI_name}_R{reg_num}_tiles/'
+valid_directory = f'data_root/tiles/{WSI_name}_R{reg_num}_labeled_tiles/'
 # train_directory = '/share/contrastive_learning/resnet50_v2/data_0122/train_patch'
 # valid_directory = '/share/contrastive_learning/resnet50_v2/data_0122/val_patch'
 # valid_directory = '/share/contrastive_learning/data/crop_after_process_doctor/merged_data_test_no_minor/'
