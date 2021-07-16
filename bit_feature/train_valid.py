@@ -27,7 +27,7 @@ train_info = []
 # Batch size
 bs = 1
 # Number of epochs
-num_epochs = 100
+num_epochs = 50
 # Number of classes
 num_classes = 3
 # Number of workers
@@ -35,22 +35,22 @@ num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
 
 
-for val_folder_index in range(1):  # TODO: with validation: for val_folder_index in range(5):
-    whole_train_list = ['P16-8917;S6;UVM_R0_labeled_tiles',
-                        'P17-2343;S6;UVM_R0_labeled_tiles',
-                        'P17-4786;S5;UVM_R0_labeled_tiles',
-                        'P17-7861;S4;UVM_R0_labeled_tiles',
-                        'P17-8000;S2;UVM_R0_labeled_tiles',
-                        'P18-6324;S2;UVM_R0_labeled_tiles']
-    # val_WSI_list = whole_train_list[val_folder_index]  # TODO: valid cmt
+for val_folder_index in range(6):  # TODO: with validation: for val_folder_index in range(5):
+    whole_train_list = ['folder1',
+                        'folder2',
+                        'folder3',
+                        'folder4',
+                        'folder5',
+                        'folder6']
+    val_WSI_list = whole_train_list[val_folder_index]  # TODO: valid cmt
     train_WSI_list = whole_train_list
-    # train_WSI_list.pop(val_folder_index)  # TODO: valid cmt
+    train_WSI_list.pop(val_folder_index)  # TODO: valid cmt
 
     train_directory = 'data_root/learning/training/'
     # TODO: valid cmt
-    # valid_directory = '/share/contrastive_learning/data/crop_after_process_doctor/merged_data_no_minor/'
+    valid_directory = train_directory
     # Set the model save path
-    best_PATH = "models/train_beta.pth"
+    # best_PATH = "models/train_beta.pth"
 
     # Applying transforms to the data
     image_transforms = {
@@ -76,40 +76,39 @@ for val_folder_index in range(1):  # TODO: with validation: for val_folder_index
     dataset_train2 = datasets.ImageFolder(root=train_directory + train_WSI_list[2], transform=image_transforms['train'])
     dataset_train3 = datasets.ImageFolder(root=train_directory + train_WSI_list[3], transform=image_transforms['train'])
     dataset_train4 = datasets.ImageFolder(root=train_directory + train_WSI_list[4], transform=image_transforms['train'])
-    dataset_train5 = datasets.ImageFolder(root=train_directory + train_WSI_list[5], transform=image_transforms['train'])
+    # dataset_train5 = datasets.ImageFolder(root=train_directory + train_WSI_list[5], transform=image_transforms['train'])
 
     # TODO: valid cmt
-    # dataset['valid'] = datasets.ImageFolder(root=valid_directory + val_WSI_list, transform=image_transforms['valid'])
+    dataset['valid'] = datasets.ImageFolder(root=valid_directory + val_WSI_list, transform=image_transforms['valid'])
 
-    dataset['train'] = data.ConcatDataset([dataset_train0, dataset_train1, dataset_train2, dataset_train3, dataset_train4, dataset_train5])
+    dataset['train'] = data.ConcatDataset([dataset_train0, dataset_train1, dataset_train2, dataset_train3, dataset_train4])
     # dataset['train'] = dataset_train0
 
     # Size of train and validation data
     dataset_sizes = {
-        'train': len(dataset['train'])
-        # 'valid': len(dataset['valid'])  # TODO: valid cmt
+        'train': len(dataset['train']),
+        'valid': len(dataset['valid'])  # TODO: valid cmt
     }
 
     # Create iterators for data loading
     dataloaders = {
         'train': data.DataLoader(dataset['train'], batch_size=bs, shuffle=True,
-                                 num_workers=num_cpu, pin_memory=True, drop_last=True)
+                                 num_workers=num_cpu, pin_memory=True, drop_last=True),
         # TODO: valid cmt
-        # 'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
-        #                          num_workers=num_cpu, pin_memory=True, drop_last=True)
+        'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
+                                 num_workers=num_cpu, pin_memory=True, drop_last=True)
     }
 
     # Print the train and validation data sizes
-    print("Training-set size:", dataset_sizes['train'])
-          # "\nValidation-set size:", dataset_sizes['valid'])  # TODO: valid cmt
+    print("Training-set size:", dataset_sizes['train'],
+          "\nValidation-set size:", dataset_sizes['valid'])  # TODO: valid cmt
 
     # Set default device as gpu, if available
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     if train_mode == 'finetune':
-        # Load a pretrained model - Resnet18
+        # Load a pretrained model - BiT
         print("\nLoading BiT-M-R50x1 for finetuning ...\n")
-        # model_ft = models.resnet18(pretrained=True)
         model = BiT_models.KNOWN_MODELS['BiT-M-R50x1'](head_size=num_classes, zero_head=True)
         model.load_from(np.load(f"{'BiT-M-R50x1'}.npz"))
         classifier = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
@@ -154,7 +153,7 @@ for val_folder_index in range(1):  # TODO: with validation: for val_folder_index
     # def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     since = time.time()
 
-    best_model_wts = copy.deepcopy(model.state_dict())
+    best_model_wts = copy.deepcopy(classifier.state_dict())
     best_acc = 0.0
 
     # Tensorboard summary
@@ -165,14 +164,14 @@ for val_folder_index in range(1):  # TODO: with validation: for val_folder_index
         print('-' * 10)
 
         # Each epoch has a training and validation phase
-        for phase in ['train']:  # TODO: orig with valid: for phase in ['train', 'valid']:
+        for phase in ['train', 'valid']:  # TODO: orig with valid: for phase in ['train', 'valid']:
             model.eval()    # Setting model to eval since we are only training the classifier
-            classifier.train()
+            # classifier.train()
 
-            # if phase == 'train':
-            #     model.train()  # Set model to training mode
-            # else:
-            #     model.eval()  # Set model to evaluate mode
+            if phase == 'train':
+                classifier.train()  # Set classifier to training mode
+            else:
+                classifier.eval()  # Set classifier to evaluate mode
 
             running_loss = 0.0
             running_corrects = 0
@@ -224,37 +223,38 @@ for val_folder_index in range(1):  # TODO: with validation: for val_folder_index
 
             # Record training loss and accuracy for each phase
             if phase == 'train':
-                writer.add_scalar('Train/Loss', epoch_loss, epoch)
-                writer.add_scalar('Train/Accuracy', epoch_acc, epoch)
-                writer.add_scalar('Train/F1_score', f1, epoch)
-                writer.add_scalar('Train/Balance_accuracy', balance_acc, epoch)
+                writer.add_scalar(f'Train{val_folder_index}/Loss', epoch_loss, epoch)
+                writer.add_scalar(f'Train{val_folder_index}/Accuracy', epoch_acc, epoch)
+                writer.add_scalar(f'Train{val_folder_index}/F1_score', f1, epoch)
+                writer.add_scalar(f'Train{val_folder_index}/Balance_accuracy', balance_acc, epoch)
                 writer.flush()
             else:
-                writer.add_scalar('Valid/Loss', epoch_loss, epoch)
-                writer.add_scalar('Valid/Accuracy', epoch_acc, epoch)
-                writer.add_scalar('Valid/Balance_accuracy', balance_acc, epoch)
+                writer.add_scalar(f'Valid{val_folder_index}/Loss', epoch_loss, epoch)
+                writer.add_scalar(f'Valid{val_folder_index}/Accuracy', epoch_acc, epoch)
+                writer.add_scalar(f'Valid{val_folder_index}/F1_score', f1, epoch)
+                writer.add_scalar(f'Valid{val_folder_index}/Balance_accuracy', balance_acc, epoch)
                 writer.flush()
 
             # deep copy the model
             # TODO: valid cmt
-            # if phase == 'valid' and balance_acc > best_acc:
-            #     best_epoch = epoch
-            #     best_acc = balance_acc
-            #     best_model_wts = copy.deepcopy(model.state_dict())
-        PATH = 'data_root/learning/models/train1_epoch_' + str(epoch) + '.pth'
+            if phase == 'valid' and balance_acc > best_acc:
+                best_epoch = epoch
+                best_acc = balance_acc
+                best_model_wts = copy.deepcopy(model.state_dict())
+        PATH = 'data_root/learning/models/train2_epoch_' + str(epoch) + f'_val_{val_folder_index}.pth'
         torch.save(classifier, PATH)
 
     time_elapsed = time.time() - since
     print('Training complete in {:.0f}m {:.0f}s'.format(
         time_elapsed // 60, time_elapsed % 60))
     writer.close()
-    # print('Best val Acc: {:4f}'.format(best_acc))
-    # print('Best epoch in val is : ', best_epoch)
-    # train_info.append([val_WSI_list, best_epoch, best_acc])
-# with open('checkpoint/exp_0510_ms_change_scheduler/train_info_0504_100percent.csv', 'w') as f:
-#     # using csv.writer method from CSV package
-#     write = csv.writer(f)
-#     write.writerows(train_info)
+    print('Best val Acc: {:4f}'.format(best_acc))
+    print('Best epoch in val is : ', best_epoch)
+    train_info.append([val_WSI_list, best_epoch, best_acc])
+with open('data_root/learning/training_output/train2_summary.csv', 'w') as f:
+    # using csv.writer method from CSV package
+    write = csv.writer(f)
+    write.writerows(train_info)
 
 '''
 Sample run: python train.py --mode=finetue

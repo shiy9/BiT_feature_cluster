@@ -27,7 +27,7 @@ import BiT_models
 test_directory = 'data_root/learning/testing/P18-8264;S2;UVM_R0_labeled_tiles/'
 # test_directory = '/share/contrastive_learning/data/sup_data/data_0124_10000/test_patch'
 # Set the model save path
-classifier_model_path = 'data_root/learning/best_model/train1_epoch_12.pth'
+classifier_model_path = 'data_root/learning/best_model/train1_epoch_16.pth'
 
 # Batch size
 bs = 1
@@ -113,7 +113,7 @@ f1 = f1_score(true, pred, labels=[0, 1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15 ], av
 print('model f1 score:  ', f1)
 print('Confusion matrix: ')
 print(cm)
-np.savetxt("data_root/learning/testing_output/cm_train1_12.csv", cm, delimiter=",")
+np.savetxt("data_root/learning/testing_output/cm_train2_1_4.csv", cm, delimiter=",")
 time_elapsed = time.time() - since
 print('Testing complete in {:.0f}m {:.0f}s'.format(
     time_elapsed // 60, time_elapsed % 60))
