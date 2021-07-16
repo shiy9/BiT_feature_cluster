@@ -148,6 +148,13 @@ for label in class_dict.keys():
 # for label in area_dict.keys():
 #     ratio_dict[label] = area_dict[label] / sum_area
 
+# save the label mask for "oversampling"
+label_mask_dir = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/label_mask/'
+if not os.path.exists(label_mask_dir):
+    os.makedirs(label_mask_dir)
+for label, mask in class_dict.items():
+    np.save(f'{label_mask_dir}{label}_mask.npy', mask)
+
 # For drawing mask, new_img_w and new_img_h in terms of number of patches
 new_img_w = int(reg_w/downsample//patch_size)
 new_img_h = int(reg_h/downsample//patch_size)
