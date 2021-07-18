@@ -7,11 +7,12 @@ import numpy as np
 from PIL import Image
 import csv
 from matplotlib import pyplot as plt
+import sys
 # import random
 # import csv
 # import pandas as pd
 
-WSI_name = 'P17-2343;S6;UVM'
+WSI_name = 'P18-8264;S2;UVM'
 reg_num = 0  # reg_num is 0 based!
 downsample = 2
 patch_size = 256
@@ -38,13 +39,16 @@ save_root = f'/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/tiles/'
 
 colors_list = [(255, 255, 255), (123, 35, 15), (23, 172, 169), (211, 49, 153),
                 (160, 90, 160), (200, 200, 200),
-               (150, 200, 150), (200, 0, 0), (201, 120, 25), (214, 199, 219), (42, 189, 89)]
+               (150, 200, 150), (200, 0, 0), (201, 120, 25), (214, 199, 219), (42, 189, 89), (226, 2, 214)]
 
 # TODO: official documentation is 'EA' instead of 'EI'
 label_dict = {'eos': 1, 'bzh': 2, 'dis': 3, 'ea': 4, 'sl': 5, 'sea': 6, 'dec': 7, 'lpf': 8, 'normal lp': 9,
-              'fibrotic lp': 10}
+              'fibrotic lp': 10, 'ei': 11}
 pt_mask_dict = {'eos': 17, 'bzh': 34, 'dis': 51, 'ea': 68, 'sl': 85, 'sea': 102, 'dec': 119, 'lpf': 136,
-                'normal lp': 153, 'fibrotic lp': 170}
+                'normal lp': 153, 'fibrotic lp': 170, 'ei': 187}
+
+if os.path.exists(f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/'):
+    sys.exit('Sorted tiles folder already exists. Aborting...')
 
 WSI_file_name = WSI_name + '.scn'
 simg = openslide.open_slide(f'/home/yuxuanshi/VUSRP/WSI/{WSI_file_name}')
@@ -168,7 +172,7 @@ i = 0
 # Write a CSV file for record
 print('Sorting patches...', end='')
 with open(f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{WSI_name}_R{reg_num}_tiles_record.csv', mode='w') as tiles_record:
-    fieldnames = ['patch_name', 'eos', 'bzh', 'dis', 'ea', 'sl', 'sea', 'dec', 'lpf', 'normal lp', 'fibrotic lp',
+    fieldnames = ['patch_name', 'eos', 'bzh', 'dis', 'ea', 'sl', 'sea', 'dec', 'lpf', 'normal lp', 'fibrotic lp', 'ei',
                   'supersampled']
     writer = csv.DictWriter(tiles_record, fieldnames=fieldnames)
     writer.writeheader()
@@ -177,7 +181,7 @@ with open(f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{WSI_name}_R{reg_num}
         # print(f'File being processed: {filename}')
         # at 40x resolution and are relative coordinates in terms of region
         csv_row = {'patch_name': filename, 'eos': 0, 'bzh': 0, 'dis': 0, 'ea': 0, 'sl': 0, 'sea': 0, 'dec': 0, 'lpf': 0,
-                   'normal lp': 0, 'fibrotic lp': 0, 'supersampled': 0}
+                   'normal lp': 0, 'fibrotic lp': 0, 'ei': 0, 'supersampled': 0}
         patch_start_x = tiles_coord[i][0] - reg_x
         patch_start_y = tiles_coord[i][1] - reg_y
 
