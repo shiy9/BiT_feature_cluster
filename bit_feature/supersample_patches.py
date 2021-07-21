@@ -4,14 +4,15 @@ import os
 from PIL import Image
 import sys
 
-WSI_name = 'P18-8264;S2;UVM'
+# NOTE: change 'WSI_name' and 'target_num' values when processing new slides
+WSI_name = 'P17-4786;S5;UVM'
 reg_num = 0  # reg_num is 0 based!
 downsample = 2
 patch_size = 256
 draw_result_mask = True
 
 # desired number of patches to supersample
-target_num = {'bzh': 10, 'dis': 0, 'eos': 36}
+target_num = {'normal lp': 72, 'fibrotic lp': 198}
 
 label_mask_path = f'data_root/tiles/{WSI_name}_R{reg_num}_labeled_tiles/label_mask/mask_file/'
 supersample_tile_path = f'data_root/tiles/{WSI_name}_R{reg_num}_ss_tiles/'

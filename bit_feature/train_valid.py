@@ -10,6 +10,7 @@ from torch.optim import lr_scheduler
 # from nets import *
 import time, os, copy, argparse
 import multiprocessing
+import json
 # from torchsummary import summary
 from matplotlib import pyplot as plt
 # from model import *
@@ -27,28 +28,23 @@ train_info = []
 # Batch size
 bs = 1
 # Number of epochs
-num_epochs = 50
-# Number of classes
-num_classes = 3
+num_epochs = 200
+# Note: Number of classes. CHANGE THIS IF NUMBER OF CLASSES IS NOT THE SAME!
+num_classes = 6
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
 
 
-for val_folder_index in range(6):  # TODO: with validation: for val_folder_index in range(5):
-    whole_train_list = ['folder1',
-                        'folder2',
-                        'folder3',
-                        'folder4',
-                        'folder5',
-                        'folder6']
-    val_WSI_list = whole_train_list[val_folder_index]  # TODO: valid cmt
+for val_folder_index in range(1):  # Note: with validation: for val_folder_index in range(5):
+    whole_train_list = ['folder1']
+    # val_WSI_list = whole_train_list[val_folder_index]  # Note: valid cmt
     train_WSI_list = whole_train_list
-    train_WSI_list.pop(val_folder_index)  # TODO: valid cmt
+    # train_WSI_list.pop(val_folder_index)  # Note: valid cmt
 
     train_directory = 'data_root/learning/training/'
-    # TODO: valid cmt
-    valid_directory = train_directory
+    # Note: valid cmt
+    # valid_directory = train_directory
     # Set the model save path
     # best_PATH = "models/train_beta.pth"
 
@@ -72,39 +68,44 @@ for val_folder_index in range(6):  # TODO: with validation: for val_folder_index
     # Load data from folders
     dataset = {}
     dataset_train0 = datasets.ImageFolder(root=train_directory + train_WSI_list[0], transform=image_transforms['train'])
-    dataset_train1 = datasets.ImageFolder(root=train_directory + train_WSI_list[1], transform=image_transforms['train'])
-    dataset_train2 = datasets.ImageFolder(root=train_directory + train_WSI_list[2], transform=image_transforms['train'])
-    dataset_train3 = datasets.ImageFolder(root=train_directory + train_WSI_list[3], transform=image_transforms['train'])
-    dataset_train4 = datasets.ImageFolder(root=train_directory + train_WSI_list[4], transform=image_transforms['train'])
+    # dataset_train1 = datasets.ImageFolder(root=train_directory + train_WSI_list[1], transform=image_transforms['train'])
+    # dataset_train2 = datasets.ImageFolder(root=train_directory + train_WSI_list[2], transform=image_transforms['train'])
+    # dataset_train3 = datasets.ImageFolder(root=train_directory + train_WSI_list[3], transform=image_transforms['train'])
+    # dataset_train4 = datasets.ImageFolder(root=train_directory + train_WSI_list[4], transform=image_transforms['train'])
     # dataset_train5 = datasets.ImageFolder(root=train_directory + train_WSI_list[5], transform=image_transforms['train'])
 
-    # TODO: valid cmt
-    dataset['valid'] = datasets.ImageFolder(root=valid_directory + val_WSI_list, transform=image_transforms['valid'])
+    # Note: valid cmt
+    # dataset['valid'] = datasets.ImageFolder(root=valid_directory + val_WSI_list, transform=image_transforms['valid'])
 
-    dataset['train'] = data.ConcatDataset([dataset_train0, dataset_train1, dataset_train2, dataset_train3, dataset_train4])
-    # dataset['train'] = dataset_train0
+    # dataset['train'] = data.ConcatDataset([dataset_train0, dataset_train1, dataset_train2, dataset_train3, dataset_train4])
+    dataset['train'] = dataset_train0
 
     # Size of train and validation data
     dataset_sizes = {
         'train': len(dataset['train']),
-        'valid': len(dataset['valid'])  # TODO: valid cmt
+        # 'valid': len(dataset['valid'])  # Note: valid cmt
     }
 
     # Create iterators for data loading
     dataloaders = {
         'train': data.DataLoader(dataset['train'], batch_size=bs, shuffle=True,
                                  num_workers=num_cpu, pin_memory=True, drop_last=True),
-        # TODO: valid cmt
-        'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
-                                 num_workers=num_cpu, pin_memory=True, drop_last=True)
+        # Note: valid cmt
+        # 'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
+        #                          num_workers=num_cpu, pin_memory=True, drop_last=True)
     }
 
     # Print the train and validation data sizes
-    print("Training-set size:", dataset_sizes['train'],
-          "\nValidation-set size:", dataset_sizes['valid'])  # TODO: valid cmt
+    print("Training-set size:", dataset_sizes['train'])
+          # "\nValidation-set size:", dataset_sizes['valid'])  # Note: valid cmt
+
+    train_labels = dataset['train'].class_to_idx
+    with open('data_root/learning/models/train_labels.txt', 'w') as train_labels_file:
+        train_labels_file.write(json.dumps(train_labels))
 
     # Set default device as gpu, if available
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    # device = torch.device('cpu')
 
     if train_mode == 'finetune':
         # Load a pretrained model - BiT
@@ -134,7 +135,9 @@ for val_folder_index in range(6):  # TODO: with validation: for val_folder_index
 
     # Optimizer
     # optimizer = optim.SGD(model.parameters(), lr=0.05, momentum=0.9)
-    optimizer = optim.SGD(model.parameters(), lr=0.1,
+    # Note: may have problem
+    # 0.001
+    optimizer = optim.SGD(model.parameters(), lr=0.001,
                           momentum=0.9, weight_decay=5e-4)
 
     # Learning rate decay
@@ -164,14 +167,14 @@ for val_folder_index in range(6):  # TODO: with validation: for val_folder_index
         print('-' * 10)
 
         # Each epoch has a training and validation phase
-        for phase in ['train', 'valid']:  # TODO: orig with valid: for phase in ['train', 'valid']:
+        for phase in ['train']:  # Note: orig with valid: for phase in ['train', 'valid']:
             model.eval()    # Setting model to eval since we are only training the classifier
-            # classifier.train()
+            classifier.train()
 
-            if phase == 'train':
-                classifier.train()  # Set classifier to training mode
-            else:
-                classifier.eval()  # Set classifier to evaluate mode
+            # if phase == 'train':
+            #     classifier.train()  # Set classifier to training mode
+            # else:
+            #     classifier.eval()  # Set classifier to evaluate mode
 
             running_loss = 0.0
             running_corrects = 0
@@ -236,25 +239,26 @@ for val_folder_index in range(6):  # TODO: with validation: for val_folder_index
                 writer.flush()
 
             # deep copy the model
-            # TODO: valid cmt
-            if phase == 'valid' and balance_acc > best_acc:
-                best_epoch = epoch
-                best_acc = balance_acc
-                best_model_wts = copy.deepcopy(model.state_dict())
-        PATH = 'data_root/learning/models/train2_epoch_' + str(epoch) + f'_val_{val_folder_index}.pth'
+            # # Note: valid cmt
+            # if phase == 'valid' and balance_acc > best_acc:
+            #     best_epoch = epoch
+            #     best_acc = balance_acc
+            #     best_model_wts = copy.deepcopy(model.state_dict())
+        PATH = 'data_root/learning/models/train3_epoch_' + str(epoch) + '.pth'
         torch.save(classifier, PATH)
 
     time_elapsed = time.time() - since
     print('Training complete in {:.0f}m {:.0f}s'.format(
         time_elapsed // 60, time_elapsed % 60))
-    writer.close()
-    print('Best val Acc: {:4f}'.format(best_acc))
-    print('Best epoch in val is : ', best_epoch)
-    train_info.append([val_WSI_list, best_epoch, best_acc])
-with open('data_root/learning/training_output/train2_summary.csv', 'w') as f:
-    # using csv.writer method from CSV package
-    write = csv.writer(f)
-    write.writerows(train_info)
+
+    # print('Best val Acc: {:4f}'.format(best_acc))
+    # print('Best epoch in val is : ', best_epoch)
+    # train_info.append([val_WSI_list, best_epoch, best_acc])
+writer.close()
+# with open('data_root/learning/training_output/train2_summary.csv', 'w') as f:
+#     # using csv.writer method from CSV package
+#     write = csv.writer(f)
+#     write.writerows(train_info)
 
 '''
 Sample run: python train.py --mode=finetue

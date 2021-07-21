@@ -24,15 +24,15 @@ import BiT_models
 
 # train_directory = '/share/contrastive_learning/resnet50_v2/data_0122/train_patch'
 # valid_directory = '/share/contrastive_learning/resnet50_v2/data_0122/val_patch'
-test_directory = 'data_root/learning/testing/P18-8264;S2;UVM_R0_labeled_tiles/'
+test_directory = 'data_root/learning/testing/'
 # test_directory = '/share/contrastive_learning/data/sup_data/data_0124_10000/test_patch'
 # Set the model save path
-classifier_model_path = 'data_root/learning/best_model/train1_epoch_16.pth'
+classifier_model_path = 'data_root/learning/best_model/train3_epoch_85.pth'
 
 # Batch size
 bs = 1
 # Number of classes
-num_classes = 3
+num_classes = 4
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
