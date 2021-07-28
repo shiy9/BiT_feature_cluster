@@ -20,25 +20,25 @@ import torch.nn as nn
 import BiT_models
 
 # Set the train and validation directory paths
-test_directory = 'data_root/learning/testing'
+test_directory = 'data_root/learning/training/folder1'
 # Set the model save path
-classifier_model_path = 'data_root/learning/models/train_binary_epoch_7.pth'
+classifier_model_path = 'data_root/learning/models/train3_epoch_24.pth'
 
 # Batch size
 bs = 1
 # Number of classes
 num_classes = 2
 # Number of workers
-# num_cpu = multiprocessing.cpu_count()
-num_cpu = 0
+num_cpu = multiprocessing.cpu_count()
+# num_cpu = 0
 
 # Applying transforms to the data
 image_transforms = {
     'test': transforms.Compose([
         transforms.Resize(size=256),
         transforms.ToTensor(),
-        # transforms.Normalize([0.485, 0.456, 0.406],
-        #                      [0.229, 0.224, 0.225])
+        transforms.Normalize([0.485, 0.456, 0.406],
+                             [0.229, 0.224, 0.225])
     ])
 }
 
@@ -54,8 +54,8 @@ dataset_sizes = {
 
 # Create iterators for data loading
 dataloaders = {
-    'test': data.DataLoader(dataset['test'], batch_size=bs, shuffle=False,
-                             num_workers=num_cpu, pin_memory=True, drop_last=False)
+    'test': data.DataLoader(dataset['test'], batch_size=bs, shuffle=True,
+                             num_workers=0, pin_memory=True, drop_last=True)
 }
 
 # Class names or target labels
@@ -71,10 +71,8 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = BiT_models.KNOWN_MODELS['BiT-M-R50x1'](head_size=num_classes, zero_head=True)
 model.load_from(np.load(f"{'BiT-M-R50x1'}.npz"))
 classifier = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
-
-model = torch.nn.DataParallel(model)
-classifier = torch.nn.DataParallel(classifier)
 classifier.load_state_dict(torch.load(classifier_model_path))
+
 model = model.to(device)
 classifier = classifier.to(device)
 
@@ -87,6 +85,10 @@ running_corrects = 0
 
 pred = []
 true = []
+
+# Note: trouble shooting, delete later
+# Trying to see if the features are the same. Not correct with shuffle=True
+feature_dict = {}
 
 # Note: indexing does not really work with shuffle=True. Order of samples/imgs in dataloader is not right
 # Can definitely change to for inputs, labels in dataloaders['test']
@@ -103,9 +105,10 @@ for i, (inputs, labels) in enumerate(dataloaders['test'], 0):  # for inputs, lab
     preds = classifier(feature)
     _, preds = torch.max(preds, 1)
 
-    running_corrects += torch.sum(preds == labels.data)
-    class_idx = preds.data[0]
+    # Note: trouble shooting, delete later
+    feature_dict[spl_filename] = feature.cpu().detach().numpy()
 
+    running_corrects += torch.sum(preds == labels.data)
 
     preds_list = list(np.array(preds.cpu()))
     labels_list = list(np.array(labels.cpu()))
@@ -114,14 +117,16 @@ for i, (inputs, labels) in enumerate(dataloaders['test'], 0):  # for inputs, lab
 
 pred = sum(pred, [])
 true = sum(true, [])
-epoch_acc = running_corrects / dataset_sizes['test']
+epoch_acc = running_corrects.double() / dataset_sizes['test']
 cm = confusion_matrix(true, pred)
-f1 = f1_score(true, pred, labels=[0, 1], average='macro')
+f1 = f1_score(true, pred, labels=[0, 1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15 ], average='macro')
 print('model f1 score:  ', f1)
 print('Confusion matrix: ')
 print(cm)
-print('acc:   ', epoch_acc)
 np.savetxt("data_root/learning/testing_output/cm_train2_1_4.csv", cm, delimiter=",")
+
+# Note: trouble shooting, delete later
+np.save(f'data_root/learning/models/file_feature/test3_epoch_24_fea.npy', feature_dict)
 
 time_elapsed = time.time() - since
 print('Testing complete in {:.0f}m {:.0f}s'.format(

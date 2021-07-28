@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 # import torchvision
-import torch.nn.functional as F
 from torchvision import datasets, models, transforms
 import torch.utils.data as data
 from torch.utils.tensorboard import SummaryWriter
@@ -27,14 +26,14 @@ import BiT_models
 train_mode = 'finetune'
 train_info = []
 # Batch size
-bs = 16
+bs = 1
 # Number of epochs
 num_epochs = 100
 # Note: Number of classes. Check before running
 num_classes = 2
 # Number of workers
-# num_cpu = multiprocessing.cpu_count()
-num_cpu = 0
+num_cpu = multiprocessing.cpu_count()
+# num_cpu = 0
 
 
 for val_folder_index in range(1):  # Note: with validation: for val_folder_index in range(5):
@@ -54,8 +53,8 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
         'train': transforms.Compose([
             transforms.Resize(size=256),
             transforms.ToTensor(),
-            # transforms.Normalize([0.485, 0.456, 0.406],
-            #                      [0.229, 0.224, 0.225])
+            transforms.Normalize([0.485, 0.456, 0.406],
+                                 [0.229, 0.224, 0.225])
         ]),
         # 'valid': transforms.Compose([
         #     transforms.Resize(size=256),
@@ -106,6 +105,7 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
 
     # Set default device as gpu, if available
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    # device = torch.device('cpu')
 
     if train_mode == 'finetune':
         # Load a pretrained model - BiT
@@ -124,8 +124,6 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
     # Transfer the model to GPU
     model = model.to(device)
     classifier = classifier.to(device)
-    model = torch.nn.DataParallel(model)
-    classifier = torch.nn.DataParallel(classifier)
     # Print model summary
     print('Model Summary:-\n')
 
@@ -133,12 +131,18 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
     criterion = nn.CrossEntropyLoss()
     # criterion = FocalLoss(class_num=num_classes)
 
-    optimizer = optim.SGD(classifier.parameters(), lr=0.001,
+    # model = torch.nn.Sequential(model, classifier)
+
+    # Optimizer
+    # optimizer = optim.SGD(model.parameters(), lr=0.05, momentum=0.9)
+    # Note: may have problem
+    # 0.001
+    optimizer = optim.SGD(model.parameters(), lr=0.001,
                           momentum=0.9, weight_decay=5e-4)
 
     # Learning rate decay
-    scheduler = lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
-    # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
+    # exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
     # scheduler = LR_Scheduler(
     #     optimizer,
     #     0, 0,
@@ -152,33 +156,54 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
     # def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     since = time.time()
 
-    # best_model_wts = copy.deepcopy(classifier.state_dict())
-    # best_acc = 0.0
+    best_model_wts = copy.deepcopy(classifier.state_dict())
+    best_acc = 0.0
 
     # Tensorboard summary
     writer = SummaryWriter()
 
-    for param in model.parameters():
-        param.requires_grad = False
-    for param in classifier.parameters():
-        param.requires_grad = True
-
     for epoch in range(num_epochs):
+        # Load the previous epoch's model in before training
+        # For debugging only. Comment out later!
+        if epoch != 0:
+            classifier_lv = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+            classifier_lv.load_state_dict(torch.load(f'data_root/learning/models/train3_epoch_{epoch - 1}.pth'))
+            classifier_lv = classifier_lv.to(device)
+            running_corrects_v = 0
+            running_corrects_lv = 0
+            model.eval()
+            classifier.eval()
+            classifier_lv.eval()
+            for inputs_v, labels_v in dataloaders['train']:
+                inputs_v = inputs_v.to(device, non_blocking=True)
+                labels_v = labels_v.to(device, non_blocking=True)
+
+                # forward
+                _, feature_v = model(inputs_v)
+                preds_v = classifier(feature_v)
+                preds_lv = classifier_lv(feature_v)
+                _, preds_v = torch.max(preds_v, 1)
+                _, preds_lv = torch.max(preds_lv, 1)
+
+                running_corrects_v += torch.sum(preds_v == labels_v.data)
+                running_corrects_lv += torch.sum(preds_lv == labels_v.data)
+
+            epoch_acc_v = running_corrects_v.double() / dataset_sizes['train']
+            epoch_acc_lv = running_corrects_lv.double() / dataset_sizes['train']
+            print('Previous Epoch {} test Acc: {:4f}, load test Acc: {:4f}\n'.format(epoch - 1, epoch_acc_v, epoch_acc_lv))
+
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
         print('-' * 10)
 
+        # Each epoch has a training and validation phase
         for phase in ['train']:  # Note: orig with valid: for phase in ['train', 'valid']:
-            model.eval()  # Setting model to eval since we are only training the classifier
+            model.eval()    # Setting model to eval since we are only training the classifier
             classifier.train()
 
-
             # if phase == 'train':
-            #
-            #
+            #     classifier.train()  # Set classifier to training mode
             # else:
-            #     for param in classifier.parameters():
-            #         param.requires_grad = False
-            #     classifier.eval()
+            #     classifier.eval()  # Set classifier to evaluate mode
 
             running_loss = 0.0
             running_corrects = 0
@@ -186,31 +211,53 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
             pred = []
             true = []
 
+            # Note: trouble shooting, delete later
+            # Trying to see if the features are the same. Not correct with shuffle=True
+            feature_dict = {}
+
+            # Iterate over data.
+            # Note: indexing does not really work with shuffle=True. Order of samples/imgs in dataloader is not right
+            # Can definitely change to for inputs, labels in dataloaders[phase]
             for i, (inputs, labels) in enumerate(dataloaders[phase], 0):  # for inputs, labels in dataloaders[phase]:
-                classifier.zero_grad()
-                inputs = inputs.to(device)
-                labels = labels.to(device)
+                inputs = inputs.to(device, non_blocking=True)
+                labels = labels.to(device, non_blocking=True)
+
+                # Note: trouble shooting, delete later
+                spl_filename = dataloaders[phase].dataset.samples[i][0]
+                spl_filename = spl_filename.rsplit('/', 1)[-1]
+
+                # zero the parameter gradients
                 optimizer.zero_grad()
-                _, feature = model(inputs)
-                preds = classifier(feature)
-                loss = F.cross_entropy(preds, labels)
+                # track history if only in train
+                with torch.set_grad_enabled(phase == 'train'):
+                    _, feature = model(inputs)
+                    classifier.zero_grad()
+                    preds = classifier(feature)
+                    # _, preds = torch.max(preds, 1)
+                    loss = criterion(preds, labels)
 
-                if phase == 'train':
-                    loss.backward()
-                    optimizer.step()
-                    scheduler.step()
+                    # Note: trouble shooting, delete later
+                    feature_dict[spl_filename] = feature.cpu().detach().numpy()
 
-                preds_list = list(np.array(preds.argmax(dim=1).cpu().detach().numpy()))
-                labels_list = list(np.array(labels.cpu().detach().numpy()))
-                pred.append(preds_list)
-                true.append(labels_list)
+                    preds_list = list(np.array(preds.argmax(dim=1).cpu().detach().numpy()))
+                    labels_list = list(np.array(labels.cpu().detach().numpy()))
+                    pred.append(preds_list)
+                    true.append(labels_list)
+
+                    # backward + optimize only if in training phase
+                    if phase == 'train':
+                        loss.backward()
+                        optimizer.step()
 
                 # statistics
+                temp = inputs.size(0)
                 running_loss += loss.item() * inputs.size(0)
-                running_corrects += (np.array(pred) == np.array(true)).sum().item()
+                running_corrects += torch.sum(preds.argmax(dim=1) == labels.data)
+            if phase == 'train':
+                scheduler.step()
 
             epoch_loss = running_loss / dataset_sizes[phase]
-            epoch_acc = running_corrects / dataset_sizes[phase]
+            epoch_acc = running_corrects.double() / dataset_sizes[phase]
 
             pred = sum(pred, [])
             true = sum(true, [])
@@ -218,7 +265,7 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
             balance_acc = balanced_accuracy_score(true, pred)
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(
-                phase, epoch_loss, balance_acc))
+                phase, epoch_loss, epoch_acc))
 
             # Record training loss and accuracy for each phase
             if phase == 'train':
@@ -240,9 +287,11 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
             #     best_epoch = epoch
             #     best_acc = balance_acc
             #     best_model_wts = copy.deepcopy(model.state_dict())
-        PATH = 'data_root/learning/models/train_binary_epoch_' + str(epoch) + '.pth'
+        PATH = 'data_root/learning/models/train3_epoch_' + str(epoch) + '.pth'
         torch.save(classifier.state_dict(), PATH)
 
+        # Note: trouble shooting, delete later
+        np.save(f'data_root/learning/models/file_feature/train3_epoch_{str(epoch)}_fea.npy', feature_dict)
 
     time_elapsed = time.time() - since
     print('Training complete in {:.0f}m {:.0f}s'.format(
