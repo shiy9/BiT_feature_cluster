@@ -9,10 +9,10 @@ WSI_name = 'P17-4786;S5;UVM'
 reg_num = 0  # reg_num is 0 based!
 downsample = 2
 patch_size = 256
-draw_result_mask = True
+draw_result_mask = False
 
 # desired number of patches to supersample
-target_num = {'normal lp': 72, 'fibrotic lp': 198}
+target_num = {'dis': 72, 'fibrotic lp': 198}
 
 label_mask_path = f'data_root/tiles/{WSI_name}_R{reg_num}_labeled_tiles/label_mask/mask_file/'
 supersample_tile_path = f'data_root/tiles/{WSI_name}_R{reg_num}_ss_tiles/'

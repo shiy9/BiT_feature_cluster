@@ -10,8 +10,8 @@ from PIL import Image
 import shutil
 import BiT_models
 
-test_tile_dir = 'data_root/learning/training/folder1_binary'
-classifier_path = 'data_root/learning/models/train3_epoch_24.pth'
+test_tile_dir = 'data_root/learning/binary_testing'
+classifier_path = 'data_root/learning/models/train_binary_epoch_7.pth'
 
 # Batch size
 bs = 1
@@ -39,6 +39,8 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = BiT_models.KNOWN_MODELS['BiT-M-R50x1'](head_size=num_classes, zero_head=True)
 model.load_from(np.load(f"{'BiT-M-R50x1'}.npz"))
 classifier = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+model = torch.nn.DataParallel(model)
+classifier = torch.nn.DataParallel(classifier)
 classifier.load_state_dict(torch.load(classifier_path))
 model = model.to(device)
 classifier = classifier.to(device)
@@ -76,14 +78,14 @@ for _ in range(1):  # for folder in os.listdir(test_tile_dir):
     # dataset = datasets.ImageFolder(root=f'{test_tile_dir}/{folder}', transform=image_transforms['test'])
     dataset = datasets.ImageFolder(root=f'{test_tile_dir}', transform=image_transforms['test'])
     dataset_len = len(dataset)
-    dataloader = data.DataLoader(dataset, batch_size=bs, shuffle=False, num_workers=0,
+    dataloader = data.DataLoader(dataset, batch_size=bs, shuffle=False, num_workers=num_cpu,
                                  pin_memory=True, drop_last=False)
     print('\tTesting-set size:', dataset_len, end='')
 
     # Create separate destination folder for each label
     for label in classifier_labels:
         # train_tile_save_dir = f'{test_tile_dir}/{WSI_name}_trained_labeled_tiles/{label}'
-        train_tile_save_dir = f'{test_tile_dir}/folder1_trained_labeled_tiles/{label}'
+        train_tile_save_dir = f'data_root/learning/binarY_testing_result/{label}'
 
         if not os.path.exists(train_tile_save_dir):
             os.makedirs(train_tile_save_dir)
@@ -118,7 +120,7 @@ for _ in range(1):  # for folder in os.listdir(test_tile_dir):
         #             f'{test_tile_dir}/{WSI_name}_trained_labeled_tiles/{classifier_labels[pred_label_idx]}/{spl_filename}')
         # shutil.copy(f'{test_tile_dir}/{folder}/eoe/{spl_filename}',
         shutil.copy(f'{test_tile_dir}/eoe/{spl_filename}',
-                    f'{test_tile_dir}/folder1_trained_labeled_tiles/{classifier_labels[pred_label_idx]}/{spl_filename}')
+                    f'data_root/learning/binarY_testing_result/{classifier_labels[pred_label_idx]}/{spl_filename}')
 
     # print('\tSaving mask...', end='')
     # Image.fromarray(img_color_arr).save(f'data_root/result_img/Testing_10_WSI/{WSI_name}_trained_mask.png')
