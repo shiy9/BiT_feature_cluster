@@ -4,6 +4,7 @@ import shutil
 import openslide
 import cv2
 import numpy as np
+import PIL
 from PIL import Image
 import csv
 from matplotlib import pyplot as plt
@@ -12,13 +13,18 @@ import sys
 # import csv
 # import pandas as pd
 
-WSI_name = 'P18-8264;S2;UVM'
+WSI_name = 'P17-4786;S6;UVM'
 reg_num = 0  # reg_num is 0 based!
 downsample = 2
 patch_size = 256
 
+# Note: change this if PyHIST is not usable
+have_patches = True
+
+
 json_root = '/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/annotation/converted_json/'
 patch_root = f'/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/tiles/{WSI_name}_R{reg_num}_tiles/'
+tiles_coord_dir = '/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/tiles_coord'
 tiles_coord_path = f'/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/tiles_coord/{WSI_name}_R{reg_num}_tiles_coord.npy'
 tiles_root = f'/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/tiles/{WSI_name}_R{reg_num}_tiles/'
 save_root = f'/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/tiles/'
@@ -142,13 +148,13 @@ for label in class_dict.keys():
 label_mask_dir = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/label_mask/'
 
 # Comment out this image part when not needed! Takes a long time!
-print('Saving label mask images...', end='')
-if not os.path.exists(f'{label_mask_dir}mask_image/'):
-    os.makedirs(f'{label_mask_dir}mask_image/')
-for label, mask in class_dict.items():
-    binary = mask > 0
-    plt.imsave(f'{label_mask_dir}mask_image/{WSI_name}_R{reg_num}_{label}_mask.png', binary)
-print(' Done!')
+# print('Saving label mask images...', end='')
+# if not os.path.exists(f'{label_mask_dir}mask_image/'):
+#     os.makedirs(f'{label_mask_dir}mask_image/')
+# for label, mask in class_dict.items():
+#     binary = mask > 0
+#     plt.imsave(f'{label_mask_dir}mask_image/{WSI_name}_R{reg_num}_{label}_mask.png', binary)
+# print(' Done!')
 # for label in area_dict.keys():
 #     ratio_dict[label] = area_dict[label] / sum_area
 
@@ -166,161 +172,186 @@ new_img_h = int(reg_h/downsample//patch_size)
 img_color = Image.new(mode = "RGB", size = (new_img_w, new_img_h))
 img_color_arr = np.array(img_color).astype(np.uint8) + 255
 
-tiles_coord = np.load(tiles_coord_path)
-i = 0
+if have_patches:
+    tiles_coord = np.load(tiles_coord_path)
+    i = 0
 
-# Write a CSV file for record
-print('Sorting patches...', end='')
-with open(f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{WSI_name}_R{reg_num}_tiles_record.csv', mode='w') as tiles_record:
-    fieldnames = ['patch_name', 'eos', 'bzh', 'dis', 'ea', 'sl', 'sea', 'dec', 'lpf', 'normal lp', 'fibrotic lp', 'ei',
-                  'supersampled']
-    writer = csv.DictWriter(tiles_record, fieldnames=fieldnames)
-    writer.writeheader()
+    # Write a CSV file for record
+    print('Sorting patches...', end='')
+    with open(f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{WSI_name}_R{reg_num}_tiles_record.csv', mode='w') as tiles_record:
+        fieldnames = ['patch_name', 'eos', 'bzh', 'dis', 'ea', 'sl', 'sea', 'dec', 'lpf', 'normal lp', 'fibrotic lp', 'ei',
+                      'supersampled']
+        writer = csv.DictWriter(tiles_record, fieldnames=fieldnames)
+        writer.writeheader()
 
-    for filename in sorted(os.listdir(tiles_root)):
-        # print(f'File being processed: {filename}')
-        # at 40x resolution and are relative coordinates in terms of region
-        csv_row = {'patch_name': filename, 'eos': 0, 'bzh': 0, 'dis': 0, 'ea': 0, 'sl': 0, 'sea': 0, 'dec': 0, 'lpf': 0,
-                   'normal lp': 0, 'fibrotic lp': 0, 'ei': 0, 'supersampled': 0}
-        patch_start_x = tiles_coord[i][0] - reg_x
-        patch_start_y = tiles_coord[i][1] - reg_y
+        for filename in sorted(os.listdir(tiles_root)):
+            # print(f'File being processed: {filename}')
+            # at 40x resolution and are relative coordinates in terms of region
+            csv_row = {'patch_name': filename, 'eos': 0, 'bzh': 0, 'dis': 0, 'ea': 0, 'sl': 0, 'sea': 0, 'dec': 0, 'lpf': 0,
+                       'normal lp': 0, 'fibrotic lp': 0, 'ei': 0, 'supersampled': 0}
+            patch_start_x = tiles_coord[i][0] - reg_x
+            patch_start_y = tiles_coord[i][1] - reg_y
 
-        # Not used, center_x, y are relative coordinates at 40x resolution
-        # center_x = patch_start_x + patch_size * downsample / 2
-        # center_y = patch_start_y + patch_size * downsample / 2
+            # Not used, center_x, y are relative coordinates at 40x resolution
+            # center_x = patch_start_x + patch_size * downsample / 2
+            # center_y = patch_start_y + patch_size * downsample / 2
 
-        first_mask_area = 0
-        second_mask_area = 0
-        third_mask_area = 0
-        first_label = '_'
-        second_label = '_'
-        third_label = '_'
+            first_mask_area = 0
+            second_mask_area = 0
+            third_mask_area = 0
+            first_label = '_'
+            second_label = '_'
+            third_label = '_'
 
-        # The grayscale mask of each patch containing all the labels within that patch
-        patch_save_mask = np.zeros((patch_size, patch_size), dtype=np.uint8)
+            # The grayscale mask of each patch containing all the labels within that patch
+            patch_save_mask = np.zeros((patch_size, patch_size), dtype=np.uint8)
 
-        for label in class_dict.keys():
-            subject_mask = class_dict[label]
-            patch_mask = subject_mask[patch_start_y // downsample: patch_start_y // downsample + patch_size,
-                         patch_start_x // downsample: patch_start_x // downsample + patch_size]
-            patch_save_mask = np.where(patch_mask > 0, pt_mask_dict[label], patch_save_mask)
+            for label in class_dict.keys():
+                subject_mask = class_dict[label]
+                patch_mask = subject_mask[patch_start_y // downsample: patch_start_y // downsample + patch_size,
+                             patch_start_x // downsample: patch_start_x // downsample + patch_size]
+                patch_save_mask = np.where(patch_mask > 0, pt_mask_dict[label], patch_save_mask)
 
-            mask_area = cv2.countNonZero(patch_mask)
-            if mask_area > first_mask_area:
-                third_mask_area = second_mask_area
-                third_label = second_label
-                second_mask_area = first_mask_area
-                second_label = first_label
-                first_mask_area = mask_area
-                first_label = label
-            elif mask_area > second_mask_area:
-                third_mask_area = second_mask_area
-                third_label = second_label
-                second_mask_area = mask_area
-                second_label = label
-            elif mask_area > third_mask_area:
-                third_mask_area = mask_area
-                third_label = label
+                mask_area = cv2.countNonZero(patch_mask)
+                if mask_area > first_mask_area:
+                    third_mask_area = second_mask_area
+                    third_label = second_label
+                    second_mask_area = first_mask_area
+                    second_label = first_label
+                    first_mask_area = mask_area
+                    first_label = label
+                elif mask_area > second_mask_area:
+                    third_mask_area = second_mask_area
+                    third_label = second_label
+                    second_mask_area = mask_area
+                    second_label = label
+                elif mask_area > third_mask_area:
+                    third_mask_area = mask_area
+                    third_label = label
 
-            # V2
-            if mask_area > 0:
-                sorted_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{label}'
-                if not os.path.exists(sorted_root):
-                    os.makedirs(sorted_root)
-                shutil.copy(f'{tiles_root}{filename}', f'{sorted_root}/{filename}')
-                csv_row[label] = 1
+                # V2
+                if mask_area > 0:
+                    sorted_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{label}'
+                    if not os.path.exists(sorted_root):
+                        os.makedirs(sorted_root)
+                    shutil.copy(f'{tiles_root}{filename}', f'{sorted_root}/{filename}')
+                    csv_row[label] = 1
 
-        temp_x = int(patch_start_x / downsample // patch_size)
-        temp_y = int(patch_start_y / downsample // patch_size)
+            temp_x = int(patch_start_x / downsample // patch_size)
+            temp_y = int(patch_start_y / downsample // patch_size)
 
-        others_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/others'
-        if not os.path.exists(others_root):
-            os.makedirs(others_root)
+            others_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/others'
+            if not os.path.exists(others_root):
+                os.makedirs(others_root)
 
-        if first_label == '_':
-            img_color_arr[temp_y, temp_x] = colors_list[0]
-            shutil.copy(f'{tiles_root}{filename}', f'{others_root}/{filename}')
-        else:
-            writer.writerow(csv_row)
-            color_index = label_dict[first_label]
-            img_color_arr[temp_y, temp_x] = colors_list[color_index]
+            if first_label == '_':
+                img_color_arr[temp_y, temp_x] = colors_list[0]
+                shutil.copy(f'{tiles_root}{filename}', f'{others_root}/{filename}')
+            else:
+                writer.writerow(csv_row)
+                color_index = label_dict[first_label]
+                img_color_arr[temp_y, temp_x] = colors_list[color_index]
 
-            sorted_mask_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/tiles_mask'
-            sorted_mask_file_root = sorted_mask_root + '/mask_file'
-            sorted_mask_img_root = sorted_mask_root + '/mask_img'
+                sorted_mask_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/tiles_mask'
+                sorted_mask_file_root = sorted_mask_root + '/mask_file'
+                sorted_mask_img_root = sorted_mask_root + '/mask_img'
 
-            if not os.path.exists(sorted_mask_root):  # V1: sorted root
-                os.makedirs(sorted_mask_root)
-            if not os.path.exists(sorted_mask_file_root):
-                os.makedirs(sorted_mask_file_root)
-            if not os.path.exists(sorted_mask_img_root):
-                os.makedirs(sorted_mask_img_root)
+                if not os.path.exists(sorted_mask_root):  # V1: sorted root
+                    os.makedirs(sorted_mask_root)
+                if not os.path.exists(sorted_mask_file_root):
+                    os.makedirs(sorted_mask_file_root)
+                if not os.path.exists(sorted_mask_img_root):
+                    os.makedirs(sorted_mask_img_root)
 
-            # V2
-            np.save(f'{sorted_mask_file_root}/{filename}_mask.npy', patch_save_mask)
-            Image.fromarray(patch_save_mask).save(f'{sorted_mask_img_root}/{filename}_mask.png')
+                # V2
+                np.save(f'{sorted_mask_file_root}/{filename}_mask.npy', patch_save_mask)
+                Image.fromarray(patch_save_mask).save(f'{sorted_mask_img_root}/{filename}_mask.png')
 
-        # print(temp_x, temp_y, first_label)
-        i += 1
+            # print(temp_x, temp_y, first_label)
+            i += 1
 
-    tiles_record.close()
-    shutil.move(tiles_root, f'{save_root}Unlabeled')
-    Image.fromarray(img_color_arr).save(f'data_root/result_img/{WSI_name}_R{reg_num}_patch_group_mask.png')
-print(' Done!')
+        tiles_record.close()
+        shutil.move(tiles_root, f'{save_root}Unlabeled')
+        Image.fromarray(img_color_arr).save(f'data_root/result_img/{WSI_name}_R{reg_num}_patch_group_mask.png')
+    print(' Done!')
 
+else:
+    # Crop image
+    patch_h = 512
+    patch_w = 512
+    step = 512
 
+    crop_x_total = reg_w // step - 1
+    crop_y_total = reg_h // step - 1
+    coord_list = []
+    print('Cropping image...', end='')
+    with open(f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{WSI_name}_R{reg_num}_tiles_record.csv', mode='w') as tiles_record:
+        fieldnames = ['patch_name', 'eos', 'bzh', 'dis', 'ea', 'sl', 'sea', 'dec', 'lpf', 'normal lp', 'fibrotic lp', 'ei',
+                      'supersampled']
+        writer = csv.DictWriter(tiles_record, fieldnames=fieldnames)
+        writer.writeheader()
 
+        # For saving file names
+        save_ctr = 0
 
-# Crop image
-# patch_h = 512
-# patch_w = 512
-# step = 256
-#
-# crop_x_total = max_w // step - 1
-# crop_y_total = max_h // step - 1
-# print('CROP: ', crop_x_total, crop_y_total)
-# for j in range(crop_y_total):
-#     for i in range(crop_x_total):
-#         # print(j, i)
-#         patch_start_x = i * step
-#         patch_start_y = j * step
-#         # TODO: locate center of patch?
-#         center_x = patch_start_x + patch_w/2
-#         center_y = patch_start_y + patch_h/2
-#
-#         img_patch = simg.read_region((patch_start_x, patch_start_y), 0, (512, 512)).convert('RGB')
-#         img_patch_small = img_patch.resize((256, 256))
-#         first_mask_area = 0
-#         second_mask_area = 0
-#         third_mask_area = 0
-#         first_label = '_'
-#         second_label = '_'
-#         third_label = '_'
-#         for label in ratio_dict.keys():
-#             subject_mask = class_dict[label]
-#             patch_mask = subject_mask[patch_start_y//2: patch_start_y//2 + 256, patch_start_x//2: patch_start_x//2 + 256]
-#             mask_area_ratio = cv2.countNonZero(patch_mask) / 256*256
-#             if mask_area_ratio > first_mask_area:
-#                 third_mask_area = second_mask_area
-#                 third_label = second_label
-#                 second_mask_area = first_mask_area
-#                 second_label = first_label
-#                 first_mask_area = mask_area_ratio
-#                 first_label = label
-#             elif mask_area_ratio > second_mask_area:
-#                 third_mask_area = second_mask_area
-#                 third_label = second_label
-#                 second_mask_area = mask_area_ratio
-#                 second_label = label
-#             elif mask_area_ratio > third_mask_area:
-#                 third_mask_area = mask_area_ratio
-#                 third_label = label
-#         if first_label == '_':
-#             img_color_arr[j, i] = colors_list[0]
-#         else:
-#             color_index = label_dict[first_label]
-#             img_color_arr[j, i] = colors_list[color_index]
-#         print(i, j, first_label)
-#
-# Image.fromarray(img_color_arr).save('EB70_color_label.png')
+        # Note: NOT saving the grayscale mask
+        for j in range(crop_y_total):
+            for i in range(crop_x_total):
+                filename = f'{WSI_name}_{save_ctr}'
+                csv_row = {'patch_name': filename, 'eos': 0, 'bzh': 0, 'dis': 0, 'ea': 0, 'sl': 0, 'sea': 0, 'dec': 0,
+                           'lpf': 0, 'normal lp': 0, 'fibrotic lp': 0, 'ei': 0, 'supersampled': 0}
+                # Absolute coordinates at 40x resolution
+                patch_start_x = i * step + reg_x
+                patch_start_y = j * step + reg_y
 
+                # Relative coordinates at 40x resolution
+                patch_start_x_rl = patch_start_x - reg_x
+                patch_start_y_rl = patch_start_y - reg_y
+
+                first_mask_area = 0
+                second_mask_area = 0
+                third_mask_area = 0
+                first_label = '_'
+                second_label = '_'
+                third_label = '_'
+
+                for label in class_dict.keys():
+                    subject_mask = class_dict[label]
+                    patch_mask = subject_mask[patch_start_y_rl//downsample: patch_start_y_rl//downsample + patch_size,
+                                 patch_start_x_rl//downsample: patch_start_x_rl//downsample + patch_size]
+                    mask_area = cv2.countNonZero(patch_mask)
+                    if mask_area > first_mask_area:
+                        third_mask_area = second_mask_area
+                        third_label = second_label
+                        second_mask_area = first_mask_area
+                        second_label = first_label
+                        first_mask_area = mask_area
+                        first_label = label
+                    elif mask_area > second_mask_area:
+                        third_mask_area = second_mask_area
+                        third_label = second_label
+                        second_mask_area = mask_area
+                        second_label = label
+                    elif mask_area > third_mask_area:
+                        third_mask_area = mask_area
+                        third_label = label
+
+                    if mask_area > 0:
+                        img_patch = simg.read_region((patch_start_x, patch_start_y), 0, (512, 512)).convert('RGB')
+                        img_patch = img_patch.resize((patch_size, patch_size), resample=PIL.Image.BICUBIC)
+                        sorted_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{label}'
+                        if not os.path.exists(sorted_root):
+                            os.makedirs(sorted_root)
+                        img_patch = img_patch.convert('RGB')
+                        img_patch.save(f'{sorted_root}/{filename}.png')
+                        csv_row[label] = 1
+                        coord_list.append([patch_start_x, patch_start_y])
+                if first_label == '_':
+                    img_color_arr[j, i] = colors_list[0]
+                else:
+                    color_index = label_dict[first_label]
+                    img_color_arr[j, i] = colors_list[color_index]
+                    writer.writerow(csv_row)
+                    save_ctr += 1
+        np.save(f'{tiles_coord_dir}/{WSI_name}_R{reg_num}_tiles_coord.npy', coord_list)
+    print('\tDone!')

@@ -28,9 +28,9 @@ train_info = []
 # Batch size
 bs = 1
 # Number of epochs
-num_epochs = 200
-# Note: Number of classes. CHANGE THIS IF NUMBER OF CLASSES IS NOT THE SAME!
-num_classes = 6
+num_epochs = 100
+# Note: Number of classes. Check before running
+num_classes = 2
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
@@ -57,12 +57,12 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
             transforms.Normalize([0.485, 0.456, 0.406],
                                  [0.229, 0.224, 0.225])
         ]),
-        'valid': transforms.Compose([
-            transforms.Resize(size=256),
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406],
-                                 [0.229, 0.224, 0.225])
-        ])
+        # 'valid': transforms.Compose([
+        #     transforms.Resize(size=256),
+        #     transforms.ToTensor(),
+        #     transforms.Normalize([0.485, 0.456, 0.406],
+        #                          [0.229, 0.224, 0.225])
+        # ])
     }
 
     # Load data from folders
@@ -99,6 +99,7 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
     print("Training-set size:", dataset_sizes['train'])
           # "\nValidation-set size:", dataset_sizes['valid'])  # Note: valid cmt
 
+    # Saving the classifier labels
     train_labels = dataset['train'].class_to_idx
     with open('data_root/learning/models/train_labels.txt', 'w') as train_labels_file:
         train_labels_file.write(json.dumps(train_labels))
@@ -163,6 +164,35 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
     writer = SummaryWriter()
 
     for epoch in range(num_epochs):
+        # Load the previous epoch's model in before training
+        # For debugging only. Comment out later!
+        if epoch != 0:
+            classifier_lv = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+            classifier_lv.load_state_dict(torch.load(f'data_root/learning/models/train3_epoch_{epoch - 1}.pth'))
+            classifier_lv = classifier_lv.to(device)
+            running_corrects_v = 0
+            running_corrects_lv = 0
+            model.eval()
+            classifier.eval()
+            classifier_lv.eval()
+            for inputs_v, labels_v in dataloaders['train']:
+                inputs_v = inputs_v.to(device, non_blocking=True)
+                labels_v = labels_v.to(device, non_blocking=True)
+
+                # forward
+                _, feature_v = model(inputs_v)
+                preds_v = classifier(feature_v)
+                preds_lv = classifier_lv(feature_v)
+                _, preds_v = torch.max(preds_v, 1)
+                _, preds_lv = torch.max(preds_lv, 1)
+
+                running_corrects_v += torch.sum(preds_v == labels_v.data)
+                running_corrects_lv += torch.sum(preds_lv == labels_v.data)
+
+            epoch_acc_v = running_corrects_v.double() / dataset_sizes['train']
+            epoch_acc_lv = running_corrects_lv.double() / dataset_sizes['train']
+            print('Previous Epoch {} test Acc: {:4f}, load test Acc: {:4f}\n'.format(epoch - 1, epoch_acc_v, epoch_acc_lv))
+
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
         print('-' * 10)
 
@@ -182,10 +212,21 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
             pred = []
             true = []
 
+            # Note: trouble shooting, delete later
+            # Trying to see if the features are the same. Not correct with shuffle=True
+            feature_dict = {}
+
             # Iterate over data.
-            for inputs, labels in dataloaders[phase]:
+            # Note: indexing does not really work with shuffle=True. Order of samples/imgs in dataloader is not right
+            # Can definitely change to for inputs, labels in dataloaders[phase]
+            for i, (inputs, labels) in enumerate(dataloaders[phase], 0):  # for inputs, labels in dataloaders[phase]:
                 inputs = inputs.to(device, non_blocking=True)
                 labels = labels.to(device, non_blocking=True)
+
+                # Note: trouble shooting, delete later
+                spl_filename = dataloaders[phase].dataset.samples[i][0]
+                spl_filename = spl_filename.rsplit('/', 1)[-1]
+
                 # zero the parameter gradients
                 optimizer.zero_grad()
                 # track history if only in train
@@ -195,6 +236,9 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
                     preds = classifier(feature)
                     # _, preds = torch.max(preds, 1)
                     loss = criterion(preds, labels)
+
+                    # Note: trouble shooting, delete later
+                    feature_dict[spl_filename] = feature.cpu().detach().numpy()
 
                     preds_list = list(np.array(preds.argmax(dim=1).cpu().detach().numpy()))
                     labels_list = list(np.array(labels.cpu().detach().numpy()))
@@ -245,7 +289,10 @@ for val_folder_index in range(1):  # Note: with validation: for val_folder_index
             #     best_acc = balance_acc
             #     best_model_wts = copy.deepcopy(model.state_dict())
         PATH = 'data_root/learning/models/train3_epoch_' + str(epoch) + '.pth'
-        torch.save(classifier, PATH)
+        torch.save(classifier.state_dict(), PATH)
+
+        # Note: trouble shooting, delete later
+        np.save(f'data_root/learning/models/file_feature/train3_epoch_{str(epoch)}_fea.npy', feature_dict)
 
     time_elapsed = time.time() - since
     print('Training complete in {:.0f}m {:.0f}s'.format(
