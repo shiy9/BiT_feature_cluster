@@ -32,6 +32,7 @@ bs = 64
 num_epochs = 100
 # Note: Number of classes. Check before running
 num_classes = 6
+train_splits = 1
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
@@ -44,9 +45,9 @@ if len(os.listdir(model_dir)) != 0:
     input('Model root not empty. Press Enter to continue...')
 
 # Tensorboard summary
-writer = SummaryWriter(log_dir='runs/train_all_0728')
+writer = SummaryWriter(log_dir='runs/train_all_01valid_0729')
 
-for val_folder_index in range(4):  # Note: with validation: for val_folder_index in range(5):
+for val_folder_index in range(train_splits):  # Note: with validation: for val_folder_index in range(5):
     whole_data_set = ['P17-2343;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
                       'P17-7861;S4;UVM_R0_labeled_tiles', 'P17-8000;S2;UVM_R0_labeled_tiles',
                       'P18-6324;S2;UVM_R0_labeled_tiles', 'P18-8264;S2;UVM_R0_labeled_tiles',
@@ -55,7 +56,8 @@ for val_folder_index in range(4):  # Note: with validation: for val_folder_index
                       'P17-2515;S5;UVM_R0_labeled_tiles', 'P17-2518;S6;UVM_R0_labeled_tiles',
                       'P17-2674;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
                       'P17-4786;S6;UVM_R0_labeled_tiles']
-    val_idx_list = [[2, 7, 12, 6, 0], [6, 9], [13, 14, 3, 5, 6, 0], [10, 8, 6, 0]]
+    # val_idx_list = [[2, 7, 12, 6, 0], [6, 9], [13, 14, 3, 5, 6, 0], [10, 8, 6, 0]]
+    val_idx_list = [[0, 1]]
     val_WSI_list = [whole_data_set[i] for i in val_idx_list[val_folder_index]]  # Note: valid cmt
     for val in val_WSI_list:
         whole_data_set.remove(val)
