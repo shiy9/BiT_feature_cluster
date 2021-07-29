@@ -97,32 +97,62 @@ import BiT_models
 
 
 # Extract a few patches
-WSI_name = 'P17-2515;S5;UVM'
-reg_num = 0
-coord_file = np.load(f'data_root/tiles_coord/{WSI_name}_R{reg_num}_tiles_coord.npy')
-coord_1 = coord_file[79]
-coord_2 = coord_file[89]
-coord_1[0] = coord_1[0] + 512
-coord_2[0] = coord_2[0] + 512
-coord_file = list(coord_file)
-coord_file.append(np.array([coord_1[0], coord_1[1]]))
-coord_file.append(np.array([coord_2[0], coord_2[1]]))
-wsi = openslide.open_slide(f'/home/yuxuanshi/VUSRP/WSI/{WSI_name}.scn')
-size = 512
+# WSI_name = 'P17-2515;S5;UVM'
+# reg_num = 0
+# coord_file = np.load(f'data_root/tiles_coord/{WSI_name}_R{reg_num}_tiles_coord.npy')
+# coord_1 = coord_file[79]
+# coord_2 = coord_file[89]
+# coord_1[0] = coord_1[0] + 512
+# coord_2[0] = coord_2[0] + 512
+# coord_file = list(coord_file)
+# coord_file.append(np.array([coord_1[0], coord_1[1]]))
+# coord_file.append(np.array([coord_2[0], coord_2[1]]))
+# wsi = openslide.open_slide(f'/home/yuxuanshi/VUSRP/WSI/{WSI_name}.scn')
+# size = 512
+#
+# fnames_now = sorted(os.listdir(f'data_root/tiles/{WSI_name}_R{reg_num}_tiles'))
+# save_num = int(fnames_now[-1].rsplit('_', 1)[-1][:-4])
+# file_1 = wsi.read_region(coord_1, 0, (size, size))
+# file_1 = file_1.convert('RGB')
+# save_num += 1
+# file_1.save(f'data_root/tiles/{WSI_name}_R{reg_num}_tiles/{WSI_name}_{save_num}.png')  # Note: change
+#
+# file_2 = wsi.read_region(coord_2, 0, (size, size))
+# file_2 = file_2.convert('RGB')
+# save_num += 1
+# file_2.save(f'data_root/tiles/{WSI_name}_R{reg_num}_tiles/{WSI_name}_{save_num}.png')  # Note: change
+# np.save(f'data_root/tiles_coord/{WSI_name}_R{reg_num}_tiles_coord.npy', coord_file)
 
-fnames_now = sorted(os.listdir(f'data_root/tiles/{WSI_name}_R{reg_num}_tiles'))
-save_num = int(fnames_now[-1].rsplit('_', 1)[-1][:-4])
-file_1 = wsi.read_region(coord_1, 0, (size, size))
-file_1 = file_1.convert('RGB')
-save_num += 1
-file_1.save(f'data_root/tiles/{WSI_name}_R{reg_num}_tiles/{WSI_name}_{save_num}.png')  # Note: change
 
-file_2 = wsi.read_region(coord_2, 0, (size, size))
-file_2 = file_2.convert('RGB')
-save_num += 1
-file_2.save(f'data_root/tiles/{WSI_name}_R{reg_num}_tiles/{WSI_name}_{save_num}.png')  # Note: change
-np.save(f'data_root/tiles_coord/{WSI_name}_R{reg_num}_tiles_coord.npy', coord_file)
+# For testing
+# whole_data_set = ['P17-2343;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
+#                   'P17-7861;S4;UVM_R0_labeled_tiles', 'P17-8000;S2;UVM_R0_labeled_tiles',
+#                   'P18-6324;S2;UVM_R0_labeled_tiles', 'P18-8264;S2;UVM_R0_labeled_tiles',
+#                   'P16-7404;S6;UVM_R0_labeled_tiles', 'P16-8407;S8;UVM_R0_labeled_tiles',
+#                   'P16-8902;S6;UVM_R0_labeled_tiles', 'P16-8917;S6;UVM_R0_labeled_tiles',
+#                   'P17-2343;S6;UVM_R0_labeled_tiles', 'P17-2515;S5;UVM_R0_labeled_tiles',
+#                   'P17-2518;S6;UVM_R0_labeled_tiles', 'P17-2674;S6;UVM_R0_labeled_tiles',
+#                   'P17-4786;S5;UVM_R0_labeled_tiles', 'P17-4786;S6;UVM_R0_labeled_tiles']
+# val_idx_list = [[2, 7, 13, 6, 0], [6, 9], [14, 15, 3, 5, 6, 0], [10, 8, 6, 0]]
+# val_WSI_list = [whole_data_set[i] for i in val_idx_list[1]]  # Note: valid cmt
+# for val in val_WSI_list:
+#     whole_data_set.remove(val)
+# train_WSI_list = whole_data_set
+
+# print('Haha here we go')
+# input("Press Enter to continue")
 
 
-
+# Randomly select a few patches and delete others
+target_num = 14
+others_dir = 'data_root/learning/training/P18-8264;S2;UVM_R0_labeled_tiles/others'
+name = 'P18-8264;S2;UVM_R0_labeled_tiles'
+destination_dir = ''
+files = os.listdir(others_dir)
+the_ones = random.sample(files, target_num)
+for file in the_ones:
+    files.remove(file)
+for file in files:
+    os.remove(f'{others_dir}/{file}')
+print(f'{name} Done!')
 print('dummy print')
