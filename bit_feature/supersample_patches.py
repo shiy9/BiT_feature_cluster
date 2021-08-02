@@ -5,14 +5,14 @@ from PIL import Image
 import sys
 
 # NOTE: change 'WSI_name' and 'target_num' values when processing new slides
-WSI_name = 'P17-4786;S6;UVM'
-reg_num = 0  # reg_num is 0 based!
+WSI_name = 'P17-4786;S5;UVM'
+reg_num = 1  # reg_num is 0 based!
 downsample = 2
 patch_size = 256
 draw_result_mask = False
 
 # desired number of patches to supersample
-target_num = {'dis': 18, 'normal lp': 0, 'fibrotic lp': 0}
+target_num = {'bzh': 4, 'dis': 10, 'eos': 2, 'normal lp': 0, 'fibrotic lp': 0}
 
 label_mask_path = f'data_root/tiles/{WSI_name}_R{reg_num}_labeled_tiles/label_mask/mask_file/'
 supersample_tile_path = f'data_root/tiles/{WSI_name}_R{reg_num}_ss_tiles/'
@@ -98,7 +98,11 @@ for mask_filename in os.listdir(label_mask_path):
         patch = slide.read_region((patch_start_x, patch_start_y), 0, (patch_size * downsample, patch_size * downsample))
         patch = patch.resize((patch_size, patch_size))
         patch = patch.convert('RGB')
-        patch.save(f'{label_tile_path}{WSI_name}_{label}_ss_{naming_ct}.png')
+        if label == 'normal lp':
+            label = 'normal_lp'
+        elif label == 'fibrotic lp':
+            label = 'fibrotic_lp'
+        patch.save(f'{label_tile_path}{WSI_name}_R{reg_num}_{label}_ss_{naming_ct}.png')
         naming_ct += 1
     if draw_result_mask:
         print('\tDone!\tDrawing verification mask...', end='')

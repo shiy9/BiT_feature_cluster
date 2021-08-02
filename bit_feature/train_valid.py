@@ -27,12 +27,12 @@ import BiT_models
 train_mode = 'finetune'
 train_info = []
 # Batch size
-bs = 64
+bs = 32
 # Number of epochs
 num_epochs = 100
 # Note: Number of classes. Check before running
-num_classes = 6
-train_splits = 1
+num_classes = 7
+train_splits = 5
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
@@ -45,19 +45,19 @@ if len(os.listdir(model_dir)) != 0:
     input('Model root not empty. Press Enter to continue...')
 
 # Tensorboard summary
-writer = SummaryWriter(log_dir='runs/train_all_01valid_0729')
+writer = SummaryWriter(log_dir='runs/Aug_1_train_all_new_2')
 
 for val_folder_index in range(train_splits):  # Note: with validation: for val_folder_index in range(5):
-    whole_data_set = ['P17-2343;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
-                      'P17-7861;S4;UVM_R0_labeled_tiles', 'P17-8000;S2;UVM_R0_labeled_tiles',
-                      'P18-6324;S2;UVM_R0_labeled_tiles', 'P18-8264;S2;UVM_R0_labeled_tiles',
-                      'P16-7404;S6;UVM_R0_labeled_tiles', 'P16-8407;S8;UVM_R0_labeled_tiles',
-                      'P16-8902;S6;UVM_R0_labeled_tiles', 'P16-8917;S6;UVM_R0_labeled_tiles',
-                      'P17-2515;S5;UVM_R0_labeled_tiles', 'P17-2518;S6;UVM_R0_labeled_tiles',
-                      'P17-2674;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
-                      'P17-4786;S6;UVM_R0_labeled_tiles']
-    # val_idx_list = [[2, 7, 12, 6, 0], [6, 9], [13, 14, 3, 5, 6, 0], [10, 8, 6, 0]]
-    val_idx_list = [[0, 1]]
+    # whole_data_set = ['P17-2343;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
+    #                   'P17-7861;S4;UVM_R0_labeled_tiles', 'P17-8000;S2;UVM_R0_labeled_tiles',
+    #                   'P18-6324;S2;UVM_R0_labeled_tiles', 'P18-8264;S2;UVM_R0_labeled_tiles',
+    #                   'P16-7404;S6;UVM_R0_labeled_tiles', 'P16-8407;S8;UVM_R0_labeled_tiles',
+    #                   'P16-8902;S6;UVM_R0_labeled_tiles', 'P16-8917;S6;UVM_R0_labeled_tiles',
+    #                   'P17-2515;S5;UVM_R0_labeled_tiles', 'P17-2518;S6;UVM_R0_labeled_tiles',
+    #                   'P17-2674;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
+    #                   'P17-4786;S6;UVM_R0_labeled_tiles']
+    whole_data_set = [f'folder{i}' for i in range(1, 6)]
+    val_idx_list = [[0], [1], [2], [3], [4]]
     val_WSI_list = [whole_data_set[i] for i in val_idx_list[val_folder_index]]  # Note: valid cmt
     for val in val_WSI_list:
         whole_data_set.remove(val)
@@ -91,12 +91,13 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
     # dataset['train'] = datasets.ImageFolder(root=train_directory + 'folder1', transform=image_transforms['train'])
 
     # Load validation data
-    loader_list = []
-    for slide in val_WSI_list:
-        tmp_data = datasets.ImageFolder(root=train_directory + slide, transform=image_transforms['valid'])
-        loader_list.append(tmp_data)
+    # loader_list = []
+    # for slide in val_WSI_list:
+    #     tmp_data = datasets.ImageFolder(root=train_directory + slide, transform=image_transforms['valid'])
+    #     loader_list.append(tmp_data)
     # Note: valid cmt
-    dataset['valid'] = data.ConcatDataset(loader_list)
+    # dataset['valid'] = data.ConcatDataset(loader_list)
+    dataset['valid'] = datasets.ImageFolder(root=train_directory + val_WSI_list[0], transform=image_transforms['valid'])
 
     # For code verification, loading the binary one
     # dataset['valid'] = datasets.ImageFolder(root='data_root/learning/testing', transform=image_transforms['valid'])
@@ -123,11 +124,11 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
     # Saving the classifier labels
     # Note: does not work with ConcatDataset
     # train_labels = dataset['train'].class_to_idx
-    # valid_labels = dataset['valid'].class_to_idx
+    valid_labels = dataset['valid'].class_to_idx
     # if train_labels != valid_labels:
     #     print('WARNING: training and validation class number mismatch!')
-    # with open('data_root/learning/models/train_labels.txt', 'w') as train_labels_file:
-    #     train_labels_file.write(json.dumps(train_labels))
+    with open('data_root/learning/models/train_labels.txt', 'w') as train_labels_file:
+        train_labels_file.write(json.dumps(valid_labels))
 
     # Set default device as gpu, if available
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -140,10 +141,10 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
         classifier = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
 
     # Transfer the model to GPU
-    model = model.to(device)
-    classifier = classifier.to(device)
     model = torch.nn.DataParallel(model)
     classifier = torch.nn.DataParallel(classifier)
+    model = model.to(device)
+    classifier = classifier.to(device)
 
     optimizer = optim.SGD(classifier.parameters(), lr=0.001, momentum=0.9, weight_decay=5e-4)
 

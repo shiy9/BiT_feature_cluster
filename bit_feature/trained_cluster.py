@@ -10,15 +10,15 @@ from PIL import Image
 import shutil
 import BiT_models
 
-test_tile_dir = 'data_root/learning/testing/Testing_10_WSI'
-classifier_path = 'data_root/learning/models_all_01valid/train_all_0_epoch_37.pth'
-tile_save_dir = 'data_root/learning/testing/valid_01_result'
-mask_save_dir = 'data_root/learning/testing/valid_01_mask'
+test_tile_dir = 'data_root/learning/testing/Test_17_4786'
+classifier_path = 'data_root/learning/models/train_all_0_epoch_35.pth'
+tile_save_dir = 'data_root/learning/testing/Test_17_4786_result_7'
+mask_save_dir = 'data_root/learning/testing/Test_17_4786_mask_7'
 
 # Batch size
 bs = 1
 # Number of classes
-num_classes = 6
+num_classes = 7
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
@@ -57,7 +57,7 @@ classifier_labels = ['bzh', 'dis', 'eos', 'fibrotic lp', 'normal lp', 'others']
 
 colors_list = [(201, 120, 25),  # light purple
                (123, 35, 15),  # brown
-               (23, 172, 169),  # green
+               (23, 172, 169),  # bluish
                (211, 49, 153),  # pink
                 (160, 90, 160),  # darker pink/purple
                (200, 200, 200),  # gray
@@ -91,7 +91,7 @@ for folder in os.listdir(test_tile_dir):
         if not os.path.exists(train_tile_save_dir):
             os.makedirs(train_tile_save_dir)
 
-    coor_file_path = f'data_root/tiles_coord/Testing_10_WSI/{folder}_coord.npy'
+    coor_file_path = f'data_root/tiles_coord/{folder}_coord.npy'
     coor_array = np.load(coor_file_path)
 
     new_img_w = int(max_w / downsample // patch_size)
@@ -122,5 +122,5 @@ for folder in os.listdir(test_tile_dir):
                     f'{destination_dir}/{classifier_labels[pred_label_idx]}/{spl_filename}')
 
     print('\tSaving mask...', end='')
-    Image.fromarray(img_color_arr).save(f'{mask_save_dir}/{WSI_name}_trained_mask.png')
+    Image.fromarray(img_color_arr).save(f'{mask_save_dir}/{WSI_name}_trained_mask_2.png')
     print('\tDone!')

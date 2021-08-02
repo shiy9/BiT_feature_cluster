@@ -9,9 +9,6 @@ from PIL import Image
 import csv
 from matplotlib import pyplot as plt
 import sys
-# import random
-# import csv
-# import pandas as pd
 
 WSI_name = 'P17-4786;S6;UVM'
 reg_num = 0  # reg_num is 0 based!
@@ -43,13 +40,18 @@ save_root = f'/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/tiles/'
 
 # file_list = os.listdir(root)
 
-colors_list = [(255, 255, 255), (123, 35, 15), (23, 172, 169), (211, 49, 153),
-                (160, 90, 160), (200, 200, 200),
-               (150, 200, 150), (200, 0, 0), (201, 120, 25), (214, 199, 219), (42, 189, 89), (226, 2, 214)]
+colors_list = [(201, 120, 25),  # light purple
+               (123, 35, 15),  # brown
+               (23, 172, 169),  # bluish
+               (211, 49, 153),  # pink
+                (160, 90, 160),  # darker pink/purple
+               (200, 200, 200),  # gray
+               (150, 200, 150), (201, 120, 25), (214, 199, 219), (42, 189, 89), (226, 2, 214), (200, 0, 0),
+               (255, 255, 255)]
 
 # TODO: official documentation is 'EA' instead of 'EI'
-label_dict = {'eos': 1, 'bzh': 2, 'dis': 3, 'ea': 4, 'sl': 5, 'sea': 6, 'dec': 7, 'lpf': 8, 'normal lp': 9,
-              'fibrotic lp': 10, 'ei': 11}
+label_dict = {'eos': 2, 'bzh': 0, 'dis': 1, 'ea': 6, 'sl': 7, 'sea': 8, 'dec': 9, 'lpf': 10, 'normal lp': 4,
+              'fibrotic lp': 3, 'ei': 11, 'others': 5}
 pt_mask_dict = {'eos': 17, 'bzh': 34, 'dis': 51, 'ea': 68, 'sl': 85, 'sea': 102, 'dec': 119, 'lpf': 136,
                 'normal lp': 153, 'fibrotic lp': 170, 'ei': 187}
 
@@ -191,6 +193,7 @@ if have_patches:
                        'normal lp': 0, 'fibrotic lp': 0, 'ei': 0, 'supersampled': 0}
             patch_start_x = tiles_coord[i][0] - reg_x
             patch_start_y = tiles_coord[i][1] - reg_y
+            saved = False
 
             # Not used, center_x, y are relative coordinates at 40x resolution
             # center_x = patch_start_x + patch_size * downsample / 2
@@ -230,12 +233,13 @@ if have_patches:
                     third_label = label
 
                 # V2
-                if mask_area > 0:
+                if mask_area > 0 and (label == 'dis' or label == 'eos'):
                     sorted_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{label}'
                     if not os.path.exists(sorted_root):
                         os.makedirs(sorted_root)
                     shutil.copy(f'{tiles_root}{filename}', f'{sorted_root}/{filename}')
                     csv_row[label] = 1
+                    saved = True
 
             temp_x = int(patch_start_x / downsample // patch_size)
             temp_y = int(patch_start_y / downsample // patch_size)
@@ -245,7 +249,7 @@ if have_patches:
                 os.makedirs(others_root)
 
             if first_label == '_':
-                img_color_arr[temp_y, temp_x] = colors_list[0]
+                img_color_arr[temp_y, temp_x] = colors_list[label_dict['others']]
                 shutil.copy(f'{tiles_root}{filename}', f'{others_root}/{filename}')
             else:
                 writer.writerow(csv_row)
@@ -262,6 +266,13 @@ if have_patches:
                     os.makedirs(sorted_mask_file_root)
                 if not os.path.exists(sorted_mask_img_root):
                     os.makedirs(sorted_mask_img_root)
+
+                if not saved:
+                    sorted_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{first_label}'
+                    if not os.path.exists(sorted_root):
+                        os.makedirs(sorted_root)
+                    shutil.copy(f'{tiles_root}{filename}', f'{sorted_root}/{filename}')
+                    csv_row[first_label] = 1
 
                 # V2
                 np.save(f'{sorted_mask_file_root}/{filename}_mask.npy', patch_save_mask)

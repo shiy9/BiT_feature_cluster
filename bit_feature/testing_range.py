@@ -5,6 +5,7 @@ import cv2
 import os
 import shutil
 import random
+from PIL import Image
 
 import torch
 from torchvision import datasets, transforms
@@ -144,15 +145,32 @@ import BiT_models
 
 
 # Randomly select a few patches and delete others
-target_num = 14
-others_dir = 'data_root/learning/training/P18-8264;S2;UVM_R0_labeled_tiles/others'
-name = 'P18-8264;S2;UVM_R0_labeled_tiles'
-destination_dir = ''
-files = os.listdir(others_dir)
-the_ones = random.sample(files, target_num)
-for file in the_ones:
-    files.remove(file)
-for file in files:
-    os.remove(f'{others_dir}/{file}')
-print(f'{name} Done!')
+# target_num = 14
+# others_dir = 'data_root/learning/training/P18-8264;S2;UVM_R0_labeled_tiles/others'
+# name = 'P18-8264;S2;UVM_R0_labeled_tiles'
+# destination_dir = ''
+# files = os.listdir(others_dir)
+# the_ones = random.sample(files, target_num)
+# for file in the_ones:
+#     files.remove(file)
+# for file in files:
+#     os.remove(f'{others_dir}/{file}')
+# print(f'{name} Done!')
+
+# Compare two masks
+img1 = Image.open('data_root/learning/testing/Test_17_4786_mask/P17-4786;S5;UVM_R0_trained_mask.png')
+img2 = Image.open('data_root/result_img/P17-4786;S5;UVM_R0_patch_group_mask.png')
+
+ct = 0
+all = 0
+pixels_1 = np.array(img1.getdata())
+pixels_2 = np.array(img2.getdata())
+
+size = pixels_1.shape
+
+for i in range(size[0]):
+    temp = pixels_1[i]
+    if pixels_1[i].any() != pixels_2[i].any():
+        ct += 1
+print(f'Difference {ct}')
 print('dummy print')
