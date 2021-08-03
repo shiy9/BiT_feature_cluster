@@ -1,24 +1,18 @@
 import numpy as np
 import torch
-# import torchvision
 import torch.nn.functional as F
-from torchvision import datasets, models, transforms
+from torchvision import datasets, transforms
 import torch.utils.data as data
 from torch.utils.tensorboard import SummaryWriter
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
-# from nets import *
-import time, os, copy, argparse
+import time, os
 import multiprocessing
 import json
-# from torchsummary import summary
 from matplotlib import pyplot as plt
-# from model import *
-# from focal_loss import FocalLoss
-# from lr_scheduler import LR_Scheduler
 import csv
-from sklearn.metrics import confusion_matrix, f1_score, balanced_accuracy_score
+from sklearn.metrics import f1_score, balanced_accuracy_score
 import BiT_models
 
 # Construct argument parser
@@ -27,7 +21,7 @@ import BiT_models
 train_mode = 'finetune'
 train_info = []
 # Batch size
-bs = 32
+bs = 64
 # Number of epochs
 num_epochs = 100
 # Note: Number of classes. Check before running
@@ -45,7 +39,7 @@ if len(os.listdir(model_dir)) != 0:
     input('Model root not empty. Press Enter to continue...')
 
 # Tensorboard summary
-writer = SummaryWriter(log_dir='runs/Aug_1_train_all_new_2')
+writer = SummaryWriter(log_dir='runs/Aug_2_train_weighted_2')
 
 for val_folder_index in range(train_splits):  # Note: with validation: for val_folder_index in range(5):
     # whole_data_set = ['P17-2343;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
@@ -66,13 +60,13 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
     # Applying transforms to the data
     image_transforms = {
         'train': transforms.Compose([
-            transforms.Resize(size=256),
+            transforms.Resize(size=(256, 256)),
             transforms.ToTensor()
             # transforms.Normalize([0.485, 0.456, 0.406],
             #                      [0.229, 0.224, 0.225])
         ]),
         'valid': transforms.Compose([
-            transforms.Resize(size=256),
+            transforms.Resize(size=(256, 256)),
             transforms.ToTensor()
         ])
     }
@@ -111,10 +105,10 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
     # Create iterators for data loading
     dataloaders = {
         'train': data.DataLoader(dataset['train'], batch_size=bs, shuffle=True,
-                                 num_workers=num_cpu, pin_memory=True, drop_last=True),
+                                 num_workers=num_cpu, pin_memory=True, drop_last=False),
         # Note: valid cmt
         'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
-                                 num_workers=num_cpu, pin_memory=True, drop_last=True)
+                                 num_workers=num_cpu, pin_memory=True, drop_last=False)
     }
 
     # Print the train and validation data sizes
@@ -190,7 +184,10 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
                 optimizer.zero_grad()
                 _, feature = model(inputs)
                 preds = classifier(feature)
-                loss = F.cross_entropy(preds, labels)
+
+                weights = torch.tensor([0.9, 1.0, 1.0, 1.0, 1.0, 1.0, 0.3])
+                weights = weights.to(device)
+                loss = F.cross_entropy(preds, labels, weight=weights)
 
                 if phase == 'train':
                     loss.backward()
@@ -215,7 +212,7 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
             f1 = f1_score(true, pred, average='macro')
             balance_acc = balanced_accuracy_score(true, pred)
 
-            print(f'{val_folder_index + 1}/4 {phase} Loss: {epoch_loss:.4f}, Acc: {balance_acc:.4f}')
+            print(f'{val_folder_index + 1}/{train_splits} {phase} Loss: {epoch_loss:.4f}, Acc: {balance_acc:.4f}')
 
             # Record training loss and accuracy for each phase
             if phase == 'train':
@@ -246,12 +243,12 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
 
     print('Best val Acc: {:4f}'.format(best_acc))
     print(f'Best epoch in val is {best_epoch} in split {best_split}')
-    # train_info.append([val_WSI_list, best_epoch, best_acc])
+    train_info.append([val_WSI_list, best_epoch, best_acc])
 writer.close()
-# with open('data_root/learning/training_output/train2_summary.csv', 'w') as f:
-#     # using csv.writer method from CSV package
-#     write = csv.writer(f)
-#     write.writerows(train_info)
+with open('data_root/learning/models/training_summary.csv', 'w') as f:
+    # using csv.writer method from CSV package
+    write = csv.writer(f)
+    write.writerows(train_info)
 
 '''
 Sample run: python train.py --mode=finetue

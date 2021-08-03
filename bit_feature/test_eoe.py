@@ -1,38 +1,27 @@
 import numpy as np
 import torch
-# import torchvision
-from torchvision import datasets, models, transforms
+from torchvision import datasets, transforms
 import torch.utils.data as data
-# from torch.utils.tensorboard import SummaryWriter
-# import torch.nn as nn
-# import torch.optim as optim
-# from torch.optim import lr_scheduler
-# from nets import *
-import time, os, copy, argparse
-import multiprocessing
-# from torchsummary import summary
+import time
+import imgaug.augmenters as iaa
 # from matplotlib import pyplot as plt
-# from model import *
 from sklearn.metrics import confusion_matrix, f1_score, balanced_accuracy_score
-# from focal_loss import FocalLoss
-# from lr_scheduler import LR_Scheduler
 import torch.nn as nn
-# import tensorflow as tf
 from sklearn import preprocessing
 import BiT_models
 
 # Set the train and validation directory paths
 test_directory = 'data_root/learning/testing/folder1'
 # Set the model save path
-class1_pth = 'data_root/learning/best_models/train_all_0_epoch_9.pth'
-class2_pth = 'data_root/learning/best_models/train_all_1_epoch_7.pth'
-class3_pth = 'data_root/learning/best_models/train_all_2_epoch_8.pth'
-class4_pth = 'data_root/learning/best_models/train_all_3_epoch_5.pth'
-class5_pth = 'data_root/learning/best_models/train_all_4_epoch_51.pth'
+class1_pth = 'data_root/learning/models/train_all_0_epoch_5.pth'
+class2_pth = 'data_root/learning/models/train_all_1_epoch_6.pth'
+class3_pth = 'data_root/learning/models/train_all_2_epoch_14.pth'
+class4_pth = 'data_root/learning/models/train_all_3_epoch_7.pth'
+class5_pth = 'data_root/learning/models/train_all_4_epoch_9.pth'
 
 
 # Batch size
-bs = 32
+bs = 64
 # Number of classes
 num_classes = 7
 # Number of workers
@@ -42,7 +31,8 @@ num_cpu = 0
 # Applying transforms to the data
 image_transforms = {
     'test': transforms.Compose([
-        transforms.Resize(size=256),
+        # transforms.Resize(size=256),
+
         transforms.ToTensor(),
         # transforms.Normalize([0.485, 0.456, 0.406],
         #                      [0.229, 0.224, 0.225])
@@ -173,7 +163,7 @@ for inputs, labels in dataloaders['test']:
         norm_5 = preprocessing.normalize([cls5_prob[idx]])
         norm_sum = norm_1 + norm_2 + norm_3 + norm_4 + norm_5
         temp = np.argmax(norm_sum)
-        preds[idx] = np.argmax(norm_sum)
+        preds[idx] = temp
 
     # running_corrects += torch.sum(preds == labels.data)
     # class_idx = preds.data[0]

@@ -354,6 +354,7 @@ else:
                         if not os.path.exists(sorted_root):
                             os.makedirs(sorted_root)
                         img_patch = img_patch.convert('RGB')
+                        img_patch = img_patch.resize((256, 256), resample=PIL.Image.BICUBIC)
                         img_patch.save(f'{sorted_root}/{filename}.png')
                         csv_row[label] = 1
                         coord_list.append([patch_start_x, patch_start_y])

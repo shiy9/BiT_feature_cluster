@@ -6,6 +6,9 @@ import os
 import shutil
 import random
 from PIL import Image
+import imgaug as ia
+import imgaug.augmenters as iaa
+import imageio
 
 import torch
 from torchvision import datasets, transforms
@@ -158,19 +161,31 @@ import BiT_models
 # print(f'{name} Done!')
 
 # Compare two masks
-img1 = Image.open('data_root/learning/testing/Test_17_4786_mask/P17-4786;S5;UVM_R0_trained_mask.png')
-img2 = Image.open('data_root/result_img/P17-4786;S5;UVM_R0_patch_group_mask.png')
+# img1 = Image.open('data_root/learning/testing/Test_17_4786_mask/P17-4786;S5;UVM_R0_trained_mask.png')
+# img2 = Image.open('data_root/result_img/P17-4786;S5;UVM_R0_patch_group_mask.png')
+#
+# ct = 0
+# all = 0
+# pixels_1 = np.array(img1.getdata())
+# pixels_2 = np.array(img2.getdata())
+#
+# size = pixels_1.shape
+#
+# for i in range(size[0]):
+#     temp = pixels_1[i]
+#     if pixels_1[i].any() != pixels_2[i].any():
+#         ct += 1
+# print(f'Difference {ct}')
 
-ct = 0
-all = 0
-pixels_1 = np.array(img1.getdata())
-pixels_2 = np.array(img2.getdata())
+# Data augmentation test
 
-size = pixels_1.shape
 
-for i in range(size[0]):
-    temp = pixels_1[i]
-    if pixels_1[i].any() != pixels_2[i].any():
-        ct += 1
-print(f'Difference {ct}')
+img = imageio.imread('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/learning/training/folder1/eos/P16-7404;S6;UVM_024858.png')
+transform = iaa.Sequential([
+    iaa.contrast.LinearContrast((1.0, 1.5))
+    ])
+img_aug = transform(images=img)
+ia.imshow(img)
+ia.imshow(img_aug)
+
 print('dummy print')
