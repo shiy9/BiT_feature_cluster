@@ -21,12 +21,13 @@ import BiT_models
 train_mode = 'finetune'
 train_info = []
 # Batch size
-bs = 64
+bs = 32
 # Number of epochs
 num_epochs = 100
 # Note: Number of classes. Check before running
 num_classes = 7
 train_splits = 5
+lr = 0.001
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
@@ -39,7 +40,7 @@ if len(os.listdir(model_dir)) != 0:
     input('Model root not empty. Press Enter to continue...')
 
 # Tensorboard summary
-writer = SummaryWriter(log_dir='runs/Aug_2_train_weighted_2')
+writer = SummaryWriter(log_dir='runs/Aug_3_40x_weighted_2')
 
 for val_folder_index in range(train_splits):  # Note: with validation: for val_folder_index in range(5):
     # whole_data_set = ['P17-2343;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
@@ -105,10 +106,10 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
     # Create iterators for data loading
     dataloaders = {
         'train': data.DataLoader(dataset['train'], batch_size=bs, shuffle=True,
-                                 num_workers=num_cpu, pin_memory=True, drop_last=False),
+                                 num_workers=num_cpu, pin_memory=True, drop_last=True),
         # Note: valid cmt
         'valid': data.DataLoader(dataset['valid'], batch_size=bs, shuffle=True,
-                                 num_workers=num_cpu, pin_memory=True, drop_last=False)
+                                 num_workers=num_cpu, pin_memory=True, drop_last=True)
     }
 
     # Print the train and validation data sizes
@@ -140,7 +141,7 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
     model = model.to(device)
     classifier = classifier.to(device)
 
-    optimizer = optim.SGD(classifier.parameters(), lr=0.001, momentum=0.9, weight_decay=5e-4)
+    optimizer = optim.SGD(classifier.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
 
     # Learning rate decay
     scheduler = lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
@@ -185,7 +186,7 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
                 _, feature = model(inputs)
                 preds = classifier(feature)
 
-                weights = torch.tensor([0.9, 1.0, 1.0, 1.0, 1.0, 1.0, 0.3])
+                weights = torch.tensor([0.6, 1.0, 1.0, 1.0, 1.0, 1.0, 0.4])
                 weights = weights.to(device)
                 loss = F.cross_entropy(preds, labels, weight=weights)
 

@@ -12,10 +12,10 @@ import sys
 
 WSI_name = 'P17-4786;S6;UVM'
 reg_num = 0  # reg_num is 0 based!
-downsample = 2
+downsample = 1
 patch_size = 256
 
-# Note: change this if PyHIST is not usable
+# Note: FUNCTIONALITY NEED TO BE CHANGED! change this if PyHIST is not usable
 have_patches = True
 
 
@@ -288,9 +288,7 @@ if have_patches:
 
 else:
     # Crop image
-    patch_h = 512
-    patch_w = 512
-    step = 512
+    step = 256
 
     crop_x_total = reg_w // step - 1
     crop_y_total = reg_h // step - 1
@@ -348,13 +346,13 @@ else:
                         third_label = label
 
                     if mask_area > 0:
-                        img_patch = simg.read_region((patch_start_x, patch_start_y), 0, (512, 512)).convert('RGB')
-                        img_patch = img_patch.resize((patch_size, patch_size), resample=PIL.Image.BICUBIC)
+                        img_patch = simg.read_region((patch_start_x, patch_start_y), 0, (256, 256)).convert('RGB')
+                        if patch_size != 256:
+                            img_patch = img_patch.resize((patch_size, patch_size), resample=PIL.Image.BICUBIC)
                         sorted_root = f'{save_root}{WSI_name}_R{reg_num}_labeled_tiles/{label}'
                         if not os.path.exists(sorted_root):
                             os.makedirs(sorted_root)
                         img_patch = img_patch.convert('RGB')
-                        img_patch = img_patch.resize((256, 256), resample=PIL.Image.BICUBIC)
                         img_patch.save(f'{sorted_root}/{filename}.png')
                         csv_row[label] = 1
                         coord_list.append([patch_start_x, patch_start_y])

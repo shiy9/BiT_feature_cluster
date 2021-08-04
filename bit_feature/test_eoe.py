@@ -8,31 +8,32 @@ import imgaug.augmenters as iaa
 from sklearn.metrics import confusion_matrix, f1_score, balanced_accuracy_score
 import torch.nn as nn
 from sklearn import preprocessing
+import multiprocessing
 import BiT_models
 
 # Set the train and validation directory paths
 test_directory = 'data_root/learning/testing/folder1'
 # Set the model save path
-class1_pth = 'data_root/learning/models/train_all_0_epoch_5.pth'
-class2_pth = 'data_root/learning/models/train_all_1_epoch_6.pth'
+class1_pth = 'data_root/learning/models/train_all_0_epoch_8.pth'
+class2_pth = 'data_root/learning/models/train_all_1_epoch_37.pth'
 class3_pth = 'data_root/learning/models/train_all_2_epoch_14.pth'
-class4_pth = 'data_root/learning/models/train_all_3_epoch_7.pth'
-class5_pth = 'data_root/learning/models/train_all_4_epoch_9.pth'
+class4_pth = 'data_root/learning/models/train_all_3_epoch_90.pth'
+class5_pth = 'data_root/learning/models/train_all_4_epoch_95.pth'
 
+save_name = '40x_w1'
 
 # Batch size
-bs = 64
+bs = 128
 # Number of classes
 num_classes = 7
 # Number of workers
-# num_cpu = multiprocessing.cpu_count()
-num_cpu = 0
+num_cpu = multiprocessing.cpu_count()
+# num_cpu = 0
 
 # Applying transforms to the data
 image_transforms = {
     'test': transforms.Compose([
-        # transforms.Resize(size=256),
-
+        transforms.Resize(size=(256, 256)),
         transforms.ToTensor(),
         # transforms.Normalize([0.485, 0.456, 0.406],
         #                      [0.229, 0.224, 0.225])
@@ -186,13 +187,13 @@ for inputs, labels in dataloaders['test']:
 epoch_acc = running_corrects / dataset_sizes['test']
 cm = confusion_matrix(true, pred)
 f1 = f1_score(true, pred, labels=[0, 1, 2, 3, 4, 5, 6], average='macro')
-print('model f1 score:  ', f1)
+print('\nmodel f1 score:  ', f1)
 print('Confusion matrix: ')
 print(cm)
 print(f'Testing accuracy: {epoch_acc:4f}')
 balance_acc = balanced_accuracy_score(true, pred)
 print(f'Balance accuracy: {balance_acc:4f}')
-np.savetxt("data_root/learning/testing_output/cm_train_0801.csv", cm, delimiter=",")
+np.savetxt(f"data_root/learning/testing_output/train_{save_name}_cm.csv", cm, delimiter=",")
 
 time_elapsed = time.time() - since
 print('Testing complete in {:.0f}m {:.0f}s'.format(

@@ -99,35 +99,6 @@ import BiT_models
 #     _, feature = model_2(inputs)
 #     feature_2[spl_filename_2] = feature.cpu().detach().numpy()
 
-
-# Extract a few patches
-# WSI_name = 'P17-2515;S5;UVM'
-# reg_num = 0
-# coord_file = np.load(f'data_root/tiles_coord/{WSI_name}_R{reg_num}_tiles_coord.npy')
-# coord_1 = coord_file[79]
-# coord_2 = coord_file[89]
-# coord_1[0] = coord_1[0] + 512
-# coord_2[0] = coord_2[0] + 512
-# coord_file = list(coord_file)
-# coord_file.append(np.array([coord_1[0], coord_1[1]]))
-# coord_file.append(np.array([coord_2[0], coord_2[1]]))
-# wsi = openslide.open_slide(f'/home/yuxuanshi/VUSRP/WSI/{WSI_name}.scn')
-# size = 512
-#
-# fnames_now = sorted(os.listdir(f'data_root/tiles/{WSI_name}_R{reg_num}_tiles'))
-# save_num = int(fnames_now[-1].rsplit('_', 1)[-1][:-4])
-# file_1 = wsi.read_region(coord_1, 0, (size, size))
-# file_1 = file_1.convert('RGB')
-# save_num += 1
-# file_1.save(f'data_root/tiles/{WSI_name}_R{reg_num}_tiles/{WSI_name}_{save_num}.png')  # Note: change
-#
-# file_2 = wsi.read_region(coord_2, 0, (size, size))
-# file_2 = file_2.convert('RGB')
-# save_num += 1
-# file_2.save(f'data_root/tiles/{WSI_name}_R{reg_num}_tiles/{WSI_name}_{save_num}.png')  # Note: change
-# np.save(f'data_root/tiles_coord/{WSI_name}_R{reg_num}_tiles_coord.npy', coord_file)
-
-
 # For testing
 # whole_data_set = ['P17-2343;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
 #                   'P17-7861;S4;UVM_R0_labeled_tiles', 'P17-8000;S2;UVM_R0_labeled_tiles',
@@ -178,14 +149,23 @@ import BiT_models
 # print(f'Difference {ct}')
 
 # Data augmentation test
+# img = imageio.imread('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/learning/training/folder1/eos/P16-7404;S6;UVM_024858.png')
+# transform = iaa.Sequential([
+#     iaa.contrast.LinearContrast((1.0, 1.5))
+#     ])
+# img_aug = transform(images=img)
+# ia.imshow(img)
+# ia.imshow(img_aug)
 
-
-img = imageio.imread('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/learning/training/folder1/eos/P16-7404;S6;UVM_024858.png')
-transform = iaa.Sequential([
-    iaa.contrast.LinearContrast((1.0, 1.5))
-    ])
-img_aug = transform(images=img)
-ia.imshow(img)
-ia.imshow(img_aug)
+# Data augmentation test 2 with opencv
+# img = cv2.imread('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/learning/training/folder1/eos/P16-7404;S6;UVM_024858.png')
+# lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+# l, a, b = cv2.split(lab)
+# clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8, 8))
+# cl = clahe.apply(l)
+# limg = cv2.merge((cl,a,b))
+# final = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
+# cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', final)
+# cv2.waitKey(0)
 
 print('dummy print')
