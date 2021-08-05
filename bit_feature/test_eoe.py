@@ -14,13 +14,13 @@ import BiT_models
 # Set the train and validation directory paths
 test_directory = 'data_root/learning/testing/folder1'
 # Set the model save path
-class1_pth = 'data_root/learning/models/train_all_0_epoch_8.pth'
-class2_pth = 'data_root/learning/models/train_all_1_epoch_37.pth'
-class3_pth = 'data_root/learning/models/train_all_2_epoch_14.pth'
-class4_pth = 'data_root/learning/models/train_all_3_epoch_90.pth'
-class5_pth = 'data_root/learning/models/train_all_4_epoch_95.pth'
+class1_pth = 'data_root/learning/models/train_all_0_epoch_20.pth'
+class2_pth = 'data_root/learning/models/train_all_1_epoch_10.pth'
+class3_pth = 'data_root/learning/models/train_all_2_epoch_16.pth'
+class4_pth = 'data_root/learning/models/train_all_3_epoch_12.pth'
+class5_pth = 'data_root/learning/models/train_all_4_epoch_15.pth'
 
-save_name = '40x_w1'
+save_name = '40x_2_layer'
 
 # Batch size
 bs = 128
@@ -68,11 +68,37 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # Transfer the model to GPU
 model = BiT_models.KNOWN_MODELS['BiT-M-R50x1'](head_size=num_classes, zero_head=True)
 model.load_from(np.load(f"{'BiT-M-R50x1'}.npz"))
-classifier1 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
-classifier2 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
-classifier3 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
-classifier4 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
-classifier5 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+# classifier1 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+# classifier2 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+# classifier3 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+# classifier4 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+# classifier5 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+
+classifier1 = nn.Sequential(
+        nn.Linear(in_features=2048, out_features=1024, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=1024, out_features=num_classes, bias=True)
+)
+classifier2 = nn.Sequential(
+        nn.Linear(in_features=2048, out_features=1024, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=1024, out_features=num_classes, bias=True)
+)
+classifier3 = nn.Sequential(
+        nn.Linear(in_features=2048, out_features=1024, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=1024, out_features=num_classes, bias=True)
+)
+classifier4 = nn.Sequential(
+        nn.Linear(in_features=2048, out_features=1024, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=1024, out_features=num_classes, bias=True)
+)
+classifier5 = nn.Sequential(
+        nn.Linear(in_features=2048, out_features=1024, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=1024, out_features=num_classes, bias=True)
+)
 
 model = torch.nn.DataParallel(model)
 classifier1 = torch.nn.DataParallel(classifier1)

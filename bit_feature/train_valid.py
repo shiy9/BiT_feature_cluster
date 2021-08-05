@@ -128,12 +128,15 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
     # Set default device as gpu, if available
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    if train_mode == 'finetune':
-        # Load a pretrained model - BiT
-        print("\nLoading BiT-M-R50x1 for finetuning ...\n")
-        model = BiT_models.KNOWN_MODELS['BiT-M-R50x1'](head_size=num_classes, zero_head=True)
-        model.load_from(np.load(f"{'BiT-M-R50x1'}.npz"))
-        classifier = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
+    # Load a pretrained model - BiT
+    print("\nLoading BiT-M-R50x1 for finetuning ...\n")
+    model = BiT_models.KNOWN_MODELS['BiT-M-R50x1'](head_size=num_classes, zero_head=True)
+    model.load_from(np.load(f"{'BiT-M-R50x1'}.npz"))
+    classifier = nn.Sequential(
+        nn.Linear(in_features=2048, out_features=1024, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=1024, out_features=num_classes, bias=True)
+    )
 
     # Transfer the model to GPU
     model = torch.nn.DataParallel(model)
@@ -186,9 +189,9 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
                 _, feature = model(inputs)
                 preds = classifier(feature)
 
-                weights = torch.tensor([0.6, 1.0, 1.0, 1.0, 1.0, 1.0, 0.4])
-                weights = weights.to(device)
-                loss = F.cross_entropy(preds, labels, weight=weights)
+                # weights = torch.tensor([0.6, 1.0, 1.0, 1.0, 1.0, 1.0, 0.4])
+                # weights = weights.to(device)
+                loss = F.cross_entropy(preds, labels)
 
                 if phase == 'train':
                     loss.backward()
