@@ -27,12 +27,12 @@ num_epochs = 100
 # Note: Number of classes. Check before running
 num_classes = 7
 train_splits = 5
-lr = 0.001
+lr = 0.0001
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
 
-train_directory = 'data_root/learning/training/'
+train_directory = 'data_root/learning/training_ctrst_flip/'
 model_dir = 'data_root/learning/models'
 if not os.path.exists(model_dir):
     os.makedirs(model_dir)
@@ -40,17 +40,9 @@ if len(os.listdir(model_dir)) != 0:
     input('Model root not empty. Press Enter to continue...')
 
 # Tensorboard summary
-writer = SummaryWriter(log_dir='runs/Aug_3_40x_weighted_2')
+writer = SummaryWriter(log_dir='runs/Aug_5_2l_32_0.0001_w1_ctrst_flip')
 
 for val_folder_index in range(train_splits):  # Note: with validation: for val_folder_index in range(5):
-    # whole_data_set = ['P17-2343;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
-    #                   'P17-7861;S4;UVM_R0_labeled_tiles', 'P17-8000;S2;UVM_R0_labeled_tiles',
-    #                   'P18-6324;S2;UVM_R0_labeled_tiles', 'P18-8264;S2;UVM_R0_labeled_tiles',
-    #                   'P16-7404;S6;UVM_R0_labeled_tiles', 'P16-8407;S8;UVM_R0_labeled_tiles',
-    #                   'P16-8902;S6;UVM_R0_labeled_tiles', 'P16-8917;S6;UVM_R0_labeled_tiles',
-    #                   'P17-2515;S5;UVM_R0_labeled_tiles', 'P17-2518;S6;UVM_R0_labeled_tiles',
-    #                   'P17-2674;S6;UVM_R0_labeled_tiles', 'P17-4786;S5;UVM_R0_labeled_tiles',
-    #                   'P17-4786;S6;UVM_R0_labeled_tiles']
     whole_data_set = [f'folder{i}' for i in range(1, 6)]
     val_idx_list = [[0], [1], [2], [3], [4]]
     val_WSI_list = [whole_data_set[i] for i in val_idx_list[val_folder_index]]  # Note: valid cmt
@@ -132,22 +124,33 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
     print("\nLoading BiT-M-R50x1 for finetuning ...\n")
     model = BiT_models.KNOWN_MODELS['BiT-M-R50x1'](head_size=num_classes, zero_head=True)
     model.load_from(np.load(f"{'BiT-M-R50x1'}.npz"))
-    classifier = nn.Sequential(
-        nn.Linear(in_features=2048, out_features=1024, bias=True),
-        nn.ReLU(),
-        nn.Linear(in_features=1024, out_features=num_classes, bias=True)
-    )
+    # classifier = nn.Sequential(
+    #     nn.Linear(in_features=2048, out_features=1024, bias=True),
+    #     nn.ReLU(),
+    #     nn.Linear(in_features=1024, out_features=num_classes, bias=True)
+    # )
+    classifier_l1 = nn.Linear(in_features=2048, out_features=1024, bias=True)
+    classifier_l2 = nn.Linear(in_features=1024, out_features=num_classes, bias=True)
 
     # Transfer the model to GPU
     model = torch.nn.DataParallel(model)
-    classifier = torch.nn.DataParallel(classifier)
-    model = model.to(device)
-    classifier = classifier.to(device)
+    # classifier = torch.nn.DataParallel(classifier)
+    classifier_l1 = torch.nn.DataParallel(classifier_l1)
+    classifier_l2 = torch.nn.DataParallel(classifier_l2)
 
-    optimizer = optim.SGD(classifier.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
+    model = model.to(device)
+    # classifier = classifier.to(device)
+    classifier_l1 = classifier_l1.to(device)
+    classifier_l2 = classifier_l2.to(device)
+
+    # optimizer = optim.SGD(classifier.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
+    optimizer_l1 = optim.SGD(classifier_l1.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
+    optimizer_l2 = optim.SGD(classifier_l2.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
 
     # Learning rate decay
-    scheduler = lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
+    # scheduler = lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
+    scheduler_l1 = lr_scheduler.StepLR(optimizer_l1, step_size=5, gamma=0.1)
+    scheduler_l2 = lr_scheduler.StepLR(optimizer_l2, step_size=5, gamma=0.1)
 
     # Model training routine
     print("\nTraining:-\n")
@@ -166,13 +169,25 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
 
         for phase in ['train', 'valid']:  # Note: orig with valid: for phase in ['train', 'valid']:
             if phase == 'train':
-                for param in classifier.parameters():
+                # for param in classifier.parameters():
+                #     param.requires_grad = True
+                # classifier.train()
+                for param in classifier_l1.parameters():
                     param.requires_grad = True
-                classifier.train()
+                classifier_l1.train()
+                for param in classifier_l2.parameters():
+                    param.requires_grad = True
+                classifier_l2.train()
             else:
-                for param in classifier.parameters():
+                # for param in classifier.parameters():
+                #     param.requires_grad = False
+                # classifier.eval()
+                for param in classifier_l1.parameters():
                     param.requires_grad = False
-                classifier.eval()
+                classifier_l1.eval()
+                for param in classifier_l2.parameters():
+                    param.requires_grad = False
+                classifier_l2.eval()
 
             running_loss = 0.0
             running_corrects = 0
@@ -182,20 +197,32 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
 
             # if need index: for i, (inputs, labels) in enumerate(dataloaders[phase], 0):
             for inputs, labels in dataloaders[phase]:
-                classifier.zero_grad()
+                # classifier.zero_grad()
+                classifier_l1.zero_grad()
+                classifier_l2.zero_grad()
+
                 inputs = inputs.to(device)
                 labels = labels.to(device)
-                optimizer.zero_grad()
-                _, feature = model(inputs)
-                preds = classifier(feature)
 
-                # weights = torch.tensor([0.6, 1.0, 1.0, 1.0, 1.0, 1.0, 0.4])
-                # weights = weights.to(device)
-                loss = F.cross_entropy(preds, labels)
+                # optimizer.zero_grad()
+                optimizer_l1.zero_grad()
+                optimizer_l2.zero_grad()
+
+                _, feature = model(inputs)
+                # preds = classifier(feature)
+                l1_res = classifier_l1(feature)
+                l1_res = nn.functional.relu(l1_res)
+                preds = classifier_l2(l1_res)
+
+                weights = torch.tensor([0.6, 1.0, 1.0, 1.0, 1.0, 1.0, 0.4])
+                weights = weights.to(device)
+                loss = F.cross_entropy(preds, labels, weight=weights)
 
                 if phase == 'train':
                     loss.backward()
-                    optimizer.step()
+                    # optimizer.step()
+                    optimizer_l1.step()
+                    optimizer_l2.step()
 
                 preds_list = list(np.array(preds.argmax(dim=1).cpu().detach().numpy()))
                 labels_list = list(np.array(labels.cpu().detach().numpy()))
@@ -207,7 +234,9 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
                 running_corrects += (np.array(pred) == np.array(true)).sum().item()
 
             if phase == 'train':
-                scheduler.step()  # Note: was originally behind line 181. But should be here?
+                # scheduler.step()
+                scheduler_l1.step()
+                scheduler_l2.step()
             epoch_loss = running_loss / dataset_sizes[phase]
             epoch_acc = running_corrects / dataset_sizes[phase]
 
@@ -238,8 +267,12 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
                 best_epoch = epoch
                 best_split = val_folder_index
                 best_acc = balance_acc
-        PATH = f'{model_dir}/train_all_{val_folder_index}_epoch_' + str(epoch) + '.pth'
-        torch.save(classifier.state_dict(), PATH)
+        # PATH = f'{model_dir}/train_all_{val_folder_index}_epoch_' + str(epoch) + '.pth'
+        # torch.save(classifier.state_dict(), PATH)
+        PATH = f'{model_dir}/train_all_{val_folder_index}_epoch_' + str(epoch) + '_l1.pth'
+        torch.save(classifier_l1.state_dict(), PATH)
+        PATH = f'{model_dir}/train_all_{val_folder_index}_epoch_' + str(epoch) + '_l2.pth'
+        torch.save(classifier_l2.state_dict(), PATH)
 
 
     time_elapsed = time.time() - since

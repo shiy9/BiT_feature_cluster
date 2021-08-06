@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="638e606b-167a-4d2a-80b2-6f1f669f3ee1" name="Default Changelist" comment="pre-training pipeline update">
+    <list default="true" id="638e606b-167a-4d2a-80b2-6f1f669f3ee1" name="Default Changelist" comment="two layer">
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/WSI/P16-7404;S6;UVM.scn" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/cluster/P16-7404;S6;UVM_R4_cluster_label.npy" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/feature/P16-7404;S6;UVM_R4_feature.npy" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/result_img/P16-7404;S6;UVM_R4_cluster_mask.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/supersample_patches.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/supersample_patches.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/test_eoe.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/test_eoe_old.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/train_valid.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/train_valid_old.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/trained_cluster.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/trained_cluster.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/data_augmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/data_augmentation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/test_eoe.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/test_eoe_2l_2mod.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/testing_range.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/testing_range.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/train_valid.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/train_valid.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,11 +38,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/bit_feature/train_valid_Quan.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/bit_feature/train_valid.py" />
     <property name="settings.editor.selected.configurable" value="preferences.toDoOptions" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/bit_feature/train_valid_Quan.py" />
   </component>
-  <component name="RunManager" selected="Python.train_valid">
+  <component name="RunManager" selected="Python.test_eoe_2mod">
     <configuration name="cluster_mask" type="PythonConfigurationType" factoryName="Python">
       <module name="big_transfer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -79,6 +79,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/clustering.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="data_augmentation" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="big_transfer" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/data_augmentation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -131,6 +153,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="five_fold_split" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="big_transfer" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/five_fold_split.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="group_patches" type="PythonConfigurationType" factoryName="Python">
       <module name="big_transfer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -175,20 +219,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="npy_dummy_read" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="patch_extraction" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="big_transfer" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/npy_read.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/patch_extraction.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -219,7 +263,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test_eoe" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="test_eoe_2mod" type="PythonConfigurationType" factoryName="Python">
       <module name="big_transfer" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -232,7 +276,29 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/test_eoe.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/test_eoe_2l_2mod.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="testing_range" type="PythonConfigurationType" factoryName="Python">
+      <module name="big_transfer" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/testing_range.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -308,18 +374,21 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.train_valid" />
+      <item itemvalue="Python.test_eoe_2mod" />
+      <item itemvalue="Python.data_augmentation" />
+      <item itemvalue="Python.testing_range" />
+      <item itemvalue="Python.patch_extraction" />
+      <item itemvalue="Python.supersample_patches" />
+      <item itemvalue="Python.five_fold_split" />
       <item itemvalue="Python.trained_cluster" />
       <item itemvalue="Python.move_patch_files" />
-      <item itemvalue="Python.supersample_patches" />
-      <item itemvalue="Python.feature-extraction-2.0" />
       <item itemvalue="Python.clustering" />
       <item itemvalue="Python.cluster_mask" />
       <item itemvalue="Python.group_patches" />
       <item itemvalue="Python.wsi_properties" />
-      <item itemvalue="Python.npy_dummy_read" />
       <item itemvalue="Python.feature-extraction" />
-      <item itemvalue="Python.train_valid" />
-      <item itemvalue="Python.test_eoe" />
+      <item itemvalue="Python.feature-extraction-2.0" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -389,7 +458,19 @@
       <workItem from="1627051373528" duration="2021000" />
       <workItem from="1627314109462" duration="322000" />
       <workItem from="1627411102132" duration="15581000" />
-      <workItem from="1627481470758" duration="14504000" />
+      <workItem from="1627481470758" duration="27307000" />
+      <workItem from="1627572883954" duration="6473000" />
+      <workItem from="1627613186674" duration="2438000" />
+      <workItem from="1627653958921" duration="2434000" />
+      <workItem from="1627670895337" duration="2409000" />
+      <workItem from="1627826786814" duration="24274000" />
+      <workItem from="1627919266082" duration="1041000" />
+      <workItem from="1627938256364" duration="12016000" />
+      <workItem from="1627961114773" duration="48000" />
+      <workItem from="1627993164185" duration="10315000" />
+      <workItem from="1628018787334" duration="21456000" />
+      <workItem from="1628090212010" duration="9406000" />
+      <workItem from="1628172898037" duration="20059000" />
     </task>
     <task id="LOCAL-00001" summary="Feature extraction and clustering mask">
       <created>1624843132766</created>
@@ -489,7 +570,63 @@
       <option name="project" value="LOCAL" />
       <updated>1627441849386</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="updated training pipeline">
+      <created>1627504402873</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1627504402873</updated>
+    </task>
+    <task id="LOCAL-00016" summary="updated training pipeline">
+      <created>1627504420693</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1627504420693</updated>
+    </task>
+    <task id="LOCAL-00017" summary="training update">
+      <created>1627574927199</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1627574927199</updated>
+    </task>
+    <task id="LOCAL-00018" summary="trained cluster update">
+      <created>1627579278359</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1627579278359</updated>
+    </task>
+    <task id="LOCAL-00019" summary="training update">
+      <created>1627873967944</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1627873967944</updated>
+    </task>
+    <task id="LOCAL-00020" summary="training update, data aug">
+      <created>1627961154942</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1627961154942</updated>
+    </task>
+    <task id="LOCAL-00021" summary="training update, 40x">
+      <created>1628090590689</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1628090590689</updated>
+    </task>
+    <task id="LOCAL-00022" summary="two layer">
+      <created>1628128938718</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1628128938718</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -521,7 +658,13 @@
     <MESSAGE value="move patch script" />
     <MESSAGE value="trained cluster grouping" />
     <MESSAGE value="pre-training pipeline update" />
-    <option name="LAST_COMMIT_MESSAGE" value="pre-training pipeline update" />
+    <MESSAGE value="updated training pipeline" />
+    <MESSAGE value="trained cluster update" />
+    <MESSAGE value="training update" />
+    <MESSAGE value="training update, data aug" />
+    <MESSAGE value="training update, 40x" />
+    <MESSAGE value="two layer" />
+    <option name="LAST_COMMIT_MESSAGE" value="two layer" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -530,11 +673,6 @@
           <url>file://$PROJECT_DIR$/bit_pytorch/train.py</url>
           <line>271</line>
           <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bit_feature/npy_read.py</url>
-          <line>127</line>
-          <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/feature_extraction_old.py</url>
@@ -558,7 +696,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/patch_grouping.py</url>
-          <line>237</line>
+          <line>240</line>
           <option name="timeStamp" value="61" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -582,23 +720,18 @@
           <option name="timeStamp" value="69" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bit_feature/trained_cluster.py</url>
-          <line>120</line>
-          <option name="timeStamp" value="85" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/test_eoe_old.py</url>
           <line>103</line>
           <option name="timeStamp" value="96" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bit_feature/npy_read.py</url>
-          <line>45</line>
+          <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
+          <line>49</line>
           <option name="timeStamp" value="98" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bit_feature/npy_read.py</url>
-          <line>40</line>
+          <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
+          <line>44</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -607,57 +740,57 @@
           <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bit_feature/npy_read.py</url>
-          <line>114</line>
-          <option name="timeStamp" value="112" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/patch_grouping.py</url>
-          <line>318</line>
+          <line>327</line>
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
+          <line>179</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bit_feature/test_eoe_2l_2mod.py</url>
+          <line>347</line>
+          <option name="timeStamp" value="142" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bit_feature/test_eoe_2l_2mod.py</url>
+          <line>341</line>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
+          <line>156</line>
+          <option name="timeStamp" value="145" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/train_valid.py</url>
-          <line>211</line>
-          <option name="timeStamp" value="121" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bit_feature/test_eoe.py</url>
-          <line>97</line>
-          <option name="timeStamp" value="122" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bit_feature/train_valid.py</url>
-          <line>202</line>
-          <option name="timeStamp" value="123" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bit_feature/test_eoe.py</url>
-          <line>105</line>
-          <option name="timeStamp" value="124" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bit_feature/train_valid.py</url>
-          <line>98</line>
-          <option name="timeStamp" value="125" />
+          <line>218</line>
+          <option name="timeStamp" value="146" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/big_transfer$tf2_train.coverage" NAME="tf2-train Coverage Results" MODIFIED="1623943396317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_tf2" />
-    <SUITE FILE_PATH="coverage/big_transfer$supersample_patches.coverage" NAME="supersample_patches Coverage Results" MODIFIED="1626718756965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$test_eoe_2mod.coverage" NAME="test_eoe_2mod Coverage Results" MODIFIED="1628226872851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$testing_range.coverage" NAME="testing_range Coverage Results" MODIFIED="1628222541491" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$supersample_patches.coverage" NAME="supersample_patches Coverage Results" MODIFIED="1628043484722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$draw_mask.coverage" NAME="draw_mask Coverage Results" MODIFIED="1625190342517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$feature_extraction.coverage" NAME="feature-extraction Coverage Results" MODIFIED="1625193183568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$npy_dummy_read.coverage" NAME="npy_dummy_read Coverage Results" MODIFIED="1627433196074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$npy_dummy_read.coverage" NAME="testing_range Coverage Results" MODIFIED="1627531367475" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$wsi_properties.coverage" NAME="wsi_properties Coverage Results" MODIFIED="1625667304879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$cluster_mask.coverage" NAME="cluster_mask Coverage Results" MODIFIED="1625194755561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$clustering.coverage" NAME="clustering Coverage Results" MODIFIED="1625194716295" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$group_patches.coverage" NAME="group_patches Coverage Results" MODIFIED="1627441247520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$test_eoe.coverage" NAME="test_eoe Coverage Results" MODIFIED="1627495283467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$trained_cluster.coverage" NAME="trained_cluster Coverage Results" MODIFIED="1627495804508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$train_valid.coverage" NAME="train_valid Coverage Results" MODIFIED="1627503771219" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$group_patches.coverage" NAME="group_patches Coverage Results" MODIFIED="1628031434064" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$trained_cluster.coverage" NAME="trained_cluster Coverage Results" MODIFIED="1627830121466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$test_eoe.coverage" NAME="test_eoe Coverage Results" MODIFIED="1628102855586" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$data_augmentation.coverage" NAME="data_augmentation Coverage Results" MODIFIED="1628222700451" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$train_valid.coverage" NAME="train_valid Coverage Results" MODIFIED="1628226711980" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$five_fold_split.coverage" NAME="five_fold_split Coverage Results" MODIFIED="1628045119259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$move_patch_files.coverage" NAME="move_patch_files Coverage Results" MODIFIED="1626628123312" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$patch_extraction.coverage" NAME="patch_extraction Coverage Results" MODIFIED="1628030334949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$pytorch_train.coverage" NAME="pytorch-train Coverage Results" MODIFIED="1624216754862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_pytorch" />
     <SUITE FILE_PATH="coverage/big_transfer$feature_extraction_2_0.coverage" NAME="feature-extraction-2.0 Coverage Results" MODIFIED="1626286895966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
   </component>

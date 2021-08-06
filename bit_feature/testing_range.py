@@ -158,14 +158,23 @@ import BiT_models
 # ia.imshow(img_aug)
 
 # Data augmentation test 2 with opencv
-# img = cv2.imread('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/learning/training/folder1/eos/P16-7404;S6;UVM_024858.png')
-# lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-# l, a, b = cv2.split(lab)
-# clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8, 8))
-# cl = clahe.apply(l)
-# limg = cv2.merge((cl,a,b))
-# final = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
-# cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', final)
-# cv2.waitKey(0)
+img = cv2.imread('data_root/learning/testing/folder1/eos/P17-2674;S6;UVM_10.png')
+cv2.imshow('original', img)
+cv2.waitKey(0)
+lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+l, a, b = cv2.split(lab)
+clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8, 8))
+cl = clahe.apply(l)
+limg = cv2.merge((cl,a,b))
+ctrst = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
+flip_code = random.randint(-1, 1)
+need_flip = bool(random.getrandbits(1))
+if need_flip:
+    res = cv2.flip(ctrst, flip_code)
+else:
+    res = ctrst
+cv2.imshow('result', res)
+cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', res)
+cv2.waitKey(0)
 
 print('dummy print')
