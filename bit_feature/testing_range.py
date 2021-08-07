@@ -167,14 +167,18 @@ clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8, 8))
 cl = clahe.apply(l)
 limg = cv2.merge((cl,a,b))
 ctrst = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
-flip_code = random.randint(-1, 1)
-need_flip = bool(random.getrandbits(1))
-if need_flip:
-    res = cv2.flip(ctrst, flip_code)
-else:
-    res = ctrst
-cv2.imshow('result', res)
-cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', res)
+cv2.imshow('contrast', ctrst)
+cv2.waitKey(0)
+row,col,ch = ctrst.shape
+mean = 0
+var = 0.1
+sigma = var**0.5
+gauss = np.random.normal(mean,sigma,(row,col,ch))
+gauss = gauss.reshape(row,col,ch)
+noisy = ctrst + gauss
+noisy = noisy.astype('uint8')
+cv2.imshow('result', noisy)
+cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', noisy)
 cv2.waitKey(0)
 
 print('dummy print')

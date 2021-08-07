@@ -28,11 +28,12 @@ num_epochs = 100
 num_classes = 7
 train_splits = 5
 lr = 0.0001
+stepSize = 7
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
 
-train_directory = 'data_root/learning/training_ctrst_flip/'
+train_directory = 'data_root/learning/training_flip_sharp/'
 model_dir = 'data_root/learning/models'
 if not os.path.exists(model_dir):
     os.makedirs(model_dir)
@@ -40,7 +41,7 @@ if len(os.listdir(model_dir)) != 0:
     input('Model root not empty. Press Enter to continue...')
 
 # Tensorboard summary
-writer = SummaryWriter(log_dir='runs/Aug_5_2l_32_0.0001_w1_ctrst_flip')
+writer = SummaryWriter(log_dir='runs/Aug_6_2l_flip_sharpen_0.0001')
 
 for val_folder_index in range(train_splits):  # Note: with validation: for val_folder_index in range(5):
     whole_data_set = [f'folder{i}' for i in range(1, 6)]
@@ -149,8 +150,8 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
 
     # Learning rate decay
     # scheduler = lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
-    scheduler_l1 = lr_scheduler.StepLR(optimizer_l1, step_size=5, gamma=0.1)
-    scheduler_l2 = lr_scheduler.StepLR(optimizer_l2, step_size=5, gamma=0.1)
+    scheduler_l1 = lr_scheduler.StepLR(optimizer_l1, step_size=stepSize, gamma=0.1)
+    scheduler_l2 = lr_scheduler.StepLR(optimizer_l2, step_size=stepSize, gamma=0.1)
 
     # Model training routine
     print("\nTraining:-\n")

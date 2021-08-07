@@ -13,9 +13,9 @@ import multiprocessing
 import BiT_models
 
 # Set the train and validation directory paths
-test_directory = 'data_root/learning/testing_ctrst_flip/folder1'
+test_directory = 'data_root/learning/testing_flip_sharp/folder1'
 
-best_models = [8, 53, 7, 5, 79]
+best_models = [13, 7, 5, 52, 50]
 
 class1_l1_pth = f'data_root/learning/models/train_all_0_epoch_{best_models[0]}_l1.pth'
 class1_l2_pth = f'data_root/learning/models/train_all_0_epoch_{best_models[0]}_l2.pth'
