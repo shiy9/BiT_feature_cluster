@@ -7,8 +7,8 @@ import cv2
 import numpy as np
 import random
 
-orig_dir = 'data_root/learning/testing'
-des_dir = 'data_root/learning/testing_flip_sharp'
+orig_dir = 'data_root/learning/training'
+des_dir = 'data_root/learning/training_flip_shear'
 
 if os.path.exists(des_dir):
     if len(os.listdir(des_dir)) != 0:
@@ -165,7 +165,8 @@ if os.path.exists(des_dir):
 
 
 # opencv routine
-# increase contrast + flip + rot + sharpen
+# increase contrast + flip + shear
+# Note: do NOT replace, get a new section going
 for folder in os.listdir(orig_dir):
     for label_folder in os.listdir(f'{orig_dir}/{folder}'):
         for file in os.listdir(f'{orig_dir}/{folder}/{label_folder}'):
@@ -186,11 +187,17 @@ for folder in os.listdir(orig_dir):
             else:
                 res = ctrst
 
-            #####
-            kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-            sharpen = cv2.filter2D(res, -1, kernel)
+            ##### Shear
+            rows, cols, dim = res.shape
+            y_shear = random.choice([0.2, 0])
+            x_shear = random.choice([0.2, 0])
+            shear_mat = np.float32([[1, y_shear, 0], [x_shear, 1, 0]])
+            shear_mat[0, 2] = -shear_mat[0, 1] * cols / 2
+            shear_mat[1, 2] = -shear_mat[1, 0] * rows / 2
+            sheared_img = cv2.warpAffine(res, shear_mat, (int(cols), int(rows)))
+
             save_dir = f'{des_dir}/{folder}/{label_folder}'
             if not os.path.exists(save_dir):
                 os.makedirs(save_dir)
-            cv2.imwrite(f'{save_dir}/{file}', sharpen)
+            cv2.imwrite(f'{save_dir}/{file}', sheared_img)
         print('.', end='')

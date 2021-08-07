@@ -161,24 +161,14 @@ import BiT_models
 img = cv2.imread('data_root/learning/testing/folder1/eos/P17-2674;S6;UVM_10.png')
 cv2.imshow('original', img)
 cv2.waitKey(0)
-lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-l, a, b = cv2.split(lab)
-clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8, 8))
-cl = clahe.apply(l)
-limg = cv2.merge((cl,a,b))
-ctrst = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
-cv2.imshow('contrast', ctrst)
-cv2.waitKey(0)
-row,col,ch = ctrst.shape
-mean = 0
-var = 0.1
-sigma = var**0.5
-gauss = np.random.normal(mean,sigma,(row,col,ch))
-gauss = gauss.reshape(row,col,ch)
-noisy = ctrst + gauss
-noisy = noisy.astype('uint8')
-cv2.imshow('result', noisy)
-cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', noisy)
+rows, cols, dim = img.shape
+shear_mat = np.float32([[1, 0.2, 0], [0.2, 1, 0]])
+shear_mat[0,2] = -shear_mat[0,1] * cols/2
+shear_mat[1,2] = -shear_mat[1,0] * rows/2
+sheared_img = cv2.warpAffine(img, shear_mat, (int(cols), int(rows)))
+
+cv2.imshow('result', sheared_img)
+cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', sheared_img)
 cv2.waitKey(0)
 
 print('dummy print')

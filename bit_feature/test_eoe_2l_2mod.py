@@ -13,24 +13,25 @@ import multiprocessing
 import BiT_models
 
 # Set the train and validation directory paths
-test_directory = 'data_root/learning/testing_flip_sharp/folder1'
+test_directory = 'data_root/learning/testing_4aug/folder1'
 
-best_models = [13, 7, 5, 52, 50]
+best_models = [10, 80, 5, 31, 24]
+model_folder = 'models_4aug_0.0001'
 
-class1_l1_pth = f'data_root/learning/models/train_all_0_epoch_{best_models[0]}_l1.pth'
-class1_l2_pth = f'data_root/learning/models/train_all_0_epoch_{best_models[0]}_l2.pth'
+class1_l1_pth = f'data_root/learning/{model_folder}/train_all_0_epoch_{best_models[0]}_l1.pth'
+class1_l2_pth = f'data_root/learning/{model_folder}/train_all_0_epoch_{best_models[0]}_l2.pth'
 
-class2_l1_pth = f'data_root/learning/models/train_all_1_epoch_{best_models[1]}_l1.pth'
-class2_l2_pth = f'data_root/learning/models/train_all_1_epoch_{best_models[1]}_l2.pth'
+class2_l1_pth = f'data_root/learning/{model_folder}/train_all_1_epoch_{best_models[1]}_l1.pth'
+class2_l2_pth = f'data_root/learning/{model_folder}/train_all_1_epoch_{best_models[1]}_l2.pth'
 
-class3_l1_pth = f'data_root/learning/models/train_all_2_epoch_{best_models[2]}_l1.pth'
-class3_l2_pth = f'data_root/learning/models/train_all_2_epoch_{best_models[2]}_l2.pth'
+class3_l1_pth = f'data_root/learning/{model_folder}/train_all_2_epoch_{best_models[2]}_l1.pth'
+class3_l2_pth = f'data_root/learning/{model_folder}/train_all_2_epoch_{best_models[2]}_l2.pth'
 
-class4_l1_pth = f'data_root/learning/models/train_all_3_epoch_{best_models[3]}_l1.pth'
-class4_l2_pth = f'data_root/learning/models/train_all_3_epoch_{best_models[3]}_l2.pth'
+class4_l1_pth = f'data_root/learning/{model_folder}/train_all_3_epoch_{best_models[3]}_l1.pth'
+class4_l2_pth = f'data_root/learning/{model_folder}/train_all_3_epoch_{best_models[3]}_l2.pth'
 
-class5_l1_pth = f'data_root/learning/models/train_all_4_epoch_{best_models[4]}_l1.pth'
-class5_l2_pth = f'data_root/learning/models/train_all_4_epoch_{best_models[4]}_l2.pth'
+class5_l1_pth = f'data_root/learning/{model_folder}/train_all_4_epoch_{best_models[4]}_l1.pth'
+class5_l2_pth = f'data_root/learning/{model_folder}/train_all_4_epoch_{best_models[4]}_l2.pth'
 
 
 save_name = '40x_2l_32_0.0001_weighted_1'

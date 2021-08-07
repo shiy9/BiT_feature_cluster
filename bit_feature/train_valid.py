@@ -28,12 +28,12 @@ num_epochs = 100
 num_classes = 7
 train_splits = 5
 lr = 0.0001
-stepSize = 7
+stepSize = 5
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
 
-train_directory = 'data_root/learning/training_flip_sharp/'
+train_directory = 'data_root/learning/training_ctrst_flip/'
 model_dir = 'data_root/learning/models'
 if not os.path.exists(model_dir):
     os.makedirs(model_dir)
@@ -41,7 +41,7 @@ if len(os.listdir(model_dir)) != 0:
     input('Model root not empty. Press Enter to continue...')
 
 # Tensorboard summary
-writer = SummaryWriter(log_dir='runs/Aug_6_2l_flip_sharpen_0.0001')
+writer = SummaryWriter(log_dir='runs/Aug_7_ctrst_flip_debug')
 
 for val_folder_index in range(train_splits):  # Note: with validation: for val_folder_index in range(5):
     whole_data_set = [f'folder{i}' for i in range(1, 6)]
@@ -232,7 +232,11 @@ for val_folder_index in range(train_splits):  # Note: with validation: for val_f
 
                 # statistics
                 running_loss += loss.item() * inputs.size(0)
-                running_corrects += (np.array(pred) == np.array(true)).sum().item()
+
+                # First line wrong?
+                # running_corrects += (np.array(pred) == np.array(true)).sum().item()
+                running_corrects += (np.array(preds_list) == np.array(labels_list)).sum().item()
+
 
             if phase == 'train':
                 # scheduler.step()
