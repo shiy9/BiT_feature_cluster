@@ -158,17 +158,35 @@ import BiT_models
 # ia.imshow(img_aug)
 
 # Data augmentation test 2 with opencv
-img = cv2.imread('data_root/learning/testing/folder1/eos/P17-2674;S6;UVM_10.png')
-cv2.imshow('original', img)
-cv2.waitKey(0)
-rows, cols, dim = img.shape
-shear_mat = np.float32([[1, 0.2, 0], [0.2, 1, 0]])
-shear_mat[0,2] = -shear_mat[0,1] * cols/2
-shear_mat[1,2] = -shear_mat[1,0] * rows/2
-sheared_img = cv2.warpAffine(img, shear_mat, (int(cols), int(rows)))
+# img = cv2.imread('data_root/learning/testing/folder1/eos/P17-2674;S6;UVM_10.png')
+# cv2.imshow('original', img)
+# cv2.waitKey(0)
+# rows, cols, dim = img.shape
+# shear_mat = np.float32([[1, 0.2, 0], [0.2, 1, 0]])
+# shear_mat[0,2] = -shear_mat[0,1] * cols/2
+# shear_mat[1,2] = -shear_mat[1,0] * rows/2
+# sheared_img = cv2.warpAffine(img, shear_mat, (int(cols), int(rows)))
+#
+# cv2.imshow('result', sheared_img)
+# cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', sheared_img)
+# cv2.waitKey(0)
 
-cv2.imshow('result', sheared_img)
-cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', sheared_img)
-cv2.waitKey(0)
+# Check data
+check_dir = 'data_root/learning/training_ctrst_flip'
+all_files = []
+for folder in os.listdir(check_dir):
+    temp = []
+    for label in os.listdir(f'{check_dir}/{folder}'):
+        temp.extend(os.listdir(f'{check_dir}/{folder}/{label}'))
+    all_files.append(temp)
+for idx in range(len(all_files)):
+    cur_files = all_files[idx]
+    for c_idx in range(idx+1, len(all_files)):
+        ref_files = all_files[c_idx]
+        for file in cur_files:
+            if file in set(ref_files):
+                print(f'File {file} exists in folder{idx+1} as well as in folder{c_idx+1}')
+
+
 
 print('dummy print')

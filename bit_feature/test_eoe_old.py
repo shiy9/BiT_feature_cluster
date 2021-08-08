@@ -21,10 +21,10 @@ import torch.nn.functional as F
 import BiT_models
 
 # Set the train and validation directory paths
-test_directory = 'data_root/learning/testing/folder1'
+test_directory = 'data_root/learning/testing_ctrst_flip/folder1'
 # Set the model save path
-classifierl1_model_path = 'data_root/learning/models_ctrst_flip/train_all_0_epoch_8_l1.pth'
-classifierl2_model_path = 'data_root/learning/models_ctrst_flip/train_all_0_epoch_8_l2.pth'
+classifierl1_model_path = 'data_root/learning/models_debug/train_all_0_epoch_8_l1.pth'
+classifierl2_model_path = 'data_root/learning/models_debug/train_all_0_epoch_8_l2.pth'
 
 # Batch size
 bs = 32
@@ -126,8 +126,8 @@ for inputs, labels in dataloaders['test']:
 
     running_corrects += (np.array(preds_list) == np.array(labels_list)).sum().item()
 
-# pred = sum(pred, [])
-# true = sum(true, [])
+pred = sum(pred, [])
+true = sum(true, [])
 epoch_acc = running_corrects / dataset_sizes['test']
 cm = confusion_matrix(true, pred)
 
