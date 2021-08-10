@@ -13,6 +13,11 @@ import imageio
 import torch
 from torchvision import datasets, transforms
 import torch.utils.data as data
+from PIL import Image
+from pathlib import Path
+import matplotlib.pyplot as plt
+import torch
+import torchvision.transforms as T
 import BiT_models
 
 # Crop out interested region. For 7/13/21 Presentation
@@ -148,7 +153,7 @@ import BiT_models
 #         ct += 1
 # print(f'Difference {ct}')
 
-# Data augmentation test
+###### Data augmentation test
 # img = imageio.imread('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/learning/training/folder1/eos/P16-7404;S6;UVM_024858.png')
 # transform = iaa.Sequential([
 #     iaa.contrast.LinearContrast((1.0, 1.5))
@@ -161,31 +166,83 @@ import BiT_models
 # img = cv2.imread('data_root/learning/testing/folder1/eos/P17-2674;S6;UVM_10.png')
 # cv2.imshow('original', img)
 # cv2.waitKey(0)
-# rows, cols, dim = img.shape
-# shear_mat = np.float32([[1, 0.2, 0], [0.2, 1, 0]])
-# shear_mat[0,2] = -shear_mat[0,1] * cols/2
-# shear_mat[1,2] = -shear_mat[1,0] * rows/2
-# sheared_img = cv2.warpAffine(img, shear_mat, (int(cols), int(rows)))
+# kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
+# sharpen = cv2.filter2D(img, -1, kernel)
 #
-# cv2.imshow('result', sheared_img)
-# cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', sheared_img)
+# cv2.imshow('result', sharpen)
+# cv2.imwrite('/home/yuxuanshi/VUSRP/big_transfer/bit_feature/data_root/P16-7404;S6;UVM_024858_c.png', sharpen)
 # cv2.waitKey(0)
 
-# Check data
-check_dir = 'data_root/learning/training_ctrst_flip'
-all_files = []
-for folder in os.listdir(check_dir):
-    temp = []
-    for label in os.listdir(f'{check_dir}/{folder}'):
-        temp.extend(os.listdir(f'{check_dir}/{folder}/{label}'))
-    all_files.append(temp)
-for idx in range(len(all_files)):
-    cur_files = all_files[idx]
-    for c_idx in range(idx+1, len(all_files)):
-        ref_files = all_files[c_idx]
-        for file in cur_files:
-            if file in set(ref_files):
-                print(f'File {file} exists in folder{idx+1} as well as in folder{c_idx+1}')
+##### Check data
+### Across folders
+# check_dir = 'data_root/learning/training'
+# all_files = []
+# for folder in os.listdir(check_dir):
+#     temp = []
+#     for label in os.listdir(f'{check_dir}/{folder}'):
+#         temp.extend(os.listdir(f'{check_dir}/{folder}/{label}'))
+#     all_files.append(temp)
+# for idx in range(len(all_files)):
+#     cur_files = all_files[idx]
+#     for c_idx in range(idx+1, len(all_files)):
+#         ref_files = all_files[c_idx]
+#         for file in cur_files:
+#             if file in set(ref_files):
+#                 print(f'File {file} exists in folder{idx+1} as well as in folder{c_idx+1}')
+
+### Same folder across labels
+check_dir = 'data_root/learning/testing'
+for folder in sorted(os.listdir(check_dir)):
+    all_files = []
+    for label in sorted(os.listdir(f'{check_dir}/{folder}')):
+        all_files.append(os.listdir(f'{check_dir}/{folder}/{label}'))
+    for idx in range(len(all_files)):
+        cur_files = all_files[idx]
+        for c_idx in range(idx+1, len(all_files)):
+            ref_files = all_files[c_idx]
+            for file in cur_files:
+                if file in set(ref_files):
+                    print(f'File {file} exists in folder{idx+1} as well as in folder{c_idx+1}')
+    input('Enter to continue')
+
+
+# Data augmentation test
+# plt.rcParams["savefig.bbox"] = 'tight'
+# orig_img = Image.open('data_root/learning/testing/folder1/eos/P17-2674;S6;UVM_10.png')
+# # if you change the seed, make sure that the randomly-applied transforms
+# # properly show that the image can be both transformed and *not* transformed!
+# temp_seed = random.randint(1, 10000)
+# torch.manual_seed(temp_seed)
+#
+#
+# def plot(imgs, with_orig=True, row_title=None, **imshow_kwargs):
+#     if not isinstance(imgs[0], list):
+#         # Make a 2d grid even if there's just 1 row
+#         imgs = [imgs]
+#
+#     num_rows = len(imgs)
+#     num_cols = len(imgs[0]) + with_orig
+#     fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, squeeze=False)
+#     for row_idx, row in enumerate(imgs):
+#         row = [orig_img] + row if with_orig else row
+#         for col_idx, img in enumerate(row):
+#             ax = axs[row_idx, col_idx]
+#             ax.imshow(np.asarray(img), **imshow_kwargs)
+#             ax.set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
+#
+#     if with_orig:
+#         axs[0, 0].set(title='Original image')
+#         axs[0, 0].title.set_size(8)
+#     if row_title is not None:
+#         for row_idx in range(num_rows):
+#             axs[row_idx, 0].set(ylabel=row_title[row_idx])
+#
+#     plt.tight_layout()
+#     plt.show()
+#
+# sharpness_adjuster = T.RandomAdjustSharpness(sharpness_factor=4)
+# sharpened_imgs = [sharpness_adjuster(orig_img) for _ in range(4)]
+# plot(sharpened_imgs)
 
 
 

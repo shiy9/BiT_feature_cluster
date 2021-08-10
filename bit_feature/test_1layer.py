@@ -15,11 +15,11 @@ import BiT_models
 # Set the train and validation directory paths
 test_directory = 'data_root/learning/testing/folder1'
 # Set the model save path
-class1_pth = 'data_root/learning/models/train_all_0_epoch_20.pth'
-class2_pth = 'data_root/learning/models/train_all_1_epoch_10.pth'
-class3_pth = 'data_root/learning/models/train_all_2_epoch_16.pth'
-class4_pth = 'data_root/learning/models/train_all_3_epoch_12.pth'
-class5_pth = 'data_root/learning/models/train_all_4_epoch_15.pth'
+class1_pth = 'data_root/learning/models/train_all_0_epoch_6.pth'
+class2_pth = 'data_root/learning/models/train_all_1_epoch_9.pth'
+class3_pth = 'data_root/learning/models/train_all_2_epoch_5.pth'
+class4_pth = 'data_root/learning/models/train_all_3_epoch_14.pth'
+class5_pth = 'data_root/learning/models/train_all_4_epoch_10.pth'
 
 save_name = '40x_2l_lr_0.0001'
 
@@ -101,12 +101,6 @@ classifier5 = nn.Linear(in_features=2048, out_features=num_classes, bias=True)
 #         nn.Linear(in_features=1024, out_features=num_classes, bias=True)
 # )
 
-classifier1.load_state_dict(torch.load(class1_pth))
-classifier2.load_state_dict(torch.load(class2_pth))
-classifier3.load_state_dict(torch.load(class3_pth))
-classifier4.load_state_dict(torch.load(class4_pth))
-classifier5.load_state_dict(torch.load(class5_pth))
-
 model = torch.nn.DataParallel(model)
 
 classifier1 = torch.nn.DataParallel(classifier1)
@@ -114,6 +108,12 @@ classifier2 = torch.nn.DataParallel(classifier2)
 classifier3 = torch.nn.DataParallel(classifier3)
 classifier4 = torch.nn.DataParallel(classifier4)
 classifier5 = torch.nn.DataParallel(classifier5)
+
+classifier1.load_state_dict(torch.load(class1_pth))
+classifier2.load_state_dict(torch.load(class2_pth))
+classifier3.load_state_dict(torch.load(class3_pth))
+classifier4.load_state_dict(torch.load(class4_pth))
+classifier5.load_state_dict(torch.load(class5_pth))
 
 model = model.to(device)
 

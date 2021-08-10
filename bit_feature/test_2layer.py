@@ -13,10 +13,11 @@ import multiprocessing
 import BiT_models
 
 # Set the train and validation directory paths
-test_directory = 'data_root/learning/testing_4aug/folder1'
+test_directory = 'data_root/learning/testing/folder1'
 
-best_models = [10, 80, 5, 31, 24]
-model_folder = 'models_4aug_0.0001'
+best_models = [29, 44, 40, 36, 43]
+model_folder = 'models'
+save_name = '40x_3aug_new'
 
 class1_l1_pth = f'data_root/learning/{model_folder}/train_all_0_epoch_{best_models[0]}_l1.pth'
 class1_l2_pth = f'data_root/learning/{model_folder}/train_all_0_epoch_{best_models[0]}_l2.pth'
@@ -32,9 +33,6 @@ class4_l2_pth = f'data_root/learning/{model_folder}/train_all_3_epoch_{best_mode
 
 class5_l1_pth = f'data_root/learning/{model_folder}/train_all_4_epoch_{best_models[4]}_l1.pth'
 class5_l2_pth = f'data_root/learning/{model_folder}/train_all_4_epoch_{best_models[4]}_l2.pth'
-
-
-save_name = '40x_2l_32_0.0001_weighted_1'
 
 # Batch size
 bs = 128
