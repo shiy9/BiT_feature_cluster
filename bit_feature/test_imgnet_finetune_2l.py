@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from torchvision import datasets, transforms
+from torchvision import datasets, transforms, models
 import torch.utils.data as data
 import time
 import imgaug.augmenters as iaa
@@ -15,8 +15,9 @@ import BiT_models
 # Set the train and validation directory paths
 test_directory = 'data_root/learning/testing/folder1'
 
-best_models = [29, 44, 40, 36, 43]
-model_folder = 'models'
+best_models = [65, 82, 30, 39, 44]
+model_folder = 'models_finetune2l_imgnet_2aug_w1'
+
 save_name = '40x_3aug_new'
 
 class1_l1_pth = f'data_root/learning/{model_folder}/train_all_0_epoch_{best_models[0]}_l1.pth'
@@ -77,26 +78,40 @@ print("\nTesting-set size:", dataset_sizes['test'])
 # Set default device as gpu, if available
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-# Transfer the model to GPU
-model = BiT_models.KNOWN_MODELS['BiT-M-R50x1'](head_size=num_classes, zero_head=True)
-model.load_from(np.load(f"{'BiT-M-R50x1'}.npz"))
-
-classifier1_l1 = nn.Linear(in_features=2048, out_features=1024, bias=True)
+classifier1_l1 = models.resnet50(pretrained=True)
+for param in classifier1_l1.parameters():
+    param.requires_grad = False
+fc_features = classifier1_l1.fc.in_features
+classifier1_l1.fc = nn.Linear(fc_features, 1024)
 classifier1_l2 = nn.Linear(in_features=1024, out_features=num_classes, bias=True)
 
-classifier2_l1 = nn.Linear(in_features=2048, out_features=1024, bias=True)
+classifier2_l1 = models.resnet50(pretrained=True)
+for param in classifier2_l1.parameters():
+    param.requires_grad = False
+fc_features = classifier2_l1.fc.in_features
+classifier2_l1.fc = nn.Linear(fc_features, 1024)
 classifier2_l2 = nn.Linear(in_features=1024, out_features=num_classes, bias=True)
 
-classifier3_l1 = nn.Linear(in_features=2048, out_features=1024, bias=True)
+classifier3_l1 = models.resnet50(pretrained=True)
+for param in classifier3_l1.parameters():
+    param.requires_grad = False
+fc_features = classifier3_l1.fc.in_features
+classifier3_l1.fc = nn.Linear(fc_features, 1024)
 classifier3_l2 = nn.Linear(in_features=1024, out_features=num_classes, bias=True)
 
-classifier4_l1 = nn.Linear(in_features=2048, out_features=1024, bias=True)
+classifier4_l1 = models.resnet50(pretrained=True)
+for param in classifier4_l1.parameters():
+    param.requires_grad = False
+fc_features = classifier4_l1.fc.in_features
+classifier4_l1.fc = nn.Linear(fc_features, 1024)
 classifier4_l2 = nn.Linear(in_features=1024, out_features=num_classes, bias=True)
 
-classifier5_l1 = nn.Linear(in_features=2048, out_features=1024, bias=True)
+classifier5_l1 = models.resnet50(pretrained=True)
+for param in classifier5_l1.parameters():
+    param.requires_grad = False
+fc_features = classifier5_l1.fc.in_features
+classifier5_l1.fc = nn.Linear(fc_features, 1024)
 classifier5_l2 = nn.Linear(in_features=1024, out_features=num_classes, bias=True)
-
-model = torch.nn.DataParallel(model)
 
 classifier1_l1 = torch.nn.DataParallel(classifier1_l1)
 classifier1_l2 = torch.nn.DataParallel(classifier1_l2)
@@ -113,12 +128,6 @@ classifier4_l2 = torch.nn.DataParallel(classifier4_l2)
 classifier5_l1 = torch.nn.DataParallel(classifier5_l1)
 classifier5_l2 = torch.nn.DataParallel(classifier5_l2)
 
-# classifier1.load_state_dict(torch.load(class1_pth))
-# classifier2.load_state_dict(torch.load(class2_pth))
-# classifier3.load_state_dict(torch.load(class3_pth))
-# classifier4.load_state_dict(torch.load(class4_pth))
-# classifier5.load_state_dict(torch.load(class5_pth))
-
 classifier1_l1.load_state_dict(torch.load(class1_l1_pth))
 classifier1_l2.load_state_dict(torch.load(class1_l2_pth))
 
@@ -133,8 +142,6 @@ classifier4_l2.load_state_dict(torch.load(class4_l2_pth))
 
 classifier5_l1.load_state_dict(torch.load(class5_l1_pth))
 classifier5_l2.load_state_dict(torch.load(class5_l2_pth))
-
-model = model.to(device)
 
 classifier1_l1 = classifier1_l1.to(device)
 classifier1_l2 = classifier1_l2.to(device)
@@ -154,43 +161,19 @@ classifier5_l2 = classifier5_l2.to(device)
 since = time.time()
 best_acc = 0.0
 
-for param in model.parameters():
-    param.requires_grad = False
-model.eval()  # Set model to evaluate mode
-
-for param in classifier1_l1.parameters():
-    param.requires_grad = False
 classifier1_l1.eval()
-for param in classifier1_l2.parameters():
-    param.requires_grad = False
 classifier1_l2.eval()
 
-for param in classifier2_l1.parameters():
-    param.requires_grad = False
 classifier2_l1.eval()
-for param in classifier2_l2.parameters():
-    param.requires_grad = False
 classifier2_l2.eval()
 
-for param in classifier3_l1.parameters():
-    param.requires_grad = False
 classifier3_l1.eval()
-for param in classifier3_l2.parameters():
-    param.requires_grad = False
 classifier3_l2.eval()
 
-for param in classifier4_l1.parameters():
-    param.requires_grad = False
 classifier4_l1.eval()
-for param in classifier4_l2.parameters():
-    param.requires_grad = False
 classifier4_l2.eval()
 
-for param in classifier5_l1.parameters():
-    param.requires_grad = False
 classifier5_l1.eval()
-for param in classifier5_l2.parameters():
-    param.requires_grad = False
 classifier5_l2.eval()
 
 running_corrects = 0
@@ -205,40 +188,29 @@ for inputs, labels in dataloaders['test']:
     inputs = inputs.to(device, non_blocking=True)
     labels = labels.to(device, non_blocking=True)
 
-    # # Note: trouble shooting, delete later
-    # spl_filename = dataloaders['test'].dataset.samples[i][0]
-    # spl_filename = spl_filename.rsplit('/', 1)[-1]
-
-    # forward
-    _, feature = model(inputs)
-
-    # Original
-    # preds = classifier(feature)
-    # _, preds = torch.max(preds, 1)
-
     label_arr = np.array(labels.cpu().detach().numpy())
     dis_bs = len(label_arr)
 
     # majority vote
     preds = np.zeros(dis_bs)
 
-    cls1_l1 = classifier1_l1(feature)
+    cls1_l1 = classifier1_l1(inputs)
     cls1_l1 = nn.functional.relu(cls1_l1)
     cls1_prob = np.array(classifier1_l2(cls1_l1).cpu().detach().numpy())
 
-    cls2_l1 = classifier2_l1(feature)
+    cls2_l1 = classifier2_l1(inputs)
     cls2_l1 = nn.functional.relu(cls2_l1)
     cls2_prob = np.array(classifier2_l2(cls2_l1).cpu().detach().numpy())
 
-    cls3_l1 = classifier3_l1(feature)
+    cls3_l1 = classifier3_l1(inputs)
     cls3_l1 = nn.functional.relu(cls3_l1)
     cls3_prob = np.array(classifier3_l2(cls3_l1).cpu().detach().numpy())
 
-    cls4_l1 = classifier4_l1(feature)
+    cls4_l1 = classifier4_l1(inputs)
     cls4_l1 = nn.functional.relu(cls4_l1)
     cls4_prob = np.array(classifier4_l2(cls4_l1).cpu().detach().numpy())
 
-    cls5_l1 = classifier5_l1(feature)
+    cls5_l1 = classifier5_l1(inputs)
     cls5_l1 = nn.functional.relu(cls5_l1)
     cls5_prob = np.array(classifier5_l2(cls5_l1).cpu().detach().numpy())
 
@@ -252,15 +224,6 @@ for inputs, labels in dataloaders['test']:
         norm_sum = norm_1 + norm_2 + norm_3 + norm_4 + norm_5
         temp = np.argmax(norm_sum)
         preds[idx] = temp
-
-    # running_corrects += torch.sum(preds == labels.data)
-    # class_idx = preds.data[0]
-
-    # preds_list = list(np.array(preds.cpu()))
-    # labels_list = list(np.array(labels.cpu()))
-
-    # preds_list = list(preds.astype(int))
-    # labels_list = list(np.array(labels.cpu().detach().numpy()))
 
     preds_arr = preds.astype(int)
 

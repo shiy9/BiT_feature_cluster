@@ -15,14 +15,14 @@ import csv
 from sklearn.metrics import confusion_matrix, f1_score, balanced_accuracy_score
 
 train_info = []
-bs = 64
+bs = 256
 num_epochs = 100
 # Note: Number of classes. Check before running
 num_classes = 7
 train_splits = 5
-lr = 1e-2
-stepSize = 5
-save_name = 'scr_pretr_2aug_w1'
+lr = 1e-3
+stepSize = 15
+save_name = 'finetune2l_imgnet_2aug_w1'
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
@@ -73,8 +73,7 @@ for val_folder_index in range(train_splits):
         loader_list.append(tmp_data)
     dataset['train'] = data.ConcatDataset(loader_list)
 
-    dataset['valid'] = datasets.ImageFolder(root=train_directory + val_WSI_list[0],
-                                            transform=image_transforms['valid'])
+    dataset['valid'] = datasets.ImageFolder(root=train_directory + val_WSI_list[0], transform=image_transforms['valid'])
 
     # Size of train and validation data
     dataset_sizes = {
@@ -107,26 +106,33 @@ for val_folder_index in range(train_splits):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     model = models.resnet50(pretrained=True)
+    for param in model.parameters():
+        param.requires_grad = False
     fc_features = model.fc.in_features
-    model.fc = nn.Linear(fc_features, num_classes)
+    model.fc = nn.Linear(fc_features, 1024)
+
+    classifier_l2 = nn.Linear(in_features=1024, out_features=num_classes, bias=True)
+    for param in classifier_l2.parameters():
+        param.requires_grad = True
 
     model = torch.nn.DataParallel(model)
+    classifier_l2 = torch.nn.DataParallel(classifier_l2)
+
     # Transfer the model to GPU
     model = model.to(device)
+    classifier_l2 = classifier_l2.to(device)
 
-    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
+    optimizer = optim.SGD(model.module.fc.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
+    optimizer_l2 = optim.SGD(classifier_l2.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
 
     scheduler = lr_scheduler.StepLR(optimizer, step_size=stepSize, gamma=0.1)
+    scheduler_l2 = lr_scheduler.StepLR(optimizer_l2, step_size=stepSize, gamma=0.1)
 
     # Model training routine
     print("\nTraining:-\n")
 
     # def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     best_acc = 0.0
-
-    for param in model.parameters():
-        param.requires_grad = True
-    model.train()
 
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
@@ -135,13 +141,11 @@ for val_folder_index in range(train_splits):
         # For debugging only. Comment out later!
         for phase in ['train', 'valid']:  # Note: orig with valid: for phase in ['train', 'valid']:
             if phase == 'train':
-                for param in model.parameters():
-                    param.requires_grad = True
                 model.train()
+                classifier_l2.train()
             else:
-                for param in model.parameters():
-                    param.requires_grad = False
                 model.eval()
+                classifier_l2.eval()
 
             running_loss = 0.0
             running_corrects = 0
@@ -152,12 +156,16 @@ for val_folder_index in range(train_splits):
             # if need index: for i, (inputs, labels) in enumerate(dataloaders[phase], 0):
             for inputs, labels in dataloaders[phase]:
                 model.zero_grad()
+                classifier_l2.zero_grad()
                 optimizer.zero_grad()
+                optimizer_l2.zero_grad()
 
                 inputs = inputs.to(device)
                 labels = labels.to(device)
 
-                preds = model(inputs)
+                l1_out = model(inputs)
+                l1_out = torch.nn.functional.relu(l1_out)
+                preds = classifier_l2(l1_out)
 
                 weights = torch.tensor([0.6, 1.0, 1.0, 1.0, 1.0, 1.0, 0.4])
                 weights = weights.to(device)
@@ -167,6 +175,7 @@ for val_folder_index in range(train_splits):
                 if phase == 'train':
                     loss.backward()
                     optimizer.step()
+                    optimizer_l2.step()
 
                 preds_list = list(np.array(preds.argmax(dim=1).cpu().detach().numpy()))
                 labels_list = list(np.array(labels.cpu().detach().numpy()))
@@ -182,6 +191,7 @@ for val_folder_index in range(train_splits):
 
             if phase == 'train':
                 scheduler.step()
+                scheduler_l2.step()
 
             epoch_loss = running_loss / dataset_sizes[phase]
             epoch_acc = running_corrects / dataset_sizes[phase]
@@ -207,14 +217,14 @@ for val_folder_index in range(train_splits):
                 writer.add_scalar(f'Valid{val_folder_index}/Balance_accuracy', balance_acc, epoch)
                 writer.flush()
 
-            # deep copy the model
-            # # Note: valid cmt
             if phase == 'valid' and balance_acc > best_acc:
                 best_epoch = epoch
                 best_split = val_folder_index
                 best_acc = balance_acc
-        PATH = f'{model_dir}/train_all_{val_folder_index}_epoch_' + str(epoch) + '.pth'
+        PATH = f'{model_dir}/train_all_{val_folder_index}_epoch_' + str(epoch) + '_l1.pth'
         torch.save(model.state_dict(), PATH)
+        PATH = f'{model_dir}/train_all_{val_folder_index}_epoch_' + str(epoch) + '_l2.pth'
+        torch.save(classifier_l2.state_dict(), PATH)
 
     print('Best val Acc: {:4f}'.format(best_acc))
     print(f'Best epoch in val is {best_epoch} in split {best_split}')

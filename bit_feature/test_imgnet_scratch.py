@@ -13,8 +13,9 @@ import multiprocessing
 # Set the train and validation directory paths
 test_directory = 'data_root/learning/testing/folder1'
 # Set the model save path
-best_models = [65, 60, 27, 21, 16]
-model_folder = 'models'
+best_models = [71, 28, 20, 77, 79]
+model_folder = 'models_finetune1l_imgnet_2aug_w1'
+
 class1_pth = f'data_root/learning/{model_folder}/train_all_0_epoch_{best_models[0]}.pth'
 class2_pth = f'data_root/learning/{model_folder}/train_all_1_epoch_{best_models[1]}.pth'
 class3_pth = f'data_root/learning/{model_folder}/train_all_2_epoch_{best_models[2]}.pth'
@@ -86,11 +87,11 @@ model_5 = models.resnet50(pretrained=False)
 fc_features = model_5.fc.in_features
 model_5.fc = nn.Linear(fc_features, num_classes)
 
-model_1 = torch.nn.DataParallel(model_1)
-model_2 = torch.nn.DataParallel(model_2)
-model_3 = torch.nn.DataParallel(model_3)
-model_4 = torch.nn.DataParallel(model_4)
-model_5 = torch.nn.DataParallel(model_5)
+# model_1 = torch.nn.DataParallel(model_1)
+# model_2 = torch.nn.DataParallel(model_2)
+# model_3 = torch.nn.DataParallel(model_3)
+# model_4 = torch.nn.DataParallel(model_4)
+# model_5 = torch.nn.DataParallel(model_5)
 
 model_1.load_state_dict(torch.load(class1_pth))
 model_2.load_state_dict(torch.load(class2_pth))

@@ -10,19 +10,20 @@ from torch.optim import lr_scheduler
 import time, os, copy, argparse
 import multiprocessing
 import json
+import os
 from matplotlib import pyplot as plt
 import csv
 from sklearn.metrics import confusion_matrix, f1_score, balanced_accuracy_score
 
 train_info = []
-bs = 64
+bs = 256
 num_epochs = 100
 # Note: Number of classes. Check before running
 num_classes = 7
 train_splits = 5
-lr = 1e-2
-stepSize = 5
-save_name = 'scr_pretr_2aug_w1'
+lr = 0.01
+stepSize = 15
+save_name = 'finetune1l_inet_0.01'
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
@@ -73,8 +74,7 @@ for val_folder_index in range(train_splits):
         loader_list.append(tmp_data)
     dataset['train'] = data.ConcatDataset(loader_list)
 
-    dataset['valid'] = datasets.ImageFolder(root=train_directory + val_WSI_list[0],
-                                            transform=image_transforms['valid'])
+    dataset['valid'] = datasets.ImageFolder(root=train_directory + val_WSI_list[0], transform=image_transforms['valid'])
 
     # Size of train and validation data
     dataset_sizes = {
@@ -107,14 +107,15 @@ for val_folder_index in range(train_splits):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     model = models.resnet50(pretrained=True)
+    for param in model.parameters():
+        param.requires_grad = False
     fc_features = model.fc.in_features
     model.fc = nn.Linear(fc_features, num_classes)
 
-    model = torch.nn.DataParallel(model)
     # Transfer the model to GPU
     model = model.to(device)
 
-    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
+    optimizer = optim.SGD(model.fc.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
 
     scheduler = lr_scheduler.StepLR(optimizer, step_size=stepSize, gamma=0.1)
 
@@ -124,10 +125,6 @@ for val_folder_index in range(train_splits):
     # def train_model(model, criterion, optimizer, scheduler, num_epochs=30):
     best_acc = 0.0
 
-    for param in model.parameters():
-        param.requires_grad = True
-    model.train()
-
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
         print('-' * 10)
@@ -135,12 +132,8 @@ for val_folder_index in range(train_splits):
         # For debugging only. Comment out later!
         for phase in ['train', 'valid']:  # Note: orig with valid: for phase in ['train', 'valid']:
             if phase == 'train':
-                for param in model.parameters():
-                    param.requires_grad = True
                 model.train()
             else:
-                for param in model.parameters():
-                    param.requires_grad = False
                 model.eval()
 
             running_loss = 0.0
@@ -219,6 +212,13 @@ for val_folder_index in range(train_splits):
     print('Best val Acc: {:4f}'.format(best_acc))
     print(f'Best epoch in val is {best_epoch} in split {best_split}')
     train_info.append([val_WSI_list, best_epoch, best_acc])
+
+    # Only keeping best model to save space
+    all_mods = os.listdir(model_dir)
+    for mod in all_mods:
+        if mod.startswith('train_all'):
+            if mod != f'train_all_{best_split}_epoch_{best_epoch}.pth':
+                os.remove(f'{model_dir}/{mod}')
 writer.close()
 with open(f'{model_dir}/training_summary.csv', 'w') as f:
     # using csv.writer method from CSV package
