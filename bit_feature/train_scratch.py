@@ -20,9 +20,9 @@ num_epochs = 100
 # Note: Number of classes. Check before running
 num_classes = 7
 train_splits = 5
-lr = 1e-2
+lr = 0.1
 stepSize = 5
-save_name = 'scr_pretr_2aug_w1'
+save_name = 'scr_inet_temp'
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 # num_cpu = 0
@@ -38,6 +38,8 @@ if len(os.listdir(model_dir)) != 0:
 writer = SummaryWriter(log_dir=f'runs/Aug_10_{save_name}')
 
 since = time.time()
+
+best_models = []
 
 for val_folder_index in range(train_splits):
     whole_data_set = [f'folder{i}' for i in range(1, 6)]
@@ -219,6 +221,14 @@ for val_folder_index in range(train_splits):
     print('Best val Acc: {:4f}'.format(best_acc))
     print(f'Best epoch in val is {best_epoch} in split {best_split}')
     train_info.append([val_WSI_list, best_epoch, best_acc])
+    best_models.append(f'train_all_{best_split}_epoch_{best_epoch}.pth')
+
+    # Only keeping best model to save space
+    all_mods = os.listdir(model_dir)
+    for mod in all_mods:
+        if mod.startswith('train_all'):
+            if mod not in set(best_models):
+                os.remove(f'{model_dir}/{mod}')
 writer.close()
 with open(f'{model_dir}/training_summary.csv', 'w') as f:
     # using csv.writer method from CSV package
@@ -227,7 +237,3 @@ with open(f'{model_dir}/training_summary.csv', 'w') as f:
 
 time_elapsed = time.time() - since
 print('\nTraining complete in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
-
-'''
-Sample run: python train.py --mode=finetue
-'''

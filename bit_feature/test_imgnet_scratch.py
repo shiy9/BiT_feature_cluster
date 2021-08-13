@@ -7,22 +7,26 @@ import time
 from sklearn.metrics import confusion_matrix, f1_score, balanced_accuracy_score
 import torch.nn.functional as F
 import torch.nn as nn
-from sklearn import preprocessing
 import multiprocessing
+from sklearn import preprocessing
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sn
+
 
 # Set the train and validation directory paths
 test_directory = 'data_root/learning/testing/folder1'
 # Set the model save path
-best_models = [71, 28, 20, 77, 79]
-model_folder = 'models_finetune1l_imgnet_2aug_w1'
+best_models = [15, 64, 11, 37, 48]
+model_folder = 'models_finetune2l_inet_0.01_4aug'
+save_name = 'finetune2l_inet_0.01_4aug'
+plot_title = 'ResNet50 2-layer Finetune, 4 Augmentations'
 
 class1_pth = f'data_root/learning/{model_folder}/train_all_0_epoch_{best_models[0]}.pth'
 class2_pth = f'data_root/learning/{model_folder}/train_all_1_epoch_{best_models[1]}.pth'
 class3_pth = f'data_root/learning/{model_folder}/train_all_2_epoch_{best_models[2]}.pth'
 class4_pth = f'data_root/learning/{model_folder}/train_all_3_epoch_{best_models[3]}.pth'
 class5_pth = f'data_root/learning/{model_folder}/train_all_4_epoch_{best_models[4]}.pth'
-
-save_name = '40x_2l_lr_0.0001'
 
 # Batch size
 bs = 128
@@ -67,23 +71,23 @@ print("\nTesting-set size:", dataset_sizes['test'])
 # Set default device as gpu, if available
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-model_1 = models.resnet50(pretrained=False)
+model_1 = models.resnet50(pretrained=True)
 fc_features = model_1.fc.in_features
 model_1.fc = nn.Linear(fc_features, num_classes)
 
-model_2 = models.resnet50(pretrained=False)
+model_2 = models.resnet50(pretrained=True)
 fc_features = model_2.fc.in_features
 model_2.fc = nn.Linear(fc_features, num_classes)
 
-model_3 = models.resnet50(pretrained=False)
+model_3 = models.resnet50(pretrained=True)
 fc_features = model_3.fc.in_features
 model_3.fc = nn.Linear(fc_features, num_classes)
 
-model_4 = models.resnet50(pretrained=False)
+model_4 = models.resnet50(pretrained=True)
 fc_features = model_4.fc.in_features
 model_4.fc = nn.Linear(fc_features, num_classes)
 
-model_5 = models.resnet50(pretrained=False)
+model_5 = models.resnet50(pretrained=True)
 fc_features = model_5.fc.in_features
 model_5.fc = nn.Linear(fc_features, num_classes)
 
@@ -178,13 +182,23 @@ print(cm)
 print(f'\nTesting accuracy: {epoch_acc:4f}')
 balance_acc = balanced_accuracy_score(true, pred)
 print(f'Balance accuracy: {balance_acc:4f}')
-print(f'model f1 score:{f1:4f}')
-np.savetxt(f"data_root/learning/testing_output/train_{save_name}_cm.csv", cm, delimiter=",")
+print(f'model f1 score: {f1:4f}')
+np.savetxt(f"data_root/learning/testing_output/{save_name}_cm.csv", cm, fmt='%i', delimiter=",")
 
 time_elapsed = time.time() - since
 print('Testing complete in {:.0f}m {:.0f}s'.format(
     time_elapsed // 60, time_elapsed % 60))
 
-'''
-Sample run: python train.py --mode=finetue
-'''
+index = ['bzh', 'dis', 'eos', 'fibrotic lp', 'normal lp', 'others', 'tissue']
+
+cm_df = pd.DataFrame(cm, index=index, columns=index)
+plt.figure(figsize=(9, 9))
+ax = sn.heatmap(cm_df, annot=True, cmap='Blues', fmt='d', cbar=False, square=True, annot_kws={'fontsize':12})
+ax.xaxis.tick_top()
+plt.yticks(rotation=0)
+plt.tick_params(axis='both', which='major', labelsize=12,
+                labelbottom = False, bottom=False, top = False, left=False, labeltop=True)
+plt.title(plot_title, fontdict={'fontsize': 15}, y=1.08)
+plt.savefig(f'data_root/learning/testing_output/{save_name}_cm.png')
+plt.show()
+

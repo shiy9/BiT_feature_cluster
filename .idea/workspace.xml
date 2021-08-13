@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="638e606b-167a-4d2a-80b2-6f1f669f3ee1" name="Default Changelist" comment="added training from scratch">
+    <list default="true" id="638e606b-167a-4d2a-80b2-6f1f669f3ee1" name="Default Changelist" comment="resnet50 training update">
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/WSI/P16-7404;S6;UVM.scn" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/cluster/P16-7404;S6;UVM_R4_cluster_label.npy" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/feature/P16-7404;S6;UVM_R4_feature.npy" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bit_feature/data_root/result_img/P16-7404;S6;UVM_R4_cluster_mask.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/finetune_1layer.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/finetune_BiT_1layer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/finetune_2layer.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/finetune_BiT_2layer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/test_1layer.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/test_BiT_1layer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/test_2layer.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/test_BiT_2layer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bit_feature/test_scratch.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/test_imgnet_scratch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/auto_training.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/auto_training.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/finetune_imgnet_1layer.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/finetune_imgnet_1layer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/finetune_imgnet_2layer.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/finetune_imgnet_2layer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/test_imgnet_finetune_2l.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/test_imgnet_finetune_2l.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/test_imgnet_scratch.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/test_imgnet_scratch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bit_feature/testing_range.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/testing_range.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bit_feature/train_scratch.py" beforeDir="false" afterPath="$PROJECT_DIR$/bit_feature/train_scratch.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +47,7 @@
     <property name="settings.editor.selected.configurable" value="preferences.toDoOptions" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/bit_feature/train_valid_Quan.py" />
   </component>
-  <component name="RunManager" selected="Python.finetune_imgnet_1layer">
+  <component name="RunManager" selected="Python.test_imgnet_finetune_2l">
     <configuration name="auto_training" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="big_transfer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -61,116 +62,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/auto_training.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="cluster_mask" type="PythonConfigurationType" factoryName="Python">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/clustering_mask.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="clustering" type="PythonConfigurationType" factoryName="Python">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/clustering.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="data_augmentation" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/data_augmentation.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="feature-extraction-2.0" type="PythonConfigurationType" factoryName="Python">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/feature_extraction.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="feature-extraction" type="PythonConfigurationType" factoryName="Python">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/feature_extraction_old.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -267,72 +158,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="five_fold_split" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/five_fold_split.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="group_patches" type="PythonConfigurationType" factoryName="Python">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/BiT/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/patch_grouping.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="move_patch_files" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/move_patch_files.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="patch_extraction" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="big_transfer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -347,28 +172,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/patch_extraction.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="supersample_patches" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/supersample_patches.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -413,28 +216,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/test_BiT_2layer.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="test_eoe_old" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="big_transfer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bit_feature" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bit_feature/test_eoe_old.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -629,20 +410,10 @@
       <item itemvalue="Python.finetune_2layer" />
       <item itemvalue="Python.test_2layer" />
       <item itemvalue="Python.test_1layer" />
-      <item itemvalue="Python.data_augmentation" />
       <item itemvalue="Python.testing_range" />
-      <item itemvalue="Python.test_eoe_old" />
       <item itemvalue="Python.patch_extraction" />
-      <item itemvalue="Python.supersample_patches" />
-      <item itemvalue="Python.five_fold_split" />
       <item itemvalue="Python.trained_cluster" />
-      <item itemvalue="Python.move_patch_files" />
-      <item itemvalue="Python.clustering" />
-      <item itemvalue="Python.cluster_mask" />
-      <item itemvalue="Python.group_patches" />
       <item itemvalue="Python.wsi_properties" />
-      <item itemvalue="Python.feature-extraction" />
-      <item itemvalue="Python.feature-extraction-2.0" />
       <item itemvalue="Python.train_valid_wtest" />
       <item itemvalue="Python.train_only" />
       <item itemvalue="Python.auto_training" />
@@ -738,7 +509,11 @@
       <workItem from="1628346815439" duration="21348000" />
       <workItem from="1628433904452" duration="1398000" />
       <workItem from="1628435968960" duration="18062000" />
-      <workItem from="1628516544340" duration="47324000" />
+      <workItem from="1628516544340" duration="67352000" />
+      <workItem from="1628733505015" duration="65000" />
+      <workItem from="1628734007148" duration="1033000" />
+      <workItem from="1628774210466" duration="3734000" />
+      <workItem from="1628800675073" duration="599000" />
     </task>
     <task id="LOCAL-00001" summary="Feature extraction and clustering mask">
       <created>1624843132766</created>
@@ -929,7 +704,14 @@
       <option name="project" value="LOCAL" />
       <updated>1628568109725</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="resnet50 training update">
+      <created>1628643741846</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1628643741847</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -971,7 +753,8 @@
     <MESSAGE value="training updates" />
     <MESSAGE value="training debug update" />
     <MESSAGE value="added training from scratch" />
-    <option name="LAST_COMMIT_MESSAGE" value="added training from scratch" />
+    <MESSAGE value="resnet50 training update" />
+    <option name="LAST_COMMIT_MESSAGE" value="resnet50 training update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1028,12 +811,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
-          <line>54</line>
+          <line>59</line>
           <option name="timeStamp" value="98" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
-          <line>49</line>
+          <line>54</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1048,12 +831,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
-          <line>248</line>
+          <line>277</line>
           <option name="timeStamp" value="131" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
-          <line>161</line>
+          <line>166</line>
           <option name="timeStamp" value="145" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1073,7 +856,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
-          <line>184</line>
+          <line>189</line>
           <option name="timeStamp" value="155" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1088,12 +871,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
-          <line>244</line>
+          <line>249</line>
           <option name="timeStamp" value="161" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/testing_range.py</url>
-          <line>198</line>
+          <line>203</line>
           <option name="timeStamp" value="162" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1103,17 +886,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/finetune_imgnet_1layer.py</url>
-          <line>132</line>
+          <line>134</line>
           <option name="timeStamp" value="172" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/finetune_imgnet_2layer.py</url>
-          <line>141</line>
+          <line>143</line>
           <option name="timeStamp" value="175" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bit_feature/train_scratch.py</url>
-          <line>135</line>
+          <line>137</line>
           <option name="timeStamp" value="176" />
         </line-breakpoint>
       </breakpoints>
@@ -1134,18 +917,19 @@
     <SUITE FILE_PATH="coverage/big_transfer$clustering.coverage" NAME="clustering Coverage Results" MODIFIED="1625194716295" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$group_patches.coverage" NAME="group_patches Coverage Results" MODIFIED="1628031434064" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$finetune_1layer.coverage" NAME="finetune_1layer Coverage Results" MODIFIED="1628545936685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$test_scratch.coverage" NAME="test_imgnet_scratch Coverage Results" MODIFIED="1628633698137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$test_scratch.coverage" NAME="test_imgnet_scratch Coverage Results" MODIFIED="1628707316493" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$data_augmentation.coverage" NAME="data_augmentation Coverage Results" MODIFIED="1628435286420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$five_fold_split.coverage" NAME="five_fold_split Coverage Results" MODIFIED="1628045119259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$patch_extraction.coverage" NAME="patch_extraction Coverage Results" MODIFIED="1628030334949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$train_only.coverage" NAME="train_only Coverage Results" MODIFIED="1628383895404" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$test_eoe_1mod_load.coverage" NAME="test_1layer Coverage Results" MODIFIED="1628544304763" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$feature_extraction_2_0.coverage" NAME="feature-extraction-2.0 Coverage Results" MODIFIED="1626286895966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$finetune_imgnet_1layer.coverage" NAME="finetune_imgnet_1layer Coverage Results" MODIFIED="1628643407364" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$finetune_imgnet_1layer.coverage" NAME="finetune_imgnet_1layer Coverage Results" MODIFIED="1628645936262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$test_imgnet_scratch.coverage" NAME="test_imgnet_scratch Coverage Results" MODIFIED="1628777156373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$train_valid_wtest.coverage" NAME="train_valid_wtest Coverage Results" MODIFIED="1628386554669" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$test_imgnet_finetune_2l.coverage" NAME="test_imgnet_finetune_2l Coverage Results" MODIFIED="1628635474549" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$testing_range.coverage" NAME="testing_range Coverage Results" MODIFIED="1628547856092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$train_scratch.coverage" NAME="train_scratch Coverage Results" MODIFIED="1628615837942" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$test_imgnet_finetune_2l.coverage" NAME="test_imgnet_finetune_2l Coverage Results" MODIFIED="1628777491926" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$testing_range.coverage" NAME="testing_range Coverage Results" MODIFIED="1628703186254" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$train_scratch.coverage" NAME="train_scratch Coverage Results" MODIFIED="1628654507454" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$feature_extraction.coverage" NAME="feature-extraction Coverage Results" MODIFIED="1625193183568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$wsi_properties.coverage" NAME="wsi_properties Coverage Results" MODIFIED="1625667304879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$cluster_mask.coverage" NAME="cluster_mask Coverage Results" MODIFIED="1625194755561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
@@ -1154,8 +938,8 @@
     <SUITE FILE_PATH="coverage/big_transfer$train_valid.coverage" NAME="finetune_2layer Coverage Results" MODIFIED="1628549229978" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$move_patch_files.coverage" NAME="move_patch_files Coverage Results" MODIFIED="1626628123312" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$test_eoe_old.coverage" NAME="test_eoe_old Coverage Results" MODIFIED="1628385291083" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
-    <SUITE FILE_PATH="coverage/big_transfer$finetune_imgnet_2layer.coverage" NAME="finetune_imgnet_2layer Coverage Results" MODIFIED="1628615094885" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$finetune_imgnet_2layer.coverage" NAME="finetune_imgnet_2layer Coverage Results" MODIFIED="1628653877634" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
     <SUITE FILE_PATH="coverage/big_transfer$pytorch_train.coverage" NAME="pytorch-train Coverage Results" MODIFIED="1624216754862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_pytorch" />
-    <SUITE FILE_PATH="coverage/big_transfer$auto_training.coverage" NAME="auto_training Coverage Results" MODIFIED="1628616128543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
+    <SUITE FILE_PATH="coverage/big_transfer$auto_training.coverage" NAME="auto_training Coverage Results" MODIFIED="1628734380385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bit_feature" />
   </component>
 </project>

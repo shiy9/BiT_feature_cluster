@@ -10,15 +10,20 @@ import imgaug as ia
 import imgaug.augmenters as iaa
 import imageio
 
+
 import torch
+
 from torchvision import datasets, transforms
 import torch.utils.data as data
 from PIL import Image
 from pathlib import Path
-import matplotlib.pyplot as plt
+
 import torch
 import torchvision.transforms as T
 import BiT_models
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sn
 
 # Crop out interested region. For 7/13/21 Presentation
 # data = np.load('data_root/tiles_coord/P16-8917;S6;UVM_R0_tiles_coord.npy')
@@ -191,19 +196,19 @@ import BiT_models
 #                 print(f'File {file} exists in folder{idx+1} as well as in folder{c_idx+1}')
 
 ### Same folder across labels
-check_dir = 'data_root/learning/testing'
-for folder in sorted(os.listdir(check_dir)):
-    all_files = []
-    for label in sorted(os.listdir(f'{check_dir}/{folder}')):
-        all_files.append(os.listdir(f'{check_dir}/{folder}/{label}'))
-    for idx in range(len(all_files)):
-        cur_files = all_files[idx]
-        for c_idx in range(idx+1, len(all_files)):
-            ref_files = all_files[c_idx]
-            for file in cur_files:
-                if file in set(ref_files):
-                    print(f'File {file} exists in folder{idx+1} as well as in folder{c_idx+1}')
-    input('Enter to continue')
+# check_dir = 'data_root/learning/testing'
+# for folder in sorted(os.listdir(check_dir)):
+#     all_files = []
+#     for label in sorted(os.listdir(f'{check_dir}/{folder}')):
+#         all_files.append(os.listdir(f'{check_dir}/{folder}/{label}'))
+#     for idx in range(len(all_files)):
+#         cur_files = all_files[idx]
+#         for c_idx in range(idx+1, len(all_files)):
+#             ref_files = all_files[c_idx]
+#             for file in cur_files:
+#                 if file in set(ref_files):
+#                     print(f'File {file} exists in folder{idx+1} as well as in folder{c_idx+1}')
+#     input('Enter to continue')
 
 
 # Data augmentation test
@@ -243,6 +248,30 @@ for folder in sorted(os.listdir(check_dir)):
 # sharpness_adjuster = T.RandomAdjustSharpness(sharpness_factor=4)
 # sharpened_imgs = [sharpness_adjuster(orig_img) for _ in range(4)]
 # plot(sharpened_imgs)
+
+##### Plotting confusion matrix
+cm = [[144, 29, 7, 0, 0, 5, 15],
+ [ 66,  39,  16,   2,   0,   2,  75],
+ [ 21,  41,  80,   1,   1,   3,  34],
+ [ 11,   2,   1, 118,  35,   0,  33],
+ [ 22,   1 ,  0 , 51 ,120 ,  2  , 5],
+ [  3 ,  0  , 0  , 1 ,  2 , 94  , 0],
+ [ 43,  13 , 13 ,  1 ,  2  , 0 ,121]]
+
+index = ['bzh', 'dis', 'eos', 'fibrotic lp', 'normal lp', 'others', 'tissue']
+
+cm_df = pd.DataFrame(cm, index=index, columns=index)
+plt.figure(figsize=(9, 9))
+ax = sn.heatmap(cm_df, annot=True, cmap='Blues', fmt='d', cbar=False, square=True, annot_kws={'fontsize':12})
+ax.xaxis.tick_top()
+plt.yticks(rotation=0)
+plt.tick_params(axis='both', which='major', labelsize=12,
+                labelbottom = False, bottom=False, top = False, left=False, labeltop=True)
+plt.title('ResNet50 Finetune 1 layer, lr = 0.1', fontdict={'fontsize': 15}, y=1.08)
+plt.savefig(f'data_root/learning/testing_output/finetune1l_inet_0.1.png')
+plt.show()
+
+
 
 
 

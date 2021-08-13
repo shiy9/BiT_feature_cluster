@@ -10,15 +10,17 @@ import torch.nn.functional as F
 import torch.nn as nn
 from sklearn import preprocessing
 import multiprocessing
-import BiT_models
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sn
 
 # Set the train and validation directory paths
 test_directory = 'data_root/learning/testing/folder1'
 
-best_models = [65, 82, 30, 39, 44]
-model_folder = 'models_finetune2l_imgnet_2aug_w1'
-
-save_name = '40x_3aug_new'
+best_models = [22, 36, 31, 29, 13]
+model_folder = 'models_finetune2l_inet_0.01_wt_noaug'
+save_name = 'finetune2l_inet_0.01_wt_noaug'
+plot_title = 'ResNet50 2-layer Finetune, Weighted, No Augmentation'
 
 class1_l1_pth = f'data_root/learning/{model_folder}/train_all_0_epoch_{best_models[0]}_l1.pth'
 class1_l2_pth = f'data_root/learning/{model_folder}/train_all_0_epoch_{best_models[0]}_l2.pth'
@@ -237,18 +239,27 @@ for inputs, labels in dataloaders['test']:
 epoch_acc = running_corrects / dataset_sizes['test']
 cm = confusion_matrix(true, pred)
 f1 = f1_score(true, pred, labels=[0, 1, 2, 3, 4, 5, 6], average='macro')
-print(f'\nmodel f1 score: {f1:4f}')
 print('Confusion matrix: ')
 print(cm)
 print(f'Testing accuracy: {epoch_acc:4f}')
 balance_acc = balanced_accuracy_score(true, pred)
 print(f'Balance accuracy: {balance_acc:4f}')
-np.savetxt(f"data_root/learning/testing_output/train_{save_name}_cm.csv", cm, delimiter=",")
+print(f'model f1 score: {f1:4f}')
+np.savetxt(f"data_root/learning/testing_output/{save_name}_cm.csv", cm, fmt='%i', delimiter=",")
 
 time_elapsed = time.time() - since
 print('Testing complete in {:.0f}m {:.0f}s'.format(
     time_elapsed // 60, time_elapsed % 60))
 
-'''
-Sample run: python train.py --mode=finetue
-'''
+index = ['bzh', 'dis', 'eos', 'fibrotic lp', 'normal lp', 'others', 'tissue']
+
+cm_df = pd.DataFrame(cm, index=index, columns=index)
+plt.figure(figsize=(9, 9))
+ax = sn.heatmap(cm_df, annot=True, cmap='Blues', fmt='d', cbar=False, square=True, annot_kws={'fontsize':12})
+ax.xaxis.tick_top()
+plt.yticks(rotation=0)
+plt.tick_params(axis='both', which='major', labelsize=12,
+                labelbottom = False, bottom=False, top = False, left=False, labeltop=True)
+plt.title(plot_title, fontdict={'fontsize': 15}, y=1.08)
+plt.savefig(f'data_root/learning/testing_output/{save_name}_cm.png')
+plt.show()
