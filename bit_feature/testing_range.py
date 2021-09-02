@@ -250,13 +250,14 @@ import seaborn as sn
 # plot(sharpened_imgs)
 
 ##### Plotting confusion matrix
-cm = [[144, 29, 7, 0, 0, 5, 15],
- [ 66,  39,  16,   2,   0,   2,  75],
- [ 21,  41,  80,   1,   1,   3,  34],
- [ 11,   2,   1, 118,  35,   0,  33],
- [ 22,   1 ,  0 , 51 ,120 ,  2  , 5],
- [  3 ,  0  , 0  , 1 ,  2 , 94  , 0],
- [ 43,  13 , 13 ,  1 ,  2  , 0 ,121]]
+cm = \
+ [[128, 25,   6,   12,    0,   7,  22],
+ [ 46,  80,  44,   0,    0,   2,  28],
+ [ 45,  31,  38,   1,    0,   5,  61],
+ [ 37,   28,   45, 0,   4,   0,  86],
+ [ 35,   0,   4,  143,  8,   2,   9],
+ [  1,  0,    0,    1,   1,   98,   0],
+ [ 33,  19,  9,    4,   0,   0,  128]]
 
 index = ['bzh', 'dis', 'eos', 'fibrotic lp', 'normal lp', 'others', 'tissue']
 
@@ -267,9 +268,26 @@ ax.xaxis.tick_top()
 plt.yticks(rotation=0)
 plt.tick_params(axis='both', which='major', labelsize=12,
                 labelbottom = False, bottom=False, top = False, left=False, labeltop=True)
-plt.title('ResNet50 Finetune 1 layer, lr = 0.1', fontdict={'fontsize': 15}, y=1.08)
-plt.savefig(f'data_root/learning/testing_output/finetune1l_inet_0.1.png')
+
+save_name = 'Figure4_c'
+plt.title('ResNet50 Train From Scratch, Random Initialization', fontdict={'fontsize': 15}, y=1.08)
+plt.savefig(f'/home/yuxuanshi/VUSRP/PaperFigures/{save_name}.pdf', bbox_inches='tight', pad_inches=0.1)
 plt.show()
+
+##### Save binary mask image
+# mask_pth = 'data_root/tiles/P16-8917;S6;UVM_R0_labeled_tiles/label_mask/mask_file/eos_mask.npy'
+# coord_pth = 'data_root/tiles_coord/P16-8917;S6;UVM_R0_tiles_coord.npy'
+# save_dir = '/home/yuxuanshi/VUSRP/PaperFigures'
+# mask = np.load(mask_pth)
+# binary = mask > 0
+# coords = np.load(coord_pth)
+# start_x = coords[15][0]
+# start_y = coords[15][1]
+# step_x = start_x + 3 * 256
+# step_y = start_y + 4 * 256
+# print(mask[start_y: step_y, start_x: step_x])
+
+# plt.imsave(f'{save_dir}/Figure2_label_mask.png', binary)
 
 
 
